@@ -43192,3 +43192,1121 @@ for (const [id, variants] of Object.entries(physAnswerLengthRepairs)) {
     }
   }
 }());
+
+
+
+
+// Reviewed subject-specific alternatives from the November cue review.
+// Explicit per-item options preserve answer letters after legacy transforms.
+(function restoreReviewedSubjectOptions() {
+  const repairs = {
+  "GCSE-P2-NAT-14": {
+    "reforge": {
+      "D": "Average life expectancy",
+      "A": "Total banknotes in circulation",
+      "B": "The current exchange rate",
+      "C": "The value of one firm’s exports"
+    }
+  },
+  "GCSE-P2-GRO-02": {
+    "reforge": {
+      "D": "It falls as output per person drops",
+      "A": "It rises because total output rises",
+      "B": "It stays fixed despite population growth",
+      "C": "It becomes a measure of price inflation"
+    }
+  },
+  "GCSE-P2-INC-13": {
+    "reforge": {
+      "C": "Value added tax",
+      "A": "Inheritance tax",
+      "B": "Corporation tax",
+      "D": "Personal income tax"
+    }
+  },
+  "GCSE-P2-TRD-10": {
+    "reforge": {
+      "D": "An import quota",
+      "A": "An import tariff",
+      "B": "An export subsidy",
+      "C": "A trade agreement"
+    }
+  },
+  "GCSE-P1-PRD-16": {
+    "reforge": {
+      "B": "Monthly factory rent",
+      "A": "Timber used per table",
+      "C": "Packaging for each item",
+      "D": "Electricity for each machine"
+    }
+  },
+  "BUS-N1-22": {
+    "base": {
+      "A": "Market development",
+      "B": "Product development",
+      "C": "Market penetration",
+      "D": "Diversification"
+    }
+  },
+  "CS-01": {
+    "base": {
+      "A": "An off-by-one error",
+      "B": "A syntax error in the loop",
+      "C": "An incorrect variable type",
+      "D": "A missing loop body statement"
+    }
+  },
+  "CS-C1A-10": {
+    "base": {
+      "B": "sorted",
+      "A": "encrypted",
+      "C": "unsorted",
+      "D": "compressed"
+    },
+    "reforge": {
+      "B": "sorted",
+      "A": "reversed randomly",
+      "C": "hashed",
+      "D": "unordered"
+    }
+  },
+  "CS-C1A-11": {
+    "reforge": {
+      "C": "O(n)",
+      "A": "O(1)",
+      "B": "O(log n)",
+      "D": "O(n²)"
+    }
+  },
+  "MEDIA-E1-01": {
+    "reforge": {
+      "A": "Sign",
+      "B": "Genre",
+      "C": "Code",
+      "D": "Myth"
+    }
+  },
+  "MEDIA-E1-07": {
+    "reforge": {
+      "C": "Genre",
+      "A": "Narrative",
+      "B": "Ideology",
+      "D": "Regulation"
+    }
+  },
+  "MEDIA-E1-10": {
+    "reforge": {
+      "C": "Non-linear",
+      "A": "Chronological",
+      "B": "Real-time",
+      "D": "Single-strand"
+    }
+  },
+  "MEDIA-E1-11": {
+    "reforge": {
+      "D": "Institution",
+      "A": "Audience group",
+      "B": "Genre category",
+      "C": "Regulatory code"
+    }
+  },
+  "MEDIA-E1-12": {
+    "reforge": {
+      "A": "Vertical integration",
+      "B": "Horizontal integration",
+      "C": "Audience fragmentation",
+      "D": "Product diversification"
+    }
+  },
+  "MEDIA-E1-13": {
+    "reforge": {
+      "B": "Public service remit",
+      "A": "Commercial sales target",
+      "C": "Subscription growth plan",
+      "D": "Advertising revenue goal"
+    }
+  },
+  "MEDIA-E1-15": {
+    "reforge": {
+      "D": "Convergence",
+      "A": "Fragmentation",
+      "B": "Concentration",
+      "C": "Deregulation"
+    }
+  },
+  "MEDIA-COV-009": {
+    "reforge": {
+      "A": "Sign",
+      "B": "Genre",
+      "C": "Code",
+      "D": "Myth"
+    }
+  },
+  "MEDIA-COV-015": {
+    "reforge": {
+      "C": "Genre",
+      "A": "Narrative",
+      "B": "Ideology",
+      "D": "Regulation"
+    }
+  },
+  "MEDIA-COV-019": {
+    "reforge": {
+      "D": "Institution",
+      "A": "Audience group",
+      "B": "Genre category",
+      "C": "Regulatory code"
+    }
+  },
+  "MEDIA-COV-021": {
+    "reforge": {
+      "B": "Public service remit",
+      "A": "Commercial sales target",
+      "C": "Subscription growth plan",
+      "D": "Advertising revenue goal"
+    }
+  },
+  "MEDIA-COV-023": {
+    "reforge": {
+      "D": "Convergence",
+      "A": "Fragmentation",
+      "B": "Concentration",
+      "C": "Deregulation"
+    }
+  },
+  "MEDIA-COV-109": {
+    "reforge": {
+      "A": "Sign",
+      "B": "Genre",
+      "C": "Code",
+      "D": "Myth"
+    }
+  },
+  "MEDIA-COV-115": {
+    "reforge": {
+      "C": "Genre",
+      "A": "Narrative",
+      "B": "Ideology",
+      "D": "Regulation"
+    }
+  },
+  "MEDIA-COV-119": {
+    "reforge": {
+      "D": "Institution",
+      "A": "Audience group",
+      "B": "Genre category",
+      "C": "Regulatory code"
+    }
+  },
+  "MEDIA-COV-121": {
+    "reforge": {
+      "B": "Public service remit",
+      "A": "Commercial sales target",
+      "C": "Subscription growth plan",
+      "D": "Advertising revenue goal"
+    }
+  },
+  "MEDIA-COV-123": {
+    "reforge": {
+      "D": "Convergence",
+      "A": "Fragmentation",
+      "B": "Concentration",
+      "C": "Deregulation"
+    }
+  },
+  "MEDIA-E2-08": {
+    "reforge": {
+      "A": "Regulation",
+      "B": "Distribution",
+      "C": "Production",
+      "D": "Convergence"
+    }
+  },
+  "MEDIA-E2-10": {
+    "reforge": {
+      "A": "Male gaze",
+      "B": "Female gaze",
+      "C": "Direct address",
+      "D": "Audience gaze"
+    }
+  },
+  "MEDIA-E2-13": {
+    "reforge": {
+      "A": "Gatekeeper",
+      "B": "Advertiser",
+      "C": "Distributor",
+      "D": "Correspondent"
+    }
+  },
+  "MEDIA-E2-16": {
+    "reforge": {
+      "A": "Code",
+      "B": "Genre",
+      "C": "Brand",
+      "D": "Format"
+    }
+  },
+  "MEDIA-COV-018": {
+    "reforge": {
+      "A": "Non-linear",
+      "B": "Chronological",
+      "C": "Real-time",
+      "D": "Single-strand"
+    }
+  },
+  "MEDIA-COV-020": {
+    "reforge": {
+      "A": "Vertical integration",
+      "B": "Horizontal integration",
+      "C": "Audience fragmentation",
+      "D": "Product diversification"
+    }
+  },
+  "MEDIA-COV-118": {
+    "reforge": {
+      "A": "Non-linear",
+      "B": "Chronological",
+      "C": "Real-time",
+      "D": "Single-strand"
+    }
+  },
+  "MEDIA-COV-120": {
+    "reforge": {
+      "A": "Vertical integration",
+      "B": "Horizontal integration",
+      "C": "Audience fragmentation",
+      "D": "Product diversification"
+    }
+  },
+  "MAND-COV-011": {
+    "reforge": {
+      "D": "重视家庭的观念。",
+      "A": "重视个人空间的观念。",
+      "B": "鼓励独立生活的观念。",
+      "C": "重视外语交流的观念。"
+    }
+  },
+  "MAND-COV-029": {
+    "reforge": {
+      "A": "控制人口的快速增长。",
+      "B": "鼓励每个家庭多生孩子。",
+      "C": "提高农村人口的流动性。",
+      "D": "让年轻人更早结婚成家。"
+    }
+  },
+  "MAND-COV-031": {
+    "reforge": {
+      "B": "还",
+      "A": "才",
+      "C": "却",
+      "D": "便"
+    }
+  },
+  "MAND-COV-033": {
+    "reforge": {
+      "C": "此致\n敬礼",
+      "A": "先这样吧！",
+      "B": "回头再聊！",
+      "D": "拜拜啦！"
+    }
+  },
+  "MAND-COV-037": {
+    "base": {
+      "C": "赏月、吃月饼。",
+      "A": "吃粽子、赛龙舟。",
+      "B": "放鞭炮、贴春联。",
+      "D": "登高、喝菊花酒。"
+    }
+  },
+  "MAND-COV-039": {
+    "reforge": {
+      "B": "就",
+      "A": "因",
+      "C": "和",
+      "D": "或"
+    }
+  },
+  "MAND-COV-051": {
+    "reforge": {
+      "D": "重视家庭的观念。",
+      "A": "重视个人空间的观念。",
+      "B": "鼓励独立生活的观念。",
+      "C": "重视外语交流的观念。"
+    }
+  },
+  "MAND-COV-069": {
+    "reforge": {
+      "A": "控制人口的快速增长。",
+      "B": "鼓励每个家庭多生孩子。",
+      "C": "提高农村人口的流动性。",
+      "D": "让年轻人更早结婚成家。"
+    }
+  },
+  "MAND-COV-071": {
+    "reforge": {
+      "B": "还",
+      "A": "才",
+      "C": "却",
+      "D": "便"
+    }
+  },
+  "MAND-COV-073": {
+    "reforge": {
+      "C": "此致\n敬礼",
+      "A": "先这样吧！",
+      "B": "回头再聊！",
+      "D": "拜拜啦！"
+    }
+  },
+  "MAND-COV-077": {
+    "base": {
+      "C": "赏月、吃月饼。",
+      "A": "吃粽子、赛龙舟。",
+      "B": "放鞭炮、贴春联。",
+      "D": "登高、喝菊花酒。"
+    }
+  },
+  "MAND-COV-079": {
+    "reforge": {
+      "B": "就",
+      "A": "因",
+      "C": "和",
+      "D": "或"
+    }
+  },
+  "MAND-COV-091": {
+    "reforge": {
+      "D": "重视家庭的观念。",
+      "A": "重视个人空间的观念。",
+      "B": "鼓励独立生活的观念。",
+      "C": "重视外语交流的观念。"
+    }
+  },
+  "MAND-COV-109": {
+    "reforge": {
+      "A": "控制人口的快速增长。",
+      "B": "鼓励每个家庭多生孩子。",
+      "C": "提高农村人口的流动性。",
+      "D": "让年轻人更早结婚成家。"
+    }
+  },
+  "MAND-COV-111": {
+    "reforge": {
+      "B": "还",
+      "A": "才",
+      "C": "却",
+      "D": "便"
+    }
+  },
+  "MAND-COV-113": {
+    "reforge": {
+      "C": "此致\n敬礼",
+      "A": "先这样吧！",
+      "B": "回头再聊！",
+      "D": "拜拜啦！"
+    }
+  },
+  "MAND-COV-117": {
+    "base": {
+      "C": "赏月、吃月饼。",
+      "A": "吃粽子、赛龙舟。",
+      "B": "放鞭炮、贴春联。",
+      "D": "登高、喝菊花酒。"
+    }
+  },
+  "MAND-COV-119": {
+    "reforge": {
+      "B": "就",
+      "A": "因",
+      "C": "和",
+      "D": "或"
+    }
+  },
+  "MAND-COV-131": {
+    "reforge": {
+      "D": "重视家庭的观念。",
+      "A": "重视个人空间的观念。",
+      "B": "鼓励独立生活的观念。",
+      "C": "重视外语交流的观念。"
+    }
+  },
+  "MAND-COV-149": {
+    "reforge": {
+      "A": "控制人口的快速增长。",
+      "B": "鼓励每个家庭多生孩子。",
+      "C": "提高农村人口的流动性。",
+      "D": "让年轻人更早结婚成家。"
+    }
+  },
+  "MAND-COV-151": {
+    "reforge": {
+      "B": "还",
+      "A": "才",
+      "C": "却",
+      "D": "便"
+    }
+  },
+  "MAND-COV-153": {
+    "reforge": {
+      "C": "此致\n敬礼",
+      "A": "先这样吧！",
+      "B": "回头再聊！",
+      "D": "拜拜啦！"
+    }
+  },
+  "MAND-COV-157": {
+    "base": {
+      "C": "赏月、吃月饼。",
+      "A": "吃粽子、赛龙舟。",
+      "B": "放鞭炮、贴春联。",
+      "D": "登高、喝菊花酒。"
+    }
+  },
+  "MAND-COV-159": {
+    "reforge": {
+      "B": "就",
+      "A": "因",
+      "C": "和",
+      "D": "或"
+    }
+  },
+  "MAND-ID-03": {
+    "reforge": {
+      "A": "重视家庭的观念。",
+      "B": "重视个人空间的观念。",
+      "C": "鼓励独立生活的观念。",
+      "D": "重视外语交流的观念。"
+    }
+  },
+  "MAND-ID-23": {
+    "reforge": {
+      "A": "还",
+      "B": "才",
+      "C": "却",
+      "D": "便"
+    }
+  },
+  "MAND-ID-25": {
+    "reforge": {
+      "C": "此致\n敬礼",
+      "A": "先这样吧！",
+      "B": "回头再聊！",
+      "D": "拜拜啦！"
+    }
+  },
+  "MAND-ID-29": {
+    "base": {
+      "A": "赏月、吃月饼。",
+      "B": "吃粽子、赛龙舟。",
+      "C": "放鞭炮、贴春联。",
+      "D": "登高、喝菊花酒。"
+    }
+  },
+  "MAND-ID-31": {
+    "reforge": {
+      "A": "就",
+      "B": "因",
+      "C": "和",
+      "D": "或"
+    }
+  },
+  "MAND-COV-012": {
+    "base": {
+      "B": "并列关系——两方面同时具备。",
+      "A": "选择关系——两方面只能选一个。",
+      "C": "因果关系——前者导致后者发生。",
+      "D": "转折关系——后者与前者相矛盾。"
+    },
+    "reforge": {
+      "D": "既……也……",
+      "A": "因为……所以……",
+      "B": "不是……而是……",
+      "C": "虽然……但是……"
+    }
+  },
+  "MAND-COV-020": {
+    "base": {
+      "B": "比较安静，观察力强。",
+      "A": "特别外向，喜欢合作。",
+      "C": "缺乏耐心，容易分心。",
+      "D": "成绩优秀，不爱运动。"
+    }
+  },
+  "MAND-COV-036": {
+    "base": {
+      "B": "谢谢大家！",
+      "A": "此致敬礼。",
+      "C": "敬祝安康。",
+      "D": "下次再聊！"
+    }
+  },
+  "MAND-COV-052": {
+    "base": {
+      "B": "并列关系——两方面同时具备。",
+      "A": "选择关系——两方面只能选一个。",
+      "C": "因果关系——前者导致后者发生。",
+      "D": "转折关系——后者与前者相矛盾。"
+    },
+    "reforge": {
+      "D": "既……也……",
+      "A": "因为……所以……",
+      "B": "不是……而是……",
+      "C": "虽然……但是……"
+    }
+  },
+  "MAND-COV-060": {
+    "base": {
+      "B": "比较安静，观察力强。",
+      "A": "特别外向，喜欢合作。",
+      "C": "缺乏耐心，容易分心。",
+      "D": "成绩优秀，不爱运动。"
+    }
+  },
+  "MAND-COV-076": {
+    "base": {
+      "B": "谢谢大家！",
+      "A": "此致敬礼。",
+      "C": "敬祝安康。",
+      "D": "下次再聊！"
+    }
+  },
+  "MAND-COV-092": {
+    "base": {
+      "B": "并列关系——两方面同时具备。",
+      "A": "选择关系——两方面只能选一个。",
+      "C": "因果关系——前者导致后者发生。",
+      "D": "转折关系——后者与前者相矛盾。"
+    },
+    "reforge": {
+      "D": "既……也……",
+      "A": "因为……所以……",
+      "B": "不是……而是……",
+      "C": "虽然……但是……"
+    }
+  },
+  "MAND-COV-100": {
+    "base": {
+      "B": "比较安静，观察力强。",
+      "A": "特别外向，喜欢合作。",
+      "C": "缺乏耐心，容易分心。",
+      "D": "成绩优秀，不爱运动。"
+    }
+  },
+  "MAND-COV-116": {
+    "base": {
+      "B": "谢谢大家！",
+      "A": "此致敬礼。",
+      "C": "敬祝安康。",
+      "D": "下次再聊！"
+    }
+  },
+  "MAND-COV-132": {
+    "base": {
+      "B": "并列关系——两方面同时具备。",
+      "A": "选择关系——两方面只能选一个。",
+      "C": "因果关系——前者导致后者发生。",
+      "D": "转折关系——后者与前者相矛盾。"
+    },
+    "reforge": {
+      "D": "既……也……",
+      "A": "因为……所以……",
+      "B": "不是……而是……",
+      "C": "虽然……但是……"
+    }
+  },
+  "MAND-COV-140": {
+    "base": {
+      "B": "比较安静，观察力强。",
+      "A": "特别外向，喜欢合作。",
+      "C": "缺乏耐心，容易分心。",
+      "D": "成绩优秀，不爱运动。"
+    }
+  },
+  "MAND-COV-156": {
+    "base": {
+      "B": "谢谢大家！",
+      "A": "此致敬礼。",
+      "C": "敬祝安康。",
+      "D": "下次再聊！"
+    }
+  },
+  "BUS-T2-02": {
+    "base": {
+      "B": "increase",
+      "A": "decrease",
+      "C": "stay constant",
+      "D": "fall to zero"
+    },
+    "reforge": {
+      "B": "increase",
+      "A": "fall by half",
+      "C": "remain fixed",
+      "D": "become zero"
+    }
+  },
+  "CS-ETH-01": {
+    "reforge": {
+      "C": "Control over personal data use",
+      "A": "Ownership of every algorithm",
+      "B": "Permission to copy any software",
+      "D": "Guaranteed access to source code"
+    }
+  },
+  "CS-ETH-09": {
+    "reforge": {
+      "C": "To set permitted system use",
+      "A": "To specify network packet formats",
+      "B": "To allocate processor time slices",
+      "D": "To define a database record layout"
+    }
+  },
+  "BUS-T3-05": {
+    "reforge": {
+      "B": "a supplier",
+      "A": "a retailer",
+      "C": "a competitor",
+      "D": "a conglomerate"
+    }
+  },
+  "SEP-CHEM1-13": {
+    "base": {
+      "A": "Reaction temperature",
+      "B": "Amount of catalyst",
+      "C": "Particle size of a solid catalyst",
+      "D": "Colour of the reaction vessel"
+    }
+  },
+  "GCSE-SEP-CHEM-COV-013": {
+    "base": {
+      "C": "Reaction temperature",
+      "A": "Amount of catalyst",
+      "B": "Particle size of a solid catalyst",
+      "D": "Colour of the reaction vessel"
+    }
+  },
+  "GCSE-SEP-CHEM-COV-045": {
+    "base": {
+      "C": "Reaction temperature",
+      "A": "Amount of catalyst",
+      "B": "Particle size of a solid catalyst",
+      "D": "Colour of the reaction vessel"
+    }
+  },
+  "GCSE-SEP-CHEM-COV-077": {
+    "base": {
+      "C": "Reaction temperature",
+      "A": "Amount of catalyst",
+      "B": "Particle size of a solid catalyst",
+      "D": "Colour of the reaction vessel"
+    }
+  },
+  "GCSE-SEP-CHEM-COV-109": {
+    "base": {
+      "C": "Reaction temperature",
+      "A": "Amount of catalyst",
+      "B": "Particle size of a solid catalyst",
+      "D": "Colour of the reaction vessel"
+    }
+  },
+  "GCSE-SEP-CHEM-COV-141": {
+    "base": {
+      "C": "Reaction temperature",
+      "A": "Amount of catalyst",
+      "B": "Particle size of a solid catalyst",
+      "D": "Colour of the reaction vessel"
+    }
+  },
+  "SEP-PHYS1-03": {
+    "reforge": {
+      "A": "Zero resultant force",
+      "B": "A resultant equal to its weight",
+      "C": "A resultant equal to air resistance",
+      "D": "A resultant increasing with time"
+    }
+  },
+  "GCSE-SEP-PHYS-COV-003": {
+    "reforge": {
+      "D": "Zero resultant force",
+      "A": "A resultant equal to its weight",
+      "B": "A resultant equal to air resistance",
+      "C": "A resultant increasing with time"
+    }
+  },
+  "GCSE-SEP-PHYS-COV-017": {
+    "reforge": {
+      "C": "Total momentum",
+      "A": "Total kinetic energy",
+      "B": "Each object’s speed",
+      "D": "Each object’s direction"
+    }
+  },
+  "GCSE-SEP-PHYS-COV-031": {
+    "reforge": {
+      "B": "Liquid water",
+      "A": "Solid copper",
+      "C": "Solid aluminium",
+      "D": "Solid iron"
+    }
+  },
+  "GCSE-SEP-PHYS-COV-035": {
+    "reforge": {
+      "D": "Zero resultant force",
+      "A": "A resultant equal to its weight",
+      "B": "A resultant equal to air resistance",
+      "C": "A resultant increasing with time"
+    }
+  },
+  "GCSE-SEP-PHYS-COV-049": {
+    "reforge": {
+      "C": "Total momentum",
+      "A": "Total kinetic energy",
+      "B": "Each object’s speed",
+      "D": "Each object’s direction"
+    }
+  },
+  "GCSE-SEP-PHYS-COV-063": {
+    "reforge": {
+      "B": "Liquid water",
+      "A": "Solid copper",
+      "C": "Solid aluminium",
+      "D": "Solid iron"
+    }
+  },
+  "GCSE-SEP-PHYS-COV-067": {
+    "reforge": {
+      "D": "Zero resultant force",
+      "A": "A resultant equal to its weight",
+      "B": "A resultant equal to air resistance",
+      "C": "A resultant increasing with time"
+    }
+  },
+  "GCSE-SEP-PHYS-COV-081": {
+    "reforge": {
+      "C": "Total momentum",
+      "A": "Total kinetic energy",
+      "B": "Each object’s speed",
+      "D": "Each object’s direction"
+    }
+  },
+  "GCSE-SEP-PHYS-COV-095": {
+    "reforge": {
+      "B": "Liquid water",
+      "A": "Solid copper",
+      "C": "Solid aluminium",
+      "D": "Solid iron"
+    }
+  },
+  "GCSE-SEP-PHYS-COV-099": {
+    "reforge": {
+      "D": "Zero resultant force",
+      "A": "A resultant equal to its weight",
+      "B": "A resultant equal to air resistance",
+      "C": "A resultant increasing with time"
+    }
+  },
+  "GCSE-SEP-PHYS-COV-113": {
+    "reforge": {
+      "C": "Total momentum",
+      "A": "Total kinetic energy",
+      "B": "Each object’s speed",
+      "D": "Each object’s direction"
+    }
+  },
+  "GCSE-SEP-PHYS-COV-127": {
+    "reforge": {
+      "B": "Liquid water",
+      "A": "Solid copper",
+      "C": "Solid aluminium",
+      "D": "Solid iron"
+    }
+  },
+  "GCSE-SEP-PHYS-COV-131": {
+    "reforge": {
+      "D": "Zero resultant force",
+      "A": "A resultant equal to its weight",
+      "B": "A resultant equal to air resistance",
+      "C": "A resultant increasing with time"
+    }
+  },
+  "GCSE-SEP-PHYS-COV-145": {
+    "reforge": {
+      "C": "Total momentum",
+      "A": "Total kinetic energy",
+      "B": "Each object’s speed",
+      "D": "Each object’s direction"
+    }
+  },
+  "GCSE-SEP-PHYS-COV-159": {
+    "reforge": {
+      "B": "Liquid water",
+      "A": "Solid copper",
+      "C": "Solid aluminium",
+      "D": "Solid iron"
+    }
+  },
+  "GCSE-SEP-PHYS-COV-163": {
+    "reforge": {
+      "D": "Zero resultant force",
+      "A": "A resultant equal to its weight",
+      "B": "A resultant equal to air resistance",
+      "C": "A resultant increasing with time"
+    }
+  },
+  "SEP-PHYS2-01": {
+    "reforge": {
+      "C": "Total momentum",
+      "A": "Total kinetic energy",
+      "B": "Each object’s speed",
+      "D": "Each object’s direction"
+    }
+  },
+  "SEP-PHYS2-15": {
+    "reforge": {
+      "A": "Liquid water",
+      "B": "Solid copper",
+      "C": "Solid aluminium",
+      "D": "Solid iron"
+    }
+  },
+  "GCSE-SEP-BIO-COV-027": {
+    "reforge": {
+      "D": "Luteinising hormone",
+      "A": "Follicle-stimulating hormone",
+      "B": "Thyroid-stimulating hormone",
+      "C": "Antidiuretic hormone"
+    }
+  },
+  "GCSE-SEP-BIO-COV-059": {
+    "reforge": {
+      "D": "Luteinising hormone",
+      "A": "Follicle-stimulating hormone",
+      "B": "Thyroid-stimulating hormone",
+      "C": "Antidiuretic hormone"
+    }
+  },
+  "GCSE-SEP-BIO-COV-091": {
+    "reforge": {
+      "D": "Luteinising hormone",
+      "A": "Follicle-stimulating hormone",
+      "B": "Thyroid-stimulating hormone",
+      "C": "Antidiuretic hormone"
+    }
+  },
+  "GCSE-SEP-BIO-COV-123": {
+    "reforge": {
+      "D": "Luteinising hormone",
+      "A": "Follicle-stimulating hormone",
+      "B": "Thyroid-stimulating hormone",
+      "C": "Antidiuretic hormone"
+    }
+  },
+  "GCSE-SEP-BIO-COV-155": {
+    "reforge": {
+      "D": "Luteinising hormone",
+      "A": "Follicle-stimulating hormone",
+      "B": "Thyroid-stimulating hormone",
+      "C": "Antidiuretic hormone"
+    }
+  },
+  "SEP-BIO2-08": {
+    "reforge": {
+      "B": "Decomposition",
+      "A": "Photosynthesis",
+      "C": "Pollination",
+      "D": "Transpiration"
+    }
+  },
+  "SEP-BIO2-11": {
+    "reforge": {
+      "A": "Luteinising hormone",
+      "B": "Follicle-stimulating hormone",
+      "C": "Thyroid-stimulating hormone",
+      "D": "Antidiuretic hormone"
+    }
+  },
+  "GCSE-SEP-BIO-COV-024": {
+    "reforge": {
+      "B": "Decomposition",
+      "A": "Photosynthesis",
+      "C": "Pollination",
+      "D": "Transpiration"
+    }
+  },
+  "GCSE-SEP-BIO-COV-056": {
+    "reforge": {
+      "B": "Decomposition",
+      "A": "Photosynthesis",
+      "C": "Pollination",
+      "D": "Transpiration"
+    }
+  },
+  "GCSE-SEP-BIO-COV-088": {
+    "reforge": {
+      "B": "Decomposition",
+      "A": "Photosynthesis",
+      "C": "Pollination",
+      "D": "Transpiration"
+    }
+  },
+  "GCSE-SEP-BIO-COV-120": {
+    "reforge": {
+      "B": "Decomposition",
+      "A": "Photosynthesis",
+      "C": "Pollination",
+      "D": "Transpiration"
+    }
+  },
+  "GCSE-SEP-BIO-COV-152": {
+    "reforge": {
+      "B": "Decomposition",
+      "A": "Photosynthesis",
+      "C": "Pollination",
+      "D": "Transpiration"
+    }
+  },
+  "MATH-P1-20": {
+    "base": {
+      "D": "6",
+      "A": "3",
+      "B": "8",
+      "C": "10"
+    }
+  },
+  "MATH-P2-18": {
+    "reforge": {
+      "D": "50%",
+      "A": "25%",
+      "B": "75%",
+      "C": "100%"
+    }
+  },
+  "MATH-P3-01": {
+    "base": {
+      "A": "2",
+      "B": "−2",
+      "C": "4",
+      "D": "−3"
+    },
+    "reforge": {
+      "C": "−5",
+      "A": "−3",
+      "B": "3",
+      "D": "5"
+    }
+  },
+  "MATH-P3-06": {
+    "base": {
+      "B": "90°",
+      "A": "45°",
+      "C": "180°",
+      "D": "0°"
+    }
+  },
+  "MATH-P3-14": {
+    "reforge": {
+      "D": "5",
+      "A": "7",
+      "B": "1",
+      "C": "25"
+    }
+  },
+  "MATH-P3-18": {
+    "base": {
+      "B": "2",
+      "A": "−2",
+      "C": "0.5",
+      "D": "30"
+    },
+    "reforge": {
+      "D": "28",
+      "A": "52",
+      "B": "38.5",
+      "C": "12"
+    }
+  },
+  "MATH-P3-25": {
+    "base": {
+      "A": "4",
+      "B": "16",
+      "C": "8",
+      "D": "2"
+    }
+  },
+  "MATH-P3-26": {
+    "base": {
+      "B": "2√10",
+      "A": "√10",
+      "C": "4√10",
+      "D": "20"
+    }
+  },
+  "MATH-P3-27": {
+    "base": {
+      "C": "−2",
+      "A": "2",
+      "B": "−1/2",
+      "D": "1/2"
+    }
+  },
+  "MATH-P3-30": {
+    "base": {
+      "B": "40",
+      "A": "20",
+      "C": "60",
+      "D": "80"
+    }
+  },
+  "MATH-N3-06": {
+    "reforge": {
+      "D": "Equal in length",
+      "A": "Equal to the radius",
+      "B": "Parallel to each other",
+      "C": "Perpendicular to each other"
+    }
+  },
+  "GCSE-PHASE6-MATH3-02": {
+    "base": {
+      "D": "3",
+      "A": "−3",
+      "B": "6",
+      "C": "5"
+    },
+    "reforge": {
+      "B": "3",
+      "A": "1",
+      "C": "−6",
+      "D": "−4"
+    }
+  },
+  "BUS-N4-22": {
+    "reforge": {
+      "C": "At suppliers further upstream",
+      "A": "Only in the firm's own factories",
+      "B": "Only at shops selling to customers",
+      "D": "Only in customers' payment systems"
+    }
+  },
+  "CS-C1B-12": {
+    "reforge": {
+      "D": "taken per second",
+      "A": "stored per file",
+      "B": "taken per waveform cycle",
+      "C": "stored per audio channel"
+    }
+  },
+  "CS-N4-15": {
+    "reforge": {
+      "B": "In one direction only",
+      "A": "In either direction alternately",
+      "C": "In both directions simultaneously",
+      "D": "In changing directions automatically"
+    }
+  }
+};
+  for (const bank of Object.values(BANKS)) for (const question of bank.questions || []) {
+    for (const [label, options] of Object.entries(repairs[question.id] || {})) {
+      const item = label === "base" ? question : question.reforge;
+      item.options = options;
+    }
+  }
+}());
