@@ -44310,3 +44310,788 @@ for (const [id, variants] of Object.entries(physAnswerLengthRepairs)) {
     }
   }
 }());
+
+
+
+
+// Final review of the remaining November short-answer flags.
+(function applyFinalReviewedOptions() {
+  const repairs = {
+  "SI-02": {
+    "base": {
+      "options": {
+        "B": "Internalisation",
+        "A": "Public compliance",
+        "C": "Obedience to authority",
+        "D": "Identification with a role"
+      }
+    }
+  },
+  "ATT-01": {
+    "base": {
+      "options": {
+        "A": "An innate, evolutionary drive",
+        "B": "Learning through food association",
+        "C": "Reinforcement of infant behaviour",
+        "D": "Imitation of observed relationships"
+      }
+    }
+  },
+  "CHEM-E1B-01": {
+    "reforge": {
+      "options": {
+        "A": "2,8,2",
+        "B": "2,8,1",
+        "C": "2,8,3",
+        "D": "2,6,4"
+      }
+    }
+  },
+  "CHEM-N1-17": {
+    "reforge": {
+      "options": {
+        "A": "2.50 × 10⁻³ mol",
+        "B": "2.50 × 10⁰ mol",
+        "C": "2.50 × 10⁻¹ mol",
+        "D": "4.00 × 10⁻³ mol"
+      }
+    }
+  },
+  "CHEM-N1-27": {
+    "base": {
+      "options": {
+        "A": "Donates a proton",
+        "B": "Accepts a proton",
+        "C": "Donates an electron pair",
+        "D": "Accepts an electron pair"
+      }
+    }
+  },
+  "PHYS-N1-10": {
+    "reforge": {
+      "options": {
+        "B": "Zero work",
+        "A": "Positive work",
+        "C": "Negative work",
+        "D": "Maximum work"
+      }
+    }
+  },
+  "PHYS-N1-25": {
+    "base": {
+      "options": {
+        "C": "Stationary throughout",
+        "A": "Moving with non-zero velocity",
+        "B": "Accelerating at a constant rate",
+        "D": "Slowing at a constant rate"
+      }
+    }
+  },
+  "PHYS-N1-42": {
+    "base": {
+      "options": {
+        "D": "3",
+        "A": "2",
+        "B": "6",
+        "C": "4"
+      }
+    }
+  },
+  "PHYS-N1-44": {
+    "reforge": {
+      "options": {
+        "D": "Zero apparent weight",
+        "A": "Twice their true weight",
+        "B": "Half their true weight",
+        "C": "Equal to their true weight"
+      }
+    }
+  },
+  "RS-PHASE5-05": {
+    "reforge": {
+      "options": {
+        "A": "The Sangha",
+        "B": "The Dharma",
+        "C": "The Buddha",
+        "D": "The Nirvana state"
+      }
+    }
+  },
+  "RS-BUDDHISM-01": {
+    "reforge": {
+      "options": {
+        "A": "Dukkha",
+        "B": "Anatta",
+        "C": "Anicca",
+        "D": "Nibbana"
+      }
+    }
+  },
+  "RS-BUDDHISM-06": {
+    "reforge": {
+      "options": {
+        "B": "Theravada Buddhism",
+        "A": "Mahayana Buddhism",
+        "C": "Vajrayana Buddhism",
+        "D": "Pure Land Buddhism"
+      }
+    }
+  },
+  "HSC-E1-01": {
+    "reforge": {
+      "options": {
+        "A": "Equality of access",
+        "B": "Confidentiality of records",
+        "C": "Prevention of infection",
+        "D": "Allocation of staff duties"
+      }
+    }
+  },
+  "HSC-E1-02": {
+    "base": {
+      "options": {
+        "B": "Personal autonomy",
+        "A": "Patient confidentiality",
+        "C": "Control of infection",
+        "D": "Allocation of resources"
+      }
+    },
+    "reforge": {
+      "options": {
+        "B": "Personal autonomy",
+        "A": "Protective safeguarding",
+        "C": "Clinical governance",
+        "D": "Complete risk elimination"
+      }
+    }
+  },
+  "HSC-E1-03": {
+    "reforge": {
+      "options": {
+        "C": "A physical hazard",
+        "A": "A control measure",
+        "B": "A recorded outcome",
+        "D": "A likelihood rating"
+      }
+    }
+  },
+  "HSC-E1-09": {
+    "reforge": {
+      "options": {
+        "A": "Duty to take reasonable care",
+        "B": "Duty to guarantee full recovery",
+        "C": "Duty to disclose all care records",
+        "D": "Duty to override every resident choice"
+      }
+    }
+  },
+  "HSC-COV-009": {
+    "reforge": {
+      "options": {
+        "A": "Equality of access",
+        "B": "Confidentiality of records",
+        "C": "Prevention of infection",
+        "D": "Allocation of staff duties"
+      }
+    }
+  },
+  "HSC-COV-011": {
+    "reforge": {
+      "options": {
+        "C": "A physical hazard",
+        "A": "A control measure",
+        "B": "A recorded outcome",
+        "D": "A likelihood rating"
+      }
+    }
+  },
+  "HSC-COV-017": {
+    "reforge": {
+      "options": {
+        "A": "Duty to take reasonable care",
+        "B": "Duty to guarantee full recovery",
+        "C": "Duty to disclose all care records",
+        "D": "Duty to override every resident choice"
+      }
+    }
+  },
+  "HSC-COV-109": {
+    "reforge": {
+      "options": {
+        "A": "Equality of access",
+        "B": "Confidentiality of records",
+        "C": "Prevention of infection",
+        "D": "Allocation of staff duties"
+      }
+    }
+  },
+  "HSC-COV-111": {
+    "reforge": {
+      "options": {
+        "C": "A physical hazard",
+        "A": "A control measure",
+        "B": "A recorded outcome",
+        "D": "A likelihood rating"
+      }
+    }
+  },
+  "HSC-COV-117": {
+    "reforge": {
+      "options": {
+        "A": "Duty to take reasonable care",
+        "B": "Duty to guarantee full recovery",
+        "C": "Duty to disclose all care records",
+        "D": "Duty to override every resident choice"
+      }
+    }
+  },
+  "RS-COV-022": {
+    "reforge": {
+      "options": {
+        "D": "Fideism",
+        "A": "Deism",
+        "B": "Rationalism",
+        "C": "Empiricism"
+      }
+    }
+  },
+  "RS-COV-122": {
+    "reforge": {
+      "options": {
+        "D": "Fideism",
+        "A": "Deism",
+        "B": "Rationalism",
+        "C": "Empiricism"
+      }
+    }
+  },
+  "HSC-E2-02": {
+    "reforge": {
+      "options": {
+        "B": "The left ventricle",
+        "A": "The right ventricle",
+        "C": "The right atrium",
+        "D": "The left atrium"
+      }
+    }
+  },
+  "HSC-E2-06": {
+    "reforge": {
+      "options": {
+        "B": "A bone fracture",
+        "A": "A joint dislocation",
+        "C": "A ligament sprain",
+        "D": "A muscle strain"
+      }
+    }
+  },
+  "HSC-COV-010": {
+    "base": {
+      "options": {
+        "B": "Personal autonomy",
+        "A": "Patient confidentiality",
+        "C": "Control of infection",
+        "D": "Allocation of resources"
+      }
+    }
+  },
+  "HSC-COV-060": {
+    "base": {
+      "options": {
+        "C": "Personal autonomy",
+        "A": "Patient confidentiality",
+        "B": "Control of infection",
+        "D": "Allocation of resources"
+      }
+    },
+    "reforge": {
+      "options": {
+        "A": "Respect for autonomy",
+        "B": "Maintaining confidentiality",
+        "C": "Prioritising staff convenience",
+        "D": "Preventing all possible risk"
+      }
+    }
+  },
+  "HSC-COV-110": {
+    "base": {
+      "options": {
+        "D": "Personal autonomy",
+        "A": "Patient confidentiality",
+        "B": "Control of infection",
+        "C": "Allocation of resources"
+      }
+    }
+  },
+  "HSC-PHASE5-01": {
+    "reforge": {
+      "options": {
+        "B": "The pancreas",
+        "A": "The gall bladder",
+        "C": "The spleen",
+        "D": "The kidneys"
+      }
+    }
+  },
+  "HSC-PHASE5-04": {
+    "reforge": {
+      "options": {
+        "A": "Osteoporosis",
+        "B": "Osteoarthritis",
+        "C": "Rheumatoid arthritis",
+        "D": "Muscular dystrophy"
+      }
+    }
+  },
+  "CHEM-E2-06": {
+    "reforge": {
+      "options": {
+        "B": "A reducing agent",
+        "A": "An oxidising agent",
+        "C": "An acid-base indicator",
+        "D": "A homogeneous catalyst"
+      }
+    }
+  },
+  "CHEM-N2-21": {
+    "reforge": {
+      "options": {
+        "A": "Completely filled",
+        "B": "Completely empty",
+        "C": "Half-filled",
+        "D": "Partially occupied"
+      }
+    }
+  },
+  "CHEM-N2-32": {
+    "base": {
+      "options": {
+        "B": "Raising the temperature",
+        "A": "Lowering the temperature",
+        "C": "Adding a suitable catalyst",
+        "D": "Increasing catalyst surface area"
+      }
+    }
+  },
+  "A1-PHASE7-CHEM2-01": {
+    "base": {
+      "options": {
+        "A": "increase",
+        "B": "decrease",
+        "C": "stay constant",
+        "D": "become negative"
+      }
+    }
+  },
+  "BIO-E2-02": {
+    "reforge": {
+      "options": {
+        "B": "Transpiration",
+        "A": "Translocation",
+        "C": "Guttation",
+        "D": "Evaporation from soil"
+      }
+    }
+  },
+  "PHYS-N2-25": {
+    "reforge": {
+      "options": {
+        "A": "Kelvin (K)",
+        "B": "Celsius (°C)",
+        "C": "Fahrenheit (°F)",
+        "D": "An arbitrary scale"
+      }
+    }
+  },
+  "PHYS-N2-31": {
+    "base": {
+      "options": {
+        "A": "Zero magnetic force",
+        "B": "Maximum magnetic force",
+        "C": "A force along the field",
+        "D": "A force opposite the field"
+      }
+    }
+  },
+  "GEN-03": {
+    "base": {
+      "options": {
+        "C": "50% of sons",
+        "A": "0% of sons",
+        "B": "25% of sons",
+        "D": "100% of sons"
+      }
+    }
+  },
+  "ORG-02": {
+    "reforge": {
+      "options": {
+        "D": "Alkanes lack a pi bond for electrophilic attack",
+        "A": "Alkanes have weaker pi bonds than alkenes do",
+        "B": "Alkanes contain oxygen that attracts free radicals",
+        "C": "Alkanes have polar C–C bonds that repel bromine"
+      }
+    }
+  },
+  "ORG-04": {
+    "base": {
+      "options": {
+        "D": "Ethene",
+        "A": "Ethanal",
+        "B": "Ethanol",
+        "C": "Diethyl ether"
+      }
+    }
+  },
+  "CHEM-E3-03": {
+    "reforge": {
+      "options": {
+        "C": "A nucleophile",
+        "A": "An electrophile",
+        "B": "A free radical",
+        "D": "An oxidising agent"
+      }
+    }
+  },
+  "CHEM-E3-14": {
+    "reforge": {
+      "options": {
+        "B": "Optical isomers",
+        "A": "Structural isomers",
+        "C": "Geometrical isomers",
+        "D": "Different conformations"
+      }
+    }
+  },
+  "CHEM-E3-15": {
+    "reforge": {
+      "options": {
+        "C": "A peptide bond",
+        "A": "A glycosidic bond",
+        "B": "A phosphodiester bond",
+        "D": "An ester linkage"
+      }
+    }
+  },
+  "CHEM-E3-16": {
+    "reforge": {
+      "options": {
+        "A": "A primary amine",
+        "B": "A secondary amine",
+        "C": "A tertiary amine",
+        "D": "A quaternary ammonium ion"
+      }
+    }
+  },
+  "MATH-COV-10": {
+    "base": {
+      "options": {
+        "C": "Zero resultant force",
+        "A": "A resultant equal to its weight",
+        "B": "A resultant equal to its drag",
+        "D": "A continuously increasing resultant"
+      }
+    },
+    "reforge": {
+      "options": {
+        "B": "The forces balance to give zero",
+        "A": "Weight exceeds drag by a constant amount",
+        "C": "Drag exceeds weight by a constant amount",
+        "D": "The net downward force keeps increasing"
+      }
+    }
+  },
+  "EWQ-02": {
+    "base": {
+      "options": {
+        "B": "Output voltage decreases",
+        "A": "Output voltage increases",
+        "C": "Output voltage stays constant",
+        "D": "Output voltage reverses polarity"
+      }
+    }
+  },
+  "EWQ-07": {
+    "base": {
+      "options": {
+        "C": "A point of zero displacement",
+        "A": "A point of maximum displacement",
+        "B": "A point that moves along the string",
+        "D": "A point halfway between all antinodes"
+      }
+    }
+  },
+  "PHYS-E3B-01": {
+    "base": {
+      "options": {
+        "A": "increases in magnitude",
+        "B": "decreases in magnitude",
+        "C": "remains unchanged",
+        "D": "approaches zero magnitude"
+      }
+    }
+  },
+  "PHYS-GAPS-06": {
+    "reforge": {
+      "options": {
+        "B": "A NAND gate",
+        "A": "An AND gate",
+        "C": "A NOR gate",
+        "D": "An XOR gate"
+      }
+    }
+  },
+  "PHYS-GAPS-07": {
+    "reforge": {
+      "options": {
+        "C": "Cut-off and saturation",
+        "A": "Forward-active and reverse-active",
+        "B": "Breakdown and forward-active",
+        "D": "Reverse-active and breakdown"
+      }
+    }
+  },
+  "PHYS-MEASURE-10": {
+    "base": {
+      "options": {
+        "A": "combined by addition",
+        "B": "combined by subtraction",
+        "C": "multiplied together",
+        "D": "replaced by their average"
+      }
+    }
+  },
+  "PHYS-N3-04": {
+    "reforge": {
+      "options": {
+        "C": "Waves",
+        "A": "Photons",
+        "B": "Nuclei",
+        "D": "Rigid spheres"
+      }
+    }
+  },
+  "PHYS-N3-05": {
+    "reforge": {
+      "options": {
+        "D": "Discrete levels",
+        "A": "Continuous levels",
+        "B": "Equally spaced levels",
+        "C": "Identical levels in all elements"
+      }
+    }
+  },
+  "GCSE-PSY-MEM-09": {
+    "base": {
+      "options": {
+        "A": "Acoustic coding",
+        "B": "Semantic coding",
+        "C": "Visual coding",
+        "D": "Olfactory coding"
+      }
+    }
+  },
+  "GCSE-PSY-MEM-10": {
+    "base": {
+      "options": {
+        "B": "Semantic coding",
+        "A": "Acoustic coding",
+        "C": "Visual coding",
+        "D": "Tactile coding"
+      }
+    }
+  },
+  "GCSE-PSY-MEM-11": {
+    "base": {
+      "options": {
+        "C": "Very brief, varying with the sense",
+        "A": "About half a minute for every sense",
+        "B": "Several hours without any rehearsal",
+        "D": "Potentially lifelong for every sense"
+      },
+      "scaffold": "Sensory memory briefly retains incoming information. Its duration depends on the sense: iconic visual memory lasts less than a second, while echoic auditory memory can last a few seconds. Attention helps transfer information into short-term memory."
+    }
+  },
+  "GCSE-PSY-PER-22": {
+    "base": {
+      "options": {
+        "B": "Context and perceptual set",
+        "A": "Motivation and depth perception",
+        "C": "Emotion and size constancy",
+        "D": "Culture and visual illusions"
+      }
+    }
+  },
+  "GCSE-PSY-PER-24": {
+    "base": {
+      "options": {
+        "D": "Inherited biological influences",
+        "A": "Learning from direct experience",
+        "B": "Social and cultural influences",
+        "C": "Training and reinforcement histories"
+      }
+    }
+  },
+  "GCSE-PSY-DEV-14": {
+    "base": {
+      "options": {
+        "B": "Children’s egocentrism",
+        "A": "Children’s object permanence",
+        "C": "Children’s conservation of volume",
+        "D": "Children’s attachment to caregivers"
+      }
+    }
+  },
+  "GCSE-PSY-DEV-16": {
+    "base": {
+      "options": {
+        "D": "Persistence after setbacks",
+        "A": "Avoidance of difficult tasks",
+        "B": "Belief that ability cannot change",
+        "C": "Dependence on praise for talent"
+      }
+    }
+  },
+  "GCSE-PSY-BR-09": {
+    "base": {
+      "options": {
+        "A": "Visual information",
+        "B": "Auditory information",
+        "C": "Planning and decision-making",
+        "D": "Touch and body-position information"
+      }
+    }
+  },
+  "GCSE-PSY-PP-09": {
+    "base": {
+      "options": {
+        "A": "Reduced ability to feel pleasure",
+        "B": "Persistent fear of social judgement",
+        "C": "Repetitive acts to reduce anxiety",
+        "D": "Unusually elevated mood and energy"
+      }
+    }
+  },
+  "PSYBIO-04": {
+    "reforge": {
+      "options": {
+        "B": "GABA",
+        "A": "Glutamate",
+        "C": "Dopamine",
+        "D": "Acetylcholine"
+      }
+    }
+  },
+  "MATH-N1-02": {
+    "reforge": {
+      "options": {
+        "D": "2",
+        "A": "9/8",
+        "B": "4/9",
+        "C": "3/2"
+      }
+    }
+  },
+  "MATH-P3-40": {
+    "reforge": {
+      "options": {
+        "B": "4n",
+        "A": "4n + 1",
+        "C": "2n + 1",
+        "D": "n + 4"
+      },
+      "stem": "For every integer n, which expression is a multiple of 4?"
+    }
+  },
+  "MATH-N3-18": {
+    "base": {
+      "options": {
+        "B": "Parallel or coincident",
+        "A": "Always perpendicular",
+        "C": "Always the same line",
+        "D": "Intersecting at an acute angle"
+      },
+      "scaffold": "Equal gradients mean two lines are parallel if their intercepts differ, or coincident if their intercepts also match. The intercepts are not stated, so either is possible. Perpendicular non-vertical lines have gradients whose product is −1."
+    }
+  },
+  "GEO-CARBON-03": {
+    "base": {
+      "options": {
+        "C": "Transfer of carbon between stores",
+        "A": "The amount of carbon held in a store",
+        "B": "A store taking in more carbon than it emits",
+        "D": "A limit on cumulative carbon emissions"
+      }
+    }
+  },
+  "CRIM-PUNISH-18": {
+    "base": {
+      "options": {
+        "B": "A financial penalty imposed by a court",
+        "A": "A custodial penalty served in prison",
+        "C": "Supervision of an offender in the community",
+        "D": "Unpaid work required under a community order"
+      },
+      "stem": "What is a fine in criminal sentencing?"
+    }
+  },
+  "LAW-CONTRACT-04": {
+    "reforge": {
+      "options": {
+        "B": "Unqualified agreement to the offered terms",
+        "A": "A reply proposing a different purchase price",
+        "C": "A request for more details before deciding",
+        "D": "A display inviting customers to make offers"
+      }
+    }
+  },
+  "LAW-CONTRACT-05": {
+    "base": {
+      "options": {
+        "A": "A reply offering a different price",
+        "B": "A reply agreeing to the original price",
+        "C": "A request asking when delivery could occur",
+        "D": "A reply acknowledging receipt of the offer"
+      }
+    }
+  },
+  "LAW-CONTRACT-10": {
+    "base": {
+      "options": {
+        "B": "An act completed before the promise",
+        "A": "An act promised in exchange for payment",
+        "C": "An act performed to accept a unilateral offer",
+        "D": "A future service agreed in a mutual exchange"
+      }
+    }
+  },
+  "LAW-CONTRACT-20": {
+    "reforge": {
+      "options": {
+        "B": "The contract’s meaning can outweigh the label",
+        "A": "The label always prevents a right to terminate",
+        "C": "The label always makes every breach repudiatory",
+        "D": "The label removes all remedies for a breach"
+      },
+      "stem": "In an English sale-of-goods contract, why is calling a term a “warranty” not always decisive?"
+    }
+  },
+  "LAW-CONTRACT-23": {
+    "reforge": {
+      "options": {
+        "A": "Notice first given after the contract was formed",
+        "B": "Reasonable notice given before the contract formed",
+        "C": "Clear reference to terms when the agreement formed",
+        "D": "Prominent display of the term before agreement"
+      },
+      "stem": "Which fact normally prevents a term being incorporated by notice?"
+    }
+  }
+};
+  for (const bank of Object.values(BANKS)) for (const question of bank.questions || []) {
+    for (const [label, repair] of Object.entries(repairs[question.id] || {})) {
+      const item = label === "base" ? question : question.reforge;
+      Object.assign(item, repair);
+    }
+  }
+}());

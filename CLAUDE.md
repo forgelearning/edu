@@ -210,7 +210,7 @@ lower the baseline when a fix lands. They live in `CONTENT_BASELINES`.
 | Check | Baseline | Meaning |
 |---|---|---|
 | `NULL OPTION` | **0 — never raise** | A content-free dismissal ("It has no significant relevance to the topic being tested"). Makes a 4-option question a 3-option one, so guessing pays 33% and reported accuracy inflates. |
-| `SHORT CUE` | 90 | The correct answer is uniquely the shortest *and* under 55% of mean distractor length. The mirror of `CUE`. |
+| `SHORT CUE` | 16 | The correct answer is uniquely the shortest *and* under 55% of mean distractor length. The mirror of `CUE`. |
 | `RECYCLED DISTRACTOR` | 1 | One distractor string used in more than 8 distinct source questions. Coverage clones are excluded via the `coverageVariant` flag — an earlier version stripped a `-COV-n` suffix instead, which turned `MAND-COV-011` into `MAND` and collapsed all 80 Mandarin clones into one pseudo-question. |
 
 The audit prints the true count of each next to its baseline. Only the first
@@ -665,3 +665,7 @@ reports 7,626 questions (everything, including the short/extended-answer
 shapes); `dev/audit-banks.js` reports on 7,531 gradeable MCQ stems;
 `dev/test-forge.js` checks 7,731 MCQs including reforge twins. (Measured
 2026-08-21.)
+
+## November short-answer review
+
+All 286 original short-answer flags have been reviewed. The remaining 16 are retained numerical, algebraic or abbreviation cases documented in `docs/operations/question-cue-review-2026-11-05.md`. The audit still reports them and fails if the raw count rises; no blanket exemption was added. Source longest-answer and recycled-distractor backlogs remain separate.
