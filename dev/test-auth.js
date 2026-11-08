@@ -85,12 +85,22 @@ async function run() {
   store.set('forge-notification-state:old-student:old-class', '{}');
   context.ForgeAuth.signOut();
   assert.strictEqual(context.ForgeAuth.hasSession(), false, 'sign out should remove the auth session');
-  assert.strictEqual(store.has('forge-classes'), false, 'sign out should remove saved class credentials');
+  // A student in several classes signs back in with one class's codes and
+  // expects the others to still be listed; ForgeClasses scopes the list to
+  // whoever signs in next.
+  assert.strictEqual(store.get('forge-classes'), 'class-credentials-cache', 'sign out on a personal device keeps the class list');
+  assert.strictEqual(store.has('forge-student'), false, 'sign out should remove the active class session');
   assert.strictEqual(store.has('forge-anvil-open'), false, 'sign out should clear derived Anvil state');
   assert.strictEqual(store.has('forge-assigned-open:old-student:old-class'), false, 'sign out should clear per-student assignment state');
   assert.strictEqual(store.has('forge-notification-state:old-student:old-class'), false, 'sign out should clear per-student notification state');
   assert.deepStrictEqual(roleCalls, ['student'], 'sign out should clear the student role');
   assert.deepStrictEqual(badgeCalls, [['anvil', null], ['assignments', null]], 'sign out should clear sidebar badges');
+
+  store.set('forge-classes', 'class-credentials-cache');
+  store.set('forge-student-shared-device', '1');
+  context.ForgeAuth.signOut();
+  assert.strictEqual(store.has('forge-classes'), false, 'sign out on a shared device should remove saved class credentials');
+  store.delete('forge-student-shared-device');
 
   assert.strictEqual(await context.ForgeAuth.getSession(), null, 'missing session should be a safe no-op');
   console.log(`Forge auth contract tests passed (${calls.length} mocked requests).`);
