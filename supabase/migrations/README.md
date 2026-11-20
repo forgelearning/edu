@@ -486,3 +486,9 @@ Apply in filename order, database before the pages (the pages already send
 first names, so the reverse order only leaves surnames being stored until the
 trigger lands). Legacy classes without student codes match a returning
 student by stored name; the join page now sends the first name there too.
+
+## 20261120 1800xx — close name-only sign-in
+
+| File | What it does |
+|---|---|
+| `20261120180000_close_name_only_class_sign_in.sql` | Gives every class without an active student code one unclaimable "lock" code, which switches off the name-only sign-in path everywhere `class_uses_student_codes` is checked. Students in those classes then need a private code (Class tools > Migrate existing students) |
