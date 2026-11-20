@@ -474,3 +474,15 @@ after, with `xp_week` and `answered` unchanged and the same keys returned.
 | `20261012204355_league_off_by_default.sql` | Changes the default of `classes.league_enabled` to `false`, so a teacher opts in to the weekly league from Class tools. Existing classes keep their setting (all 29 had it on when this was applied). The create-class insert does not send the column, so the default is what applies. |
 
 Applied to production on 2026-10-12 (recorded as version 20261012204355).
+
+## 20261120 1700xx — first names only
+
+| File | What it does |
+|---|---|
+| `20261120170000_student_first_names_only.sql` | Triggers on `students` and `subscribers` that store a first name only, adding a surname initial only where two students in one class share a first name |
+| `20261120170100_strip_existing_surnames.sql` | One-time rewrite of names already stored. **Irreversible**: the full names are not kept anywhere |
+
+Apply in filename order, database before the pages (the pages already send
+first names, so the reverse order only leaves surnames being stored until the
+trigger lands). Legacy classes without student codes match a returning
+student by stored name; the join page now sends the first name there too.
