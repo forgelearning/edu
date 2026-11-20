@@ -144,7 +144,7 @@ ForgeApp.loading(app, { label: 'Loading your dashboard', body: 'Getting your pro
 function renderLogin(){
   var f='<div class="dashboard-entry-actions"><a class="auth-btn" href="forge-quiz.html">Start practising free →</a><a href="forge-quiz.html?mode=email">Sign in with email</a></div>'
        +'<details class="dashboard-class-entry"><summary>I have class codes</summary>'
-       +'<div id="p-name-wrap" class="forge-first-name">'+ForgeAuthCard.field('p-name','Your name — first time only',{placeholder:'e.g. Alex',autocomplete:'name'})+'</div>'
+       +'<div id="p-name-wrap" class="forge-first-name">'+ForgeAuthCard.field('p-name','Your first name — first time only',{placeholder:'e.g. Alex',autocomplete:'given-name'})+'</div>'
        +ForgeAuthCard.field('p-student-code','Student code',{placeholder:'e.g. A1B2C3D4E5',upper:true})
        +ForgeAuthCard.field('p-code','Class code',{placeholder:'e.g. ECON-Y12-A',upper:true})
        +'<button class="auth-btn" id="p-btn" type="submit">View my dashboard \u2192</button>'
@@ -156,7 +156,7 @@ function renderLogin(){
   ForgeAuthCard.onSubmit(function(){document.getElementById('p-btn').onclick();});
 
   document.getElementById('p-btn').onclick=function(){
-    var name=document.getElementById('p-name').value.trim();
+    var name=(document.getElementById('p-name').value.trim().split(/\s+/)[0]||''); // first names only
     var studentCode=document.getElementById('p-student-code').value.trim();
     var code=document.getElementById('p-code').value.trim().toUpperCase();
     var err=document.getElementById('p-err');

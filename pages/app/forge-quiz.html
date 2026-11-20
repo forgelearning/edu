@@ -1064,7 +1064,7 @@ function renderJoin() {
   h += '<div class="forge-u-uydnfn" id="panel-email">';
   h += '<p class="forge-u-152cbjr">New to Forge? This creates your free account. Already have one? The same steps sign you in. We’ll email you an eight-digit code, and anything you’ve practised on this device is saved to your account.</p>';
   h += ForgeAuthCard.field('email-address', 'Email address', {type:'email', placeholder:'you@example.com', autocomplete:'email'});
-  h += ForgeAuthCard.field('email-name', 'Your name (optional)', {placeholder:'e.g. Alex', autocomplete:'given-name'});
+  h += ForgeAuthCard.field('email-name', 'Your first name (optional)', {placeholder:'e.g. Alex', autocomplete:'given-name'});
   h += '<button class="auth-btn" id="email-btn" type="button">Send sign-in code →</button>';
   h += '<p class="auth-err" id="email-err"></p>';
   h += '<div class="forge-email-code">';
@@ -1078,7 +1078,7 @@ function renderJoin() {
   h += '<p class="forge-u-152cbjr">Enter the class code and your individual student code. On a personal device, Forge will remember you.</p>';
   h += ForgeAuthCard.field('join-student-code', 'Student code', {placeholder:'e.g. A1B2C3D4E5', upper:true});
   h += ForgeAuthCard.field('join-code', 'Class code', {placeholder:'e.g. ECON-Y12-A', upper:true});
-  h += '<div id="join-name-wrap" class="forge-first-name">' + ForgeAuthCard.field('join-name', 'Your name — first time only', {placeholder:'First name and surname — e.g. James Morgan'}) + '</div>';
+  h += '<div id="join-name-wrap" class="forge-first-name">' + ForgeAuthCard.field('join-name', 'Your first name — first time only', {placeholder:'First name only — e.g. James', autocomplete:'given-name'}) + '</div>';
   h += '<div class="forge-login-links forge-login-links--legacy"><span>Older class without a student code?</span><button type="button" id="join-legacy">Use your name instead</button></div>';
   // Your student code is kept on this device so you don't retype it. On a
   // shared machine that would hand the next person your account, so offer the
@@ -1257,17 +1257,12 @@ function renderJoin() {
     err.style.display = 'none';
     if (!code) { err.textContent = 'Enter your class code.'; err.style.display = 'block'; return; }
 
-    // Require at least a first name and surname, but preserve the entered
-    // display name so teachers can distinguish students with similar initials.
-    var parts = rawName.trim().split(/\s+/);
-    var name;
-    if (rawName && parts.length < 2) {
-      err.textContent = 'Enter your first name and surname — e.g. James Morgan';
-      err.style.display = 'block'; return;
-    }
-    // Keep the full entered name (with collapsed whitespace) rather than
-    // reducing it to "First I", which makes two students look identical.
-    name = rawName.trim().replace(/\s+/g, ' ');
+    // Forge stores first names only. Send the first word plus, at most, the
+    // first letter of the last word, so a full surname never leaves the
+    // device. The server (students_first_name_only trigger) keeps that
+    // initial only when two students in one class share a first name.
+    var nameParts = rawName ? rawName.trim().split(/\s+/) : [];
+    var name = nameParts.length ? nameParts[0] + (nameParts.length > 1 ? ' ' + nameParts[nameParts.length - 1].charAt(0).toUpperCase() : '') : undefined;
 
     if (!supa._configured()) {
       state.studentName = name;
@@ -1284,7 +1279,11 @@ function renderJoin() {
       if (!name) { err.textContent = 'Enter your individual student code. For an older class, enter your name instead.'; err.style.display = 'block'; btn.disabled = false; btn.textContent = 'Join class →'; return; }
       // Compatibility for classes created before private student codes were
       // introduced. The database refuses this route once a class has active
-      // student codes, so it cannot bypass the protected flow.
+      // student codes, so it cannot bypass the protected flow. These classes
+      // match a returning student by stored name, which is now the first
+      // name only, so send just that.
+      name = name.split(' ')[0];
+      state.studentName = name;
       joinClassByCode(name, code, function(joinErr, res) {
         if (joinErr) { err.textContent = joinErr; err.style.display = 'block'; btn.disabled = false; btn.textContent = 'Join class →'; return; }
         ForgeClasses.syncFromServer(SUPABASE_URL, SUPABASE_KEY,
