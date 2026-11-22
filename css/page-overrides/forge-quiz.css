@@ -626,7 +626,6 @@ html:not([data-theme="light"]) body.forge-solo-login::after{color:var(--forge-lo
 .forge-whats-free summary{cursor:pointer;color:var(--slate);font-size:13px;font-weight:600}
 .forge-whats-free summary:focus-visible{outline:2px solid var(--ember);outline-offset:2px}
 .forge-whats-free[open] summary{margin-bottom:10px}
-.forge-whats-free__pro{margin:10px 0 0;color:var(--slate);font-size:13px}
 
 /* Wide screens: the subject and topic pickers lay their cards out in a grid
    at the app's 1280px width instead of one 720px column. The question, results

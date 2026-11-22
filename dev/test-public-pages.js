@@ -34,9 +34,11 @@ featured.forEach(([, href, key]) => {
   assert(publicPages.some((f) => path.basename(f) === href), href + ' exists');
 });
 
-// Sign-in: the free-versus-Pro list is folded away, not the first thing read.
+// Sign-in: the free list is folded away, and the poster's landing page shows no price or paid tier.
 const quiz = fs.readFileSync('pages/app/forge-quiz.html', 'utf8');
-assert(/<details class="forge-whats-free"><summary>What’s free\?<\/summary>/.test(quiz), 'the price list sits behind "What’s free?"');
+assert(/<details class="forge-whats-free"><summary>What’s free\?<\/summary>/.test(quiz), 'the free list sits behind "What’s free?"');
+assert(!/£|Subscribe|forge-signup/.test(quiz.slice(quiz.indexOf('function renderJoin'), quiz.indexOf('function renderSubjects'))), 'the sign-in screen the poster opens shows no price or subscribe link');
+assert(!/£/.test(quiz.slice(quiz.indexOf('function renderLimitWall'), quiz.indexOf('function renderQuiz'))), 'the free daily-limit screen carries no upgrade offer');
 assert(!/foot: 'Want unlimited\?/.test(quiz), 'the subscribe line is no longer pinned under the sign-in card');
 assert(/body\.has-forge-sidebar:has\(#app \.auth-card\)/.test(fs.readFileSync('css/student-motion.css', 'utf8')), 'the app menu is hidden while a student sign-in card shows');
 assert(/landing-redesign/.test(fs.readFileSync('scripts/nav.js', 'utf8')), 'the homepage keeps its full header on desktop');
