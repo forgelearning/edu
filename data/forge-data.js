@@ -45095,3 +45095,12 @@ for (const [id, variants] of Object.entries(physAnswerLengthRepairs)) {
     }
   }
 }());
+
+// Subjects locked until their questions have had more quality control
+// (2026-11-22). Each was padded to 200 from 16-40 hand-written questions, and
+// the padded copies borrow answer options from unrelated questions. A locked
+// subject stays visible as "Coming soon" but cannot be opened; teachers
+// cannot create new classes in it. Delete a key here to reopen the subject.
+["englit", "engll", "pe", "mand", "french", "german", "span", "maths"].forEach(function (key) {
+  if (SUBJECTS[key]) SUBJECTS[key].locked = true;
+});

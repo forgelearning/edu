@@ -16,7 +16,7 @@
 
 <link rel="stylesheet" href="css/states.css">
   <link rel="stylesheet" href="css/generated-utilities.css">
-<link rel="stylesheet" href="css/page-overrides/forge-quiz.css?v=20261012-parts">
+<link rel="stylesheet" href="css/page-overrides/forge-quiz.css?v=20261122-locked">
 <link rel="stylesheet" href="css/student-motion.css?v=20261004-signin">
 </head>
 <body>
@@ -123,6 +123,12 @@ var supa = {
     return ForgeAPI.get(table, query).catch(function() { return []; });
   }
 };
+
+// Subjects still waiting for quality control (data/forge-data.js) show as
+// "Coming soon" and cannot be opened, whatever route leads to them.
+function isLockedSubject(key) {
+  return !!(key && SUBJECTS[key] && SUBJECTS[key].locked);
+}
 
 function getSubjectForBank(bankKey) {
   for (var s in SUBJECTS) {
@@ -389,7 +395,7 @@ var SPEC_TO_SUBJECT = {
 // ===== DATA =====
 </script>
 <script src="data/spec-registry.js"></script>
-<script src="data/forge-catalog.js?v=20260911-recap"></script>
+<script src="data/forge-catalog.js?v=20261122-locked"></script>
 <script src="scripts/forge-student-focus.js"></script>
 <script src="scripts/forge-student-delight.js?v=20261003"></script>
 <script src="scripts/forge-chemistry-topics.js"></script>
@@ -950,6 +956,13 @@ function render(skipMotion) {
   // width; questions keep the narrow reading column.
   document.body.classList.toggle('forge-picker-screen', state.phase === 'subjects' || state.phase === 'banks');
   if (requestedCheck && (state.studentName || state.classId) && state.phase !== 'quiz' && startFixedCheck() === 'wait') return;
+  // A link, a class or a saved session can still point at a locked subject.
+  if (requestedBank && isLockedSubject(getSubjectForBank(requestedBank))) requestedBank = null;
+  if (isLockedSubject(state.subject) && state.phase !== 'join' && state.phase !== 'trial-expired') {
+    state.subject = null;
+    state.bank = null;
+    state.phase = 'subjects';
+  }
   if (requestedBank && BANKS[requestedBank] && (state.studentName || state.classId) && state.phase !== 'quiz') {
     // Assignment links are bank-specific. Establish both the bank and its
     // subject before starting so restoration cannot fall back to the full
@@ -1049,7 +1062,7 @@ function renderJoin() {
   // This is the page the study-centre poster's QR code opens, so it lists
   // only what a student gets free and carries no price or paid tier.
   h += '<details class="forge-whats-free"><summary>What’s free?</summary><div class="forge-u-eelu4s">';
-  h += '<div class="forge-u-1ce89bl"><span>✓ All subjects &amp; topics</span><span class="forge-text-dim"> free</span></div>';
+  h += '<div class="forge-u-1ce89bl"><span>✓ All open subjects &amp; topics</span><span class="forge-text-dim"> free</span></div>';
   h += '<div class="forge-u-1ce89bl"><span>✓ Explanations &amp; similar questions</span><span class="forge-text-dim"> free</span></div>';
   h += '<div class="forge-u-1ce89bl"><span>✓ Repair your mistakes</span><span class="forge-text-dim"> free</span></div>';
   h += '<div class="forge-u-h6lji0"><span>✓ XP &amp; ranks</span><span class="forge-text-dim"> free</span></div>';
@@ -1415,6 +1428,14 @@ function renderSubjects(){
     }
     var entry = state.classId ? ForgeClasses.forSubject(k) : null;
     if (entry && entry.className) countLabel += ' \u00b7 ' + entry.className;
+    if (s.locked) {
+      h+='<button type="button" class="subject-btn subject-btn--locked" data-key="'+k+'" disabled aria-disabled="true">';
+      h+='<h3>'+s.label+'</h3>';
+      h+='<div class="sub">'+s.sub+'</div>';
+      h+='<div class="count">Coming soon</div>';
+      h+='</button>';
+      return;
+    }
     h+='<button type="button" class="subject-btn" data-key="'+k+'" style="border-color:'+s.color+'25">';
     h+='<h3 style="color:'+s.color+'">'+s.label+'</h3>';
     h+='<div class="sub">'+s.sub+'</div>';
@@ -1428,6 +1449,7 @@ function renderSubjects(){
   app.innerHTML=h + sessionBar();
   wireStudyContext();
   app.querySelectorAll('.subject-btn').forEach(function(b){
+    if (isLockedSubject(b.dataset.key)) return;
     b.onclick=function(){
       state.subject=b.dataset.key;
       // Answers must land against the student row for the class that owns

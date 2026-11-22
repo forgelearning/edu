@@ -78,7 +78,7 @@ function mountTeacherSidebar() {
   <div id="app"></div>
 </main>
 
-<script src="data/forge-catalog.js?v=20260911-recap"></script>
+<script src="data/forge-catalog.js?v=20261122-locked"></script>
 <script src="data/spec-registry.js"></script>
 <script src="scripts/forge-chemistry-topics.js"></script>
 <script src="data/forge-question-index.js?v=20260823"></script>
@@ -756,6 +756,8 @@ function renderLogin(activeTab) {
     if (sel) {
       var opts = '<option value="">— Select subject —</option>';
       SUBJECT_OPTIONS.forEach(function(s) {
+        // Locked subjects are waiting for quality control: no new classes.
+        if (SUBJECTS[s.key].locked) return;
         opts += '<option value="' + s.key + '">' + s.label + ' (' + s.spec + ')</option>';
       });
       sel.innerHTML = opts;
@@ -778,6 +780,7 @@ function renderLogin(activeTab) {
           if (!sel2) return;
           var opts2 = '<option value="">— Select subject —</option>';
           SUBJECT_OPTIONS.forEach(function(s) {
+            if (SUBJECTS[s.key].locked) return;
             var held = subjectCounts[s.key] || 0;
             var note = held ? ' — you already have ' + held + ' class' + (held !== 1 ? 'es' : '') + ' for this' : '';
             opts2 += '<option value="' + s.key + '">' + s.label + ' (' + s.spec + ')' + note + '</option>';
