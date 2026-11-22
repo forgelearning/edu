@@ -144,6 +144,19 @@ async function run() {
   assert.strictEqual(resumed.student_id, 'existing-class-row');
   assert.strictEqual(resumed.student_name, 'Alex Morgan');
   assert.strictEqual(calls[0][2].token, 'access', 'a linked class call uses the email session');
+  // New email accounts are closed: the code request must not create a user,
+  // and Supabase's refusal must be recognised so the page can say "coming soon".
+  const apiSource = fs.readFileSync('scripts/forge-api.js', 'utf8');
+  assert.ok(/create_user: false/.test(apiSource) && !/create_user: true/.test(apiSource),
+    'the sign-in code request never creates a new account');
+  const closed = (status, body) => Object.assign(new Error('Request failed (' + status + ')'), { status, body });
+  assert.strictEqual(context.ForgeAuth.isSignupClosedError(closed(422, { code: 422, error_code: 'otp_disabled', msg: 'Signups not allowed for otp' })), true);
+  assert.strictEqual(context.ForgeAuth.isSignupClosedError(closed(400, { msg: 'Signups not allowed for this instance' })), true);
+  assert.strictEqual(context.ForgeAuth.isSignupClosedError(closed(429, { msg: 'email rate limit exceeded' })), false);
+  assert.strictEqual(context.ForgeAuth.isSignupClosedError(new Error('The request timed out.')), false);
+  const signupPage = fs.readFileSync('pages/auth/forge-signup.html', 'utf8');
+  assert.ok(!/ForgeAuth\.signUp\(/.test(signupPage), 'the trial page does not create email accounts');
+  assert.ok(/ForgeAuth\.showComingSoon\(\)/.test(signupPage), 'the trial page explains instead');
   console.log('Student email account handoff tests passed.');
 }
 run().catch(error => { console.error(error.stack || error); process.exitCode = 1; });

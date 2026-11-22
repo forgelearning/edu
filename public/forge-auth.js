@@ -464,5 +464,59 @@ var ForgeAuth = {
   hasSession: function() {
     var saved = _loadAuthSession();
     return !!(saved && saved.access_token);
+  },
+
+  // New email accounts are not open yet. The sign-in code request asks
+  // Supabase not to create a user (create_user: false in scripts/forge-api.js),
+  // so an email that already has an account still gets its code and one that
+  // doesn't comes back refused. That refusal is what this recognises.
+  isSignupClosedError: function(e) {
+    if (!e) return false;
+    var body = e.body && typeof e.body === 'object' ? e.body : {};
+    if (body.error_code === 'otp_disabled' || body.error_code === 'signup_disabled') return true;
+    var text = [body.msg, body.message, body.error_description, e.message].join(' ');
+    return /signups?\s+not\s+allowed/i.test(text);
+  },
+
+  // Shown when someone tries to create an email account. Built from DOM nodes
+  // and styled by the role-conflict notice in css/base.css, so it works on any
+  // page that loads this file.
+  showComingSoon: function() {
+    if (document.getElementById('forge-coming-soon')) return;
+    var opener = document.activeElement;
+    var overlay = document.createElement('div');
+    overlay.id = 'forge-coming-soon';
+    overlay.setAttribute('role', 'alertdialog');
+    overlay.setAttribute('aria-modal', 'true');
+    overlay.setAttribute('aria-labelledby', 'forge-coming-soon-title');
+    var card = document.createElement('div');
+    card.className = 'forge-role-conflict__card';
+    var title = document.createElement('h1');
+    title.id = 'forge-coming-soon-title';
+    title.textContent = 'Coming soon';
+    var body = document.createElement('p');
+    body.textContent = 'This feature is not yet live but coming soon. You can keep studying without an account, or join your class with your class code.';
+    var actions = document.createElement('div');
+    actions.className = 'forge-role-conflict__actions';
+    var ok = document.createElement('button');
+    ok.type = 'button';
+    ok.className = 'forge-role-conflict__primary';
+    ok.textContent = 'OK';
+    function close() {
+      document.removeEventListener('keydown', onKey);
+      if (overlay.parentNode) overlay.parentNode.removeChild(overlay);
+      if (opener && opener.focus) try { opener.focus(); } catch (err) {}
+    }
+    function onKey(event) { if (event.key === 'Escape') close(); }
+    ok.addEventListener('click', close);
+    overlay.addEventListener('click', function(event) { if (event.target === overlay) close(); });
+    document.addEventListener('keydown', onKey);
+    actions.appendChild(ok);
+    card.appendChild(title);
+    card.appendChild(body);
+    card.appendChild(actions);
+    overlay.appendChild(card);
+    document.body.appendChild(overlay);
+    ok.focus();
   }
 };

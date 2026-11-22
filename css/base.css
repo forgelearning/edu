@@ -209,7 +209,7 @@ html:not([data-theme="light"]) .btn-ember:hover:not(:disabled){background:#E8681
    signed in used to be redirected to the teacher's dashboard with no
    explanation; this is the interstitial that replaced it. Styled from the
    theme tokens so it works before a page's own CSS has done anything. */
-#forge-role-conflict{position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;padding:24px;background:rgba(9,7,6,.82);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);animation:forge-scrim-in var(--motion-enter) var(--ease-forge) both}
+#forge-role-conflict,#forge-coming-soon{position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;padding:24px;background:rgba(9,7,6,.82);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);animation:forge-scrim-in var(--motion-enter) var(--ease-forge) both}
 .forge-role-conflict__card{max-width:440px;width:100%;padding:28px 26px;border:1px solid var(--line);border-radius:var(--radius-lg);background:var(--panel);box-shadow:var(--shadow-raised);animation:forge-dialog-in var(--motion-enter) var(--ease-forge) both}
 @keyframes forge-scrim-in{from{opacity:0}to{opacity:1}}
 @keyframes forge-dialog-in{from{opacity:0;transform:scale(.975);filter:blur(3px)}to{opacity:1;transform:none;filter:none}}
