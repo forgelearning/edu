@@ -102,7 +102,9 @@
     sendEmailLink: function (email, redirectTo) {
       return request('/auth/v1/otp?redirect_to=' + encodeURIComponent(redirectTo), {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: email, create_user: true })
+        // create_user: false — existing accounts still get a code, but new
+        // email accounts are not open yet (see ForgeAuth.isSignupClosedError).
+        body: JSON.stringify({ email: email, create_user: false })
       });
     },
     verifyEmailCode: function (email, code) {

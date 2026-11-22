@@ -20,7 +20,7 @@
 <link rel="stylesheet" href="css/student-motion.css?v=20261004-signin">
 </head>
 <body>
-<script src="scripts/forge-api.js?v=20260809"></script>
+<script src="scripts/forge-api.js?v=20261122-signup-soon"></script>
 <script src="scripts/forge-state.js"></script>
 <script src="scripts/forge-shell.js"></script>
 <script src="scripts/forge-content-status.js?v=20260812"></script>
@@ -59,7 +59,7 @@ ForgeSidebar.mount({
   ]
 });
 </script>
-<script src="forge-auth.js?v=20261008-name"></script>
+<script src="forge-auth.js?v=20261122-signup-soon"></script>
 <script src="scripts/forge-assignment-progress.js?v=20261004-challenge"></script><script defer src="scripts/forge-student-badges.js?v=20261004-archived"></script>
 <script>
 // Keep the native edge gesture inside the quiz flow before allowing the
@@ -1216,6 +1216,11 @@ function renderJoin() {
       err.dataset.state = 'success';
       err.style.display = 'block';
     }).catch(function(e) {
+      if (ForgeAuth.isSignupClosedError(e)) {
+        err.style.display = 'none';
+        ForgeAuth.showComingSoon();
+        return;
+      }
       err.textContent = e.status === 429 || /\b429\b/.test(e.message || '')
         ? 'Too many sign-in emails requested. Wait a little, then use the latest email we sent.'
         : e.message || 'Could not send email. Please try again.';
