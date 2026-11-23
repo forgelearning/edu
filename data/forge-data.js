@@ -13931,12 +13931,12 @@ BANKS["PSY-RM"] = {
     },
     {
       id:"PSYRM-23",
-      stem:"A researcher wants to test whether extraversion is related to number of social media friends. Which test is appropriate?",
+      stem:"A researcher tests whether extraversion, rated on a 1-10 scale, is related to number of social media friends. Which test is appropriate?",
       options:{
         A:"The Mann-Whitney U test, comparing two unrelated groups of participants",
         B:"The chi-squared test, examining an association between two nominal variables",
         C:"The related t-test, comparing two conditions completed by the same people",
-        D:"Spearman's rho, testing a correlation between two ordinal variables"
+        D:"Spearman's rho, testing a correlation where the data are ordinal"
       },
       correct:"D",tag:"MC-RM-TEST",
       scaffold:"Work through the three questions in order. First: is this difference or correlation? The word 'related to' with two measured variables and no manipulated IV signals correlation, which immediately rules out Mann-Whitney and the t-test. Second: what level of measurement? An extraversion score from a questionnaire is ordinal, since the intervals between points are not demonstrably equal. Third: ordinal correlation gives Spearman's rho, whereas interval correlation would give Pearson's r. Chi-squared is wrong because it tests association between categories of nominal data, not a relationship between two continuous scores.",
@@ -45093,6 +45093,202 @@ for (const [id, variants] of Object.entries(physAnswerLengthRepairs)) {
       const item = label === "base" ? question : question.reforge;
       Object.assign(item, repair);
     }
+  }
+}());
+
+// GCSE Psychology Research Methods, rewritten by hand (2026-11-23) after a
+// Psychology teacher reported problems. The bank had been built by the
+// generators above: distractors were borrowed from other topics (a
+// state-dependent forgetting option in a hypothesis question, "A consent form"
+// as a sampling method), each Reforge twin repeated its parent's stem behind a
+// stock frame ("A classroom case illustrates: What is ...") with the same key,
+// and 17 scaffolds were placeholders that only restated the answer. Each entry
+// below replaces the whole question apart from its id and tag, with the answer
+// letter chosen as it was written. It runs after every generation and
+// redistribution pass so none of them can rebuild these options.
+(function () {
+  const rewrites = {
+    "GCSE-PSY-RM-01": {
+      stem: "What is the independent variable?",
+      options: { A: "The variable the researcher changes or manipulates", B: "The variable the researcher measures as the outcome", C: "A variable the researcher keeps the same throughout", D: "A variable that accidentally affects the results" },
+      correct: "A",
+      scaffold: "The independent variable (IV) is the one the researcher deliberately changes between conditions, such as whether participants learn a list with or without music. The dependent variable (DV) is what is measured to see whether the IV had an effect, such as the number of words recalled. Variables kept the same are controlled variables, and unwanted ones that slip in are extraneous variables. Tip: ask 'what did the researcher change?' for the IV and 'what did they count or score?' for the DV.",
+      reforge: { stem: "A researcher tests whether background music affects how many words people recall. What is the IV?", options: { A: "The number of words each participant recalls", B: "Whether background music is played or not", C: "The age and gender of each participant", D: "The room in which the test takes place" }, correct: "B" }
+    },
+    "GCSE-PSY-RM-02": {
+      stem: "What is the dependent variable?",
+      options: { A: "A variable the researcher changes between conditions", B: "The variable measured to see if the IV had an effect", C: "A variable that is kept the same for every participant", D: "The group of people the researcher wants to study" },
+      correct: "B",
+      scaffold: "The dependent variable (DV) is the outcome the researcher measures. It 'depends' on the IV: if the IV has an effect, the DV should change. A good DV is operationalised, meaning it is stated in a measurable way, such as 'number of words recalled out of 20' rather than just 'memory'. Tip: the DV is usually a score, a time or a count.",
+      reforge: { stem: "Participants either sleep for 8 hours or for 4 hours, then sit a recall test. What is the DV?", options: { A: "How many hours each participant sleeps", B: "The time of day the test is taken", C: "The score each participant gets on the recall test", D: "Whether participants are told the aim of the study" }, correct: "C" }
+    },
+    "GCSE-PSY-RM-03": {
+      stem: "What is an alternative hypothesis?",
+      options: { A: "A prediction that there will be no difference or relationship", B: "A general question the researcher hopes to answer", C: "A prediction that there will be a difference or relationship", D: "A summary of the results once the study has finished" },
+      correct: "C",
+      scaffold: "A hypothesis is a precise, testable statement. The alternative hypothesis predicts that the IV will have an effect on the DV, or that two variables are related. The null hypothesis predicts no effect or no relationship. The study is designed so that the results support one of the two. Tip: an aim is a general statement of purpose; a hypothesis is a specific prediction.",
+      reforge: { stem: "Which of these is an alternative hypothesis?", options: { A: "Caffeine will have no effect on people's reaction times", B: "The aim is to investigate whether caffeine affects reaction time", C: "Is reaction time affected by drinking caffeine?", D: "People who drink caffeine will have faster reaction times" }, correct: "D" }
+    },
+    "GCSE-PSY-RM-04": {
+      stem: "Which sampling method gives every member of the target population an equal chance of being chosen?",
+      options: { A: "Opportunity sampling", B: "Self-selected sampling", C: "Asking people who seem typical", D: "Random sampling" },
+      correct: "D",
+      scaffold: "In random sampling every member of the target population has an equal chance of being selected, for example by drawing names from a hat or using a random number generator on a complete list. This stops the researcher choosing who takes part, but it needs a full list of the population and can still produce an unrepresentative sample by chance. Tip: 'equal chance' is the phrase examiners look for.",
+      reforge: { stem: "A researcher enters the names of all 200 Year 10 students into a computer, which picks 20 of them. Which sampling method is this?", options: { A: "Random sampling", B: "Opportunity sampling", C: "Systematic sampling", D: "Self-selected sampling" }, correct: "A" }
+    },
+    "GCSE-PSY-RM-05": {
+      stem: "What is an opportunity sample?",
+      options: { A: "People chosen because they are available at the time", B: "People who reply to an advert that asks for volunteers", C: "People picked at fixed intervals from a list", D: "People chosen so that subgroups are in proportion" },
+      correct: "A",
+      scaffold: "An opportunity sample uses whoever is available and willing when the researcher is collecting data, such as students in the school canteen at lunchtime. It is quick and easy, but it is unlikely to be representative, because only people in that place at that time can be chosen and the researcher decides whom to ask. Tip: don't confuse it with self-selected sampling, where participants put themselves forward.",
+      reforge: { stem: "A researcher asks students sitting in the library at lunchtime to take part. What is one weakness of this sample?", options: { A: "Every student had an exactly equal chance of being chosen", B: "It may not represent students who never use the library", C: "It takes a very long time to collect enough participants", D: "Participants cannot withdraw once they have agreed" }, correct: "B" }
+    },
+    "GCSE-PSY-RM-06": {
+      stem: "What is a repeated measures design?",
+      options: { A: "Different participants take part in each condition", B: "The same participants take part in every condition", C: "Participants are paired on age or ability, then split up", D: "Participants choose which condition they would like to do" },
+      correct: "B",
+      scaffold: "In a repeated measures design every participant does all the conditions of the experiment, so their results are compared with their own. This removes participant variables (individual differences) between conditions, but it can cause order effects such as practice or boredom, and participants may guess the aim. Counterbalancing reduces order effects. Tip: compare it with independent groups (different people in each condition) and matched pairs (similar people paired up).",
+      reforge: { stem: "Every participant does a memory test in silence and then again with music playing. What problem might this design cause?", options: { A: "Participant variables differ between the two conditions", B: "Twice as many participants are needed as in other designs", C: "Practice could improve scores in the second condition", D: "Participants must be matched on age before the test" }, correct: "C" }
+    },
+    "GCSE-PSY-RM-07": {
+      stem: "What is inter-observer reliability?",
+      options: { A: "Whether an observation measures what it claims to measure", B: "Whether participants know that they are being observed", C: "How far two or more observers agree in what they record", D: "Whether one observer gets the same results on two occasions" },
+      correct: "C",
+      scaffold: "Inter-observer reliability is the level of agreement between two or more observers watching the same behaviour. To check it, the observers use the same behavioural categories, record independently, then compare their tallies; high agreement means the observation is reliable. Training observers and using clear, observable categories improves it. Tip: reliability means consistency; validity means accuracy.",
+      reforge: { stem: "Two observers watch the same playground and record very different numbers of aggressive acts. What does this suggest?", options: { A: "The observation has high ecological validity", B: "The sample of children was too small", C: "The observers should have run a field experiment instead", D: "The observation has low inter-observer reliability" }, correct: "D" }
+    },
+    "GCSE-PSY-RM-08": {
+      stem: "What does informed consent mean?",
+      options: { A: "Participants are told the true aim of the study only after it ends", B: "Participants can leave the study at any time they wish", C: "Participants' names and personal details are kept private", D: "Participants agree to take part knowing what the study involves" },
+      correct: "D",
+      scaffold: "Informed consent means participants agree to take part after being told enough about the study, including what they will do and their right to withdraw, to make a real choice. For under-16s, consent from a parent or guardian is normally needed as well. Deception, debriefing, the right to withdraw and confidentiality are separate ethical issues, so learn each one by name. Tip: consent is given before the study; a debrief happens after it.",
+      reforge: { stem: "A researcher wants to test 14-year-olds at school. What is usually needed for informed consent?", options: { A: "Consent from a parent or guardian as well as the student", B: "A promise that every participant will be paid for their time", C: "Permission from the participants' friends in the same class", D: "Agreement from the researcher's own psychology teacher" }, correct: "A" }
+    },
+    "GCSE-PSY-RM-09": {
+      stem: "What is a null hypothesis?",
+      options: { A: "A prediction that the IV will have no effect on the DV", B: "A prediction that the IV will make a clear difference to the DV", C: "A statement of the general purpose of the study", D: "A conclusion that is written once the results are in" },
+      correct: "A",
+      scaffold: "The null hypothesis predicts that there will be no difference or no relationship: any difference in the results is just due to chance. The alternative hypothesis predicts that there will be an effect. Psychologists write both, then use the results to decide which one to accept. Tip: 'null' means nothing, so the null hypothesis predicts that nothing will happen.",
+      reforge: { stem: "Which of these is a null hypothesis?", options: { A: "Students who revise with music will recall more words than others", B: "There will be no difference in recall with or without music", C: "To find out whether music affects students' recall", D: "Music will reduce the number of words students recall" }, correct: "B" }
+    },
+    "GCSE-PSY-RM-10": {
+      stem: "What is an extraneous variable?",
+      options: { A: "The variable the researcher changes between the conditions", B: "Any variable other than the IV that might affect the DV", C: "The variable that is measured at the end of the study", D: "A prediction about what the study is expected to find" },
+      correct: "B",
+      scaffold: "An extraneous variable is anything other than the IV that could affect the DV, such as noise, time of day or how tired participants are. If it is not controlled, the researcher cannot be sure that the IV caused any change in the DV. Researchers control extraneous variables by keeping conditions the same, using standardised instructions and choosing a suitable design. Tip: give a specific example in an exam answer, not just 'other variables'.",
+      reforge: { stem: "In a memory experiment, one group is tested in a quiet room and the other next to a noisy corridor. What is the noise?", options: { A: "The independent variable in the study", B: "The dependent variable in the study", C: "An extraneous variable that should be controlled", D: "A demand characteristic created by the researcher" }, correct: "C" }
+    },
+    "GCSE-PSY-RM-11": {
+      stem: "What is a target population?",
+      options: { A: "The small group who actually take part in the study", B: "The people who drop out before the study is finished", C: "The whole group the researcher wants to study", D: "Everyone who replies to an advert for the study" },
+      correct: "C",
+      scaffold: "The target population is the whole group of people the researcher is interested in, such as all Year 11 students in England. Because it is usually too large to test everyone, a smaller sample is taken from it. The aim is for the sample to be representative, so that the findings can be generalised back to the target population. Tip: population means everyone of interest; the sample is those who actually take part.",
+      reforge: { stem: "A researcher wants to know about the sleep habits of all UK teenagers and tests 50 students from one school. What are 'all UK teenagers'?", options: { A: "The sample used in the study", B: "The participants", C: "The control group", D: "The target population" }, correct: "D" }
+    },
+    "GCSE-PSY-RM-12": {
+      stem: "What is systematic sampling?",
+      options: { A: "Choosing whoever is available at the time", B: "Letting people put themselves forward to take part", C: "Picking names at random using a computer", D: "Choosing every nth person from a list" },
+      correct: "D",
+      scaffold: "Systematic sampling means selecting every nth person from a list of the target population, for example every 10th name on a school register. The researcher does not choose who takes part, so it avoids researcher bias, but it still needs a list and is not truly random. Tip: if a question mentions 'every tenth' or 'every fifth', it is systematic sampling.",
+      reforge: { stem: "A researcher picks every fifth name from the school register. What is one strength of this method?", options: { A: "The researcher does not choose who takes part", B: "It guarantees that the sample is representative", C: "It needs no list of the target population", D: "Participants all volunteer to be in the study" }, correct: "A" }
+    },
+    "GCSE-PSY-RM-13": {
+      stem: "What is stratified sampling?",
+      options: { A: "Picking people so subgroups match their share of the population", B: "Picking every nth person from a list of names", C: "Picking whoever is nearby when the study is run", D: "Picking people who respond to a poster or an advert about the study" },
+      correct: "A",
+      scaffold: "In stratified sampling the researcher identifies subgroups (strata) in the target population, such as year groups or boys and girls, and selects participants so that each subgroup appears in the same proportion as in the population. If 60% of the school are girls, 60% of the sample are girls. It gives a representative sample but takes time and needs detailed information about the population. Tip: think 'strata are layers, kept in proportion'.",
+      reforge: { stem: "A school is 70% girls and 30% boys. A sample of 20 is chosen with 14 girls and 6 boys. Which method was used?", options: { A: "Opportunity sampling", B: "Stratified sampling", C: "Systematic sampling", D: "Self-selected sampling" }, correct: "B" }
+    },
+    "GCSE-PSY-RM-14": {
+      stem: "What is a laboratory experiment?",
+      options: { A: "An experiment in an everyday setting where the IV is changed", B: "An experiment in a controlled setting where the IV is changed", C: "A study where the IV changes naturally without the researcher", D: "A detailed study of one person or a small group over time" },
+      correct: "B",
+      scaffold: "A laboratory experiment takes place in a controlled, artificial environment where the researcher manipulates the IV and controls extraneous variables. This makes cause and effect easier to establish and the study easier to replicate, but the setting and tasks can be unlike real life (low ecological validity) and participants may guess the aim. Tip: 'laboratory' is about control, not about a room full of equipment.",
+      reforge: { stem: "What is one weakness of a laboratory experiment?", options: { A: "None of the extraneous variables can be controlled at all", B: "The IV is never changed by the researcher", C: "Behaviour in an artificial setting may not be natural", D: "It is very hard for another researcher to repeat" }, correct: "C" }
+    },
+    "GCSE-PSY-RM-15": {
+      stem: "What is a field experiment?",
+      options: { A: "An experiment in a controlled setting where the IV is changed", B: "A study where the IV changes naturally without the researcher", C: "An experiment in a natural setting where the IV is changed", D: "A survey that asks people about their everyday behaviour" },
+      correct: "C",
+      scaffold: "A field experiment happens in a natural, everyday setting such as a school, street or shop, but the researcher still manipulates the IV. Behaviour is more natural than in a laboratory, so ecological validity is higher, but extraneous variables are harder to control and participants often cannot give informed consent. Tip: the setting is natural but the IV is still changed by the researcher; if nobody changes the IV, it is a natural experiment.",
+      reforge: { stem: "A researcher drops a pile of books in a busy corridor, sometimes wearing a uniform and sometimes not, to see who helps. What type of study is this?", options: { A: "A laboratory experiment", B: "A natural experiment", C: "A case study", D: "A field experiment" }, correct: "D" }
+    },
+    "GCSE-PSY-RM-16": {
+      stem: "What is a natural experiment?",
+      options: { A: "An experiment held outdoors where the IV is changed", B: "An experiment where the researcher changes the IV in a laboratory", C: "A study that records how people behave without any IV", D: "A study where the IV varies without the researcher changing it" },
+      correct: "D",
+      scaffold: "In a natural experiment the researcher does not manipulate the IV; it changes naturally, for example when a school starts a breakfast club, and the researcher measures the effect on the DV. This lets psychologists study variables that would be unethical or impossible to manipulate, but participants cannot be randomly allocated to conditions and other variables may explain the results. Tip: 'natural' refers to the IV, not the setting.",
+      reforge: { stem: "A researcher compares exam results before and after a school introduced a four-day week. Why is this a natural experiment?", options: { A: "The IV changed without the researcher manipulating it", B: "The study took place outside a psychology laboratory", C: "The researcher randomly allocated students to conditions", D: "The DV was measured using a standardised questionnaire" }, correct: "A" }
+    },
+    "GCSE-PSY-RM-17": {
+      stem: "What is a matched pairs design?",
+      options: { A: "Similar participants are paired, one in each condition", B: "The same participants take part in both conditions", C: "Different, unmatched participants are used in each condition", D: "Participants are allocated to conditions by their own choice" },
+      correct: "A",
+      scaffold: "In a matched pairs design participants are paired on characteristics that could affect the DV, such as age, IQ or memory ability, and one member of each pair is placed in each condition. This reduces participant variables without causing order effects, but matching is time-consuming and can never be perfect. Tip: it shares a strength of repeated measures (similar people in each condition) and a strength of independent groups (no order effects).",
+      reforge: { stem: "What is one weakness of a matched pairs design?", options: { A: "Order effects such as practice and boredom are likely", B: "It takes time and it is hard to match people exactly", C: "Participant variables are not controlled in any way", D: "Each participant has to complete both conditions" }, correct: "B" }
+    },
+    "GCSE-PSY-RM-18": {
+      stem: "What is counterbalancing?",
+      options: { A: "Using different participants in each condition of the study", B: "Changing the order of conditions so order effects even out", C: "Pairing participants who have similar abilities or ages", D: "Keeping every extraneous variable the same for everyone" },
+      correct: "B",
+      scaffold: "Counterbalancing is used in repeated measures designs to deal with order effects. Half the participants do condition A then B, and the other half do B then A, so any practice or tiredness effect is spread across both conditions rather than all favouring one. It does not remove order effects; it balances them out. Tip: it is the standard answer to 'how could the researcher deal with order effects?'",
+      reforge: { stem: "Half the participants do the noisy condition first and half do the quiet condition first. Why?", options: { A: "To make sure the two groups are matched on ability", B: "To increase the number of participants in the study", C: "To balance out practice and fatigue effects", D: "To stop participants from withdrawing part-way" }, correct: "C" }
+    },
+    "GCSE-PSY-RM-19": {
+      stem: "What is one strength of using a questionnaire?",
+      options: { A: "Participants always give honest answers about themselves", B: "It allows the researcher to ask follow-up questions in depth", C: "Large amounts of data can be collected quickly and cheaply", D: "It shows cause and effect between two different variables" },
+      correct: "C",
+      scaffold: "Questionnaires can be given to many people at once, on paper or online, so large amounts of data are collected quickly and cheaply. Closed questions produce quantitative data that are easy to analyse, and anonymity can encourage honesty. However, people may give socially desirable answers, and fixed questions cannot be followed up. Tip: follow-up questions are a strength of interviews, not questionnaires.",
+      reforge: { stem: "Why might questionnaire answers about how often people exercise be inaccurate?", options: { A: "Questionnaires can only collect qualitative data", B: "The researcher can change the questions for each person", C: "Questionnaires cannot reach large numbers of people", D: "People may give answers that make them look good" }, correct: "D" }
+    },
+    "GCSE-PSY-RM-20": {
+      stem: "What is one strength of an unstructured interview?",
+      options: { A: "Every participant is asked exactly the same questions", B: "The data are easy to compare and turn into statistics", C: "The interviewer cannot influence the answers people give", D: "Follow-up questions can produce rich, detailed answers" },
+      correct: "D",
+      scaffold: "An unstructured interview is like a guided conversation: the interviewer has a topic but can ask follow-up questions depending on the answers. This produces rich, detailed qualitative data and lets participants explain their views. The downsides are that answers are hard to compare, it takes a long time, and the interviewer can influence the responses. Tip: a structured interview uses the same fixed questions for everyone, which makes answers easier to compare and the study easier to replicate.",
+      reforge: { stem: "A researcher wants to compare 100 people's answers easily. Why is a structured interview better than an unstructured one?", options: { A: "Everyone is asked the same questions in the same order", B: "It produces richer, more detailed answers from each person", C: "It lets the interviewer change questions for each person", D: "It removes any need to get informed consent" }, correct: "A" }
+    },
+    "GCSE-PSY-RM-21": {
+      stem: "What is a case study?",
+      options: { A: "An in-depth study of one person, group or event", B: "A survey of a large, representative sample of people", C: "An experiment comparing two conditions of an IV", D: "A study measuring the relationship between two variables" },
+      correct: "A",
+      scaffold: "A case study is a detailed, in-depth investigation of one individual, group or event, often over a long time and using several methods such as interviews, observations and tests. It gives rich detail and can study rare cases, such as someone with an unusual brain injury, but the findings may not generalise to other people and the researcher's interpretation can be subjective. Tip: 'one person in depth' signals a case study.",
+      reforge: { stem: "Why can findings from a case study be hard to generalise?", options: { A: "Case studies only ever produce quantitative data", B: "They focus on one person or a very small group", C: "The researcher manipulates the IV in a laboratory", D: "Case studies always use very large samples" }, correct: "B" }
+    },
+    "GCSE-PSY-RM-22": {
+      stem: "What is a positive correlation?",
+      options: { A: "As one variable increases, the other decreases", B: "As one variable increases, the other also increases", C: "There is no relationship at all between the two variables", D: "One variable is shown to cause the other to change" },
+      correct: "B",
+      scaffold: "A correlation shows the relationship between two co-variables. In a positive correlation both increase together, for example hours of revision and test score. In a negative correlation one increases as the other decreases. A correlation never shows cause and effect, because a third variable could explain both. Tip: on a scattergram, a positive correlation slopes upwards from left to right.",
+      reforge: { stem: "As hours of revision increase, test scores also increase. What does this show?", options: { A: "A negative correlation between the two", B: "That revision definitely causes higher scores", C: "A positive correlation between the two", D: "No correlation between the two co-variables" }, correct: "C" }
+    },
+    "GCSE-PSY-RM-23": {
+      stem: "What is a negative correlation?",
+      options: { A: "As one variable increases, the other also increases", B: "There is no relationship at all between the two variables", C: "As one variable increases, the other decreases", D: "Neither variable changes when the other one does" },
+      correct: "C",
+      scaffold: "In a negative correlation, as one co-variable increases the other decreases: for example, as time spent on a phone before bed increases, hours of sleep decrease. On a scattergram the points slope downwards from left to right. As with any correlation, it does not prove that one variable causes the other. Tip: 'negative' describes the direction of the relationship, not whether the result is bad.",
+      reforge: { stem: "As stress levels increase, the number of hours slept decreases. What type of correlation is this?", options: { A: "A positive correlation", B: "No correlation", C: "A causal relationship", D: "A negative correlation" }, correct: "D" }
+    },
+    "GCSE-PSY-RM-24": {
+      stem: "What does reliability mean in research?",
+      options: { A: "Whether a study measures what it claims to measure", B: "Whether the sample truly represents the target population", C: "Whether participants have given informed consent", D: "Whether a measure gives consistent results if repeated" },
+      correct: "D",
+      scaffold: "Reliability means consistency: a reliable measure or study gives the same results if it is repeated in the same way. Standardised procedures and instructions make a study easier to replicate, and checking agreement between observers tests inter-observer reliability. A study can be reliable without being valid, like a faulty scale that always shows the same wrong weight. Tip: reliable means consistent; valid means accurate.",
+      reforge: { stem: "A memory test is given to the same people twice, a week apart, and they get very similar scores. What does this suggest?", options: { A: "The test is reliable", B: "The test is valid", C: "The sample is biased", D: "The results are not useful" }, correct: "A" }
+    },
+    "GCSE-PSY-RM-25": {
+      stem: "What does validity mean in research?",
+      options: { A: "Whether a study measures what it claims to measure", B: "Whether a measure gives the same results each time", C: "Whether two observers agree on what they record", D: "Whether a study can be repeated by other researchers" },
+      correct: "A",
+      scaffold: "Validity means accuracy: whether a study really measures what it intends to, and whether the findings apply beyond the study. Ecological validity asks whether results generalise to real-life settings; a memory test using random word lists may lack it. Validity is different from reliability, which is about consistency. Tip: a ruler printed 2 cm short gives reliable but invalid measurements.",
+      reforge: { stem: "A study tests memory by asking people to learn lists of nonsense syllables in a laboratory. What is the main criticism?", options: { A: "It has low reliability because nobody else could repeat it exactly", B: "It may lack ecological validity as the task is unlike real life", C: "It uses too many participants to be ethical", D: "The IV was not manipulated by the researcher" }, correct: "B" }
+    }
+  };
+  const bank = BANKS["GCSE-PSY-RESEARCH"];
+  for (const question of bank ? bank.questions : []) {
+    const rewrite = rewrites[question.id];
+    if (!rewrite) continue;
+    Object.assign(question, rewrite);
   }
 }());
 
