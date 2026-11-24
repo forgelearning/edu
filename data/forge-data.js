@@ -45292,6 +45292,1326 @@ for (const [id, variants] of Object.entries(physAnswerLengthRepairs)) {
   }
 }());
 
+// GCSE Psychology topic banks, rewritten by hand (2026-11-24).
+// The seven topic banks below Research Methods were built by the same
+// generators: distractors borrowed from other topics ("Less than one second"
+// as a definition of context-dependent forgetting), Reforge twins that only
+// reframed their parent, placeholder scaffolds that restated the answer, and
+// in Memory five questions on the working memory model, which is not in the
+// AQA GCSE specification. Each entry replaces the whole question apart from
+// its id and tag, with the answer letter chosen as it was written. Like the
+// Research Methods block above, it runs after every generation and
+// redistribution pass so none of them can rebuild these options.
+(function () {
+  const rewritesByBank = {
+    "GCSE-PSY-MEMORY": {
+      "GCSE-PSY-MEM-01": {
+        stem: "Which memory store has a very large capacity but holds information for less than a second or two?",
+        options: { A: "The sensory register", B: "Short-term memory store", C: "Long-term memory store", D: "Semantic memory" },
+        correct: "A",
+        scaffold: "In the multi-store model, information first enters the sensory register through the senses. It can hold a great deal, but only very briefly: visual information fades in well under a second and sounds in a couple of seconds. Only what we pay attention to passes on to short-term memory; the rest is lost. Tip: learn each store as a set of three facts: coding, capacity and duration.",
+        reforge: { stem: "You glance at a busy street and, for a split second, take in far more detail than you could ever describe. Which store held that detail?", options: { A: "Long-term memory store", B: "Short-term memory store", C: "The sensory register", D: "Procedural memory" }, correct: "C" }
+      },
+      "GCSE-PSY-MEM-02": {
+        stem: "What is the usual capacity of short-term memory?",
+        options: { A: "Between two and three items", B: "Between five and nine items", C: "Between twenty and thirty items", D: "An unlimited number of items" },
+        correct: "B",
+        scaffold: "Short-term memory can hold only a small amount at once. The standard estimate is 7 plus or minus 2 items, so between five and nine. Grouping items into meaningful chunks, such as remembering 1066 as one date rather than four digits, lets you hold more. Long-term memory, by contrast, is thought to have an unlimited capacity.",
+        reforge: { stem: "A student can repeat back seven digits in order, but makes mistakes when given twelve. What does this show?", options: { A: "Long-term memory has a limited capacity", B: "The sensory register lasts several minutes", C: "Twelve digits is too long a duration to hold", D: "Short-term memory has a limited capacity" }, correct: "D" }
+      },
+      "GCSE-PSY-MEM-03": {
+        stem: "What did Murdock's serial position curve show about recalling a list of words?",
+        options: { A: "Words in the middle were recalled best of all", B: "Every word was recalled about equally well", C: "The first and last words were recalled best", D: "Only the first few words were recalled at all" },
+        correct: "C",
+        scaffold: "Murdock asked participants to learn a list of words and recall them in any order. Recall was best for words at the start (the primacy effect) and at the end (the recency effect), and worst for the middle. The early words had been rehearsed into long-term memory, and the last words were still in short-term memory. That supports the multi-store model's claim that STM and LTM are separate stores.",
+        reforge: { stem: "Why does the multi-store model say the last few words of a list are recalled well?", options: { A: "They are still held in short-term memory", B: "They have been rehearsed the most times", C: "They are coded semantically in the sensory register", D: "They were learned in a different context" }, correct: "A" }
+      },
+      "GCSE-PSY-MEM-04": {
+        stem: "Which type of long-term memory stores personal experiences, such as a particular birthday party?",
+        options: { A: "Semantic memory", B: "Procedural memory", C: "Short-term memory", D: "Episodic memory" },
+        correct: "D",
+        scaffold: "There are three types of long-term memory. Episodic memory holds personal events, linked to a time and place, such as your first day at secondary school. Semantic memory holds facts and knowledge, such as the capital of France. Procedural memory holds skills, such as riding a bike, which you can do without consciously recalling how.",
+        reforge: { stem: "Which of these is an example of episodic memory?", options: { A: "Knowing that Paris is the capital of France", B: "Remembering your first day at secondary school", C: "Knowing how to tie your shoelaces without thinking", D: "Holding a phone number for a few seconds" }, correct: "B" }
+      },
+      "GCSE-PSY-MEM-05": {
+        stem: "According to the multi-store model, how does information pass from short-term to long-term memory?",
+        options: { A: "Through attention paid to the senses", B: "Through rehearsal, such as repeating it", C: "Through interference from newer learning", D: "Through matching the original context" },
+        correct: "B",
+        scaffold: "The multi-store model has two key processes. Attention moves information from the sensory register into short-term memory. Rehearsal, such as repeating something over and over, moves it from short-term into long-term memory. Information that is not rehearsed is lost from STM within about 18 to 30 seconds. Tip: attention comes first, rehearsal second.",
+        reforge: { stem: "A student repeats a new French word over and over until she still knows it the next day. Which process has she used?", options: { A: "Attention", B: "Retrieval", C: "Rehearsal", D: "Interference" }, correct: "C" }
+      },
+      "GCSE-PSY-MEM-06": {
+        stem: "In Bartlett's War of the Ghosts study, how did participants' recall of the story change?",
+        options: { A: "It became more detailed with each telling", B: "It stayed accurate, word for word", C: "It was forgotten completely within a single day", D: "It became shorter and fitted their own culture" },
+        correct: "D",
+        scaffold: "Bartlett asked English participants to read an unfamiliar Native American folk tale and recall it several times. Their versions became shorter, and unfamiliar details were changed to fit their own culture: 'canoes' became 'boats', and the supernatural parts were left out. He concluded that memory is reconstructive: we rebuild memories each time using our existing knowledge, called schemas.",
+        reforge: { stem: "In Bartlett's study, 'hunting seals' became 'fishing'. What does this show?", options: { A: "Participants changed details to fit what was familiar", B: "Participants had not paid close attention to the story", C: "Participants' short-term memory capacity was full", D: "Participants were recalling in a different room" }, correct: "A" }
+      },
+      "GCSE-PSY-MEM-07": {
+        stem: "Why does interference cause forgetting?",
+        options: { A: "Memories fade away simply because time passes", B: "The cues present at learning are missing later", C: "Similar memories get confused with each other", D: "Information never reached long-term memory" },
+        correct: "C",
+        scaffold: "Interference happens when two memories are similar and get in each other's way, so the one you want is harder to retrieve. It is most likely when the material is similar, such as two sets of vocabulary or two phone numbers. There are two kinds: proactive (old learning disrupts new) and retroactive (new learning disrupts old). Tip: interference is about similarity; context is about missing cues.",
+        reforge: { stem: "Sam learns Spanish and Italian in the same year and keeps mixing up the words. Which explanation fits best?", options: { A: "Context, because he is in the wrong room", B: "Interference between similar material", C: "False memory created by leading questions", D: "Decay because he never rehearses at all" }, correct: "B" }
+      },
+      "GCSE-PSY-MEM-08": {
+        stem: "What is a false memory?",
+        options: { A: "Remembering something that did not happen", B: "Forgetting an event because of a missing cue", C: "Remembering a skill such as riding a bike", D: "Holding information briefly in the senses" },
+        correct: "A",
+        scaffold: "A false memory is a memory of an event, or a detail, that did not actually happen, yet it can feel completely real. False memories can be created by suggestion, for example when someone hears a misleading account or is asked a leading question, and the new detail is woven into their memory. This matters for eyewitness testimony, because a confident witness is not always an accurate one.",
+        reforge: { stem: "After talking to other witnesses, Jo is certain the robber wore a red hat, but CCTV shows no hat. What is this?", options: { A: "Procedural memory", B: "Proactive interference", C: "The primacy effect", D: "A false memory" }, correct: "D" }
+      },
+      "GCSE-PSY-MEM-09": {
+        tag: "MC-GPSY-MEMORY-SYSTEMS",
+        stem: "How is information mainly coded in short-term memory?",
+        options: { A: "Semantically, by its meaning", B: "Procedurally, as a skill", C: "Acoustically, by its sound", D: "By its smell or its taste" },
+        correct: "C",
+        scaffold: "Coding is the form in which information is stored. Short-term memory mainly codes acoustically, by sound, which is why we repeat things to ourselves and why similar-sounding words such as 'cat, cap, can' are easily confused in STM. Long-term memory mainly codes semantically, by meaning, so words with similar meanings get mixed up in LTM instead.",
+        reforge: { stem: "People find the list 'man, mad, map, can' harder to recall straight away than 'pen, day, cow, bus'. Why?", options: { A: "Long-term memory codes words by their meaning", B: "Short-term memory codes words by their sound", C: "The sensory register has a limited capacity", D: "The second list has fewer letters to recall" }, correct: "B" }
+      },
+      "GCSE-PSY-MEM-10": {
+        tag: "MC-GPSY-MEMORY-SYSTEMS",
+        stem: "How is information mainly coded in long-term memory?",
+        options: { A: "By its sound", B: "By its meaning", C: "By its shape only", D: "It is not coded" },
+        correct: "B",
+        scaffold: "Long-term memory mainly codes semantically, which means by meaning. That is why, when you recall a story days later, you remember the gist rather than the exact words, and why words with similar meanings, such as 'big, huge, large', are confused in LTM. Compare short-term memory, which mainly codes acoustically.",
+        reforge: { stem: "A week after reading a story, you can explain what happened but not the exact words. Which feature of LTM does this show?", options: { A: "It has a very small capacity", B: "It lasts under thirty seconds", C: "It holds information as its sound", D: "It codes information by meaning" }, correct: "D" }
+      },
+      "GCSE-PSY-MEM-11": {
+        stem: "How long can information stay in short-term memory without rehearsal?",
+        options: { A: "Less than one second", B: "About 18 to 30 seconds", C: "Several days or weeks", D: "Potentially a lifetime" },
+        correct: "B",
+        scaffold: "Without rehearsal, information in short-term memory is lost after roughly 18 to 30 seconds. The sensory register lasts less than a second or two, and long-term memory can last a lifetime. Learn the durations alongside the capacities: sensory register (very large, under a second or two), STM (7 plus or minus 2 items, 18 to 30 seconds), LTM (unlimited, lifetime).",
+        reforge: { stem: "Someone reads a code once, is distracted so they cannot repeat it, and has forgotten it half a minute later. Which store does this show?", options: { A: "Short-term memory", B: "Long-term memory", C: "Procedural memory", D: "Semantic memory" }, correct: "A" }
+      },
+      "GCSE-PSY-MEM-12": {
+        stem: "Which type of long-term memory stores facts and general knowledge?",
+        options: { A: "Episodic memory", B: "Procedural memory", C: "Semantic memory", D: "Sensory memory" },
+        correct: "C",
+        scaffold: "Semantic memory is our store of facts and knowledge about the world, such as the meanings of words or that water boils at 100°C. Unlike episodic memories, semantic memories are not tied to when or where you learned them. Procedural memory holds skills. Tip: semantic sounds like 'meaning', and that is what it stores.",
+        reforge: { stem: "Knowing that there are seven days in a week is an example of which memory type?", options: { A: "Procedural memory", B: "Short-term memory", C: "Episodic memory", D: "Semantic memory" }, correct: "D" }
+      },
+      "GCSE-PSY-MEM-13": {
+        stem: "Which type of long-term memory lets you carry out skills, such as swimming, without thinking about each step?",
+        options: { A: "Procedural memory", B: "Episodic memory", C: "Semantic memory", D: "Short-term memory" },
+        correct: "A",
+        scaffold: "Procedural memory stores skills and how to do things. These memories are usually hard to put into words and are used automatically: an experienced driver changes gear without consciously recalling the steps. Procedural memories are also very long-lasting, which is why people say you never forget how to ride a bike.",
+        reforge: { stem: "An experienced pianist plays a familiar piece while chatting to a friend. Which memory type is she mainly using?", options: { A: "Semantic memory", B: "Procedural memory", C: "Episodic memory", D: "The sensory register" }, correct: "B" }
+      },
+      "GCSE-PSY-MEM-14": {
+        stem: "What does encoding mean in memory?",
+        options: { A: "Getting information back out of memory", B: "Holding information over a period of time", C: "Losing information that has not been rehearsed", D: "Changing information into a form for storage" },
+        correct: "D",
+        scaffold: "Memory involves three processes. Encoding changes information into a form that can be stored, such as a sound, an image or a meaning. Storage holds it over time. Retrieval gets it back out when needed. A useful analogy is a library: encoding is labelling a book, storage is putting it on the shelf, and retrieval is finding it again.",
+        reforge: { stem: "A student turns a list of new words into pictures in her head so she can remember them. Which memory process is this?", options: { A: "Retrieval", B: "Storage", C: "Encoding", D: "Forgetting" }, correct: "C" }
+      },
+      "GCSE-PSY-MEM-15": {
+        stem: "What does retrieval mean in memory?",
+        options: { A: "Changing information into a form that can be stored", B: "Getting stored information back out when needed", C: "Holding information in memory over a period of time", D: "Repeating information so that it is not forgotten" },
+        correct: "B",
+        scaffold: "Retrieval is the process of getting information out of storage when we need it, for example recalling a fact in an exam. Forgetting can happen at any stage: information may not be encoded, may not be stored, or may be stored but not retrieved. Context-dependent forgetting is a retrieval failure, because the memory is still there but the cue to reach it is missing.",
+        reforge: { stem: "In an exam, a student cannot remember a key term, then it comes back to her after she leaves the hall. Which process failed at first?", options: { A: "Encoding", B: "Storage", C: "Attention", D: "Retrieval" }, correct: "D" }
+      },
+      "GCSE-PSY-MEM-16": {
+        tag: "MC-GPSY-MEMORY-SERIAL",
+        stem: "Which finding supports the idea that short-term and long-term memory are separate stores?",
+        options: { A: "Murdock's primacy and recency effects", B: "Bartlett's War of the Ghosts results", C: "Effort after meaning in story recall", D: "Leading questions changing speed estimates" },
+        correct: "A",
+        scaffold: "The serial position curve supports the multi-store model. If STM and LTM were the same store, recall should not show two separate peaks. The primacy effect reflects words rehearsed into LTM, and the recency effect reflects words still in STM. Bartlett's work and leading questions are evidence about how accurate memory is, not about how many stores there are.",
+        reforge: { stem: "If people are distracted for 30 seconds before recalling a list, they lose the recency effect but keep primacy. Why?", options: { A: "The first words were never encoded at all", B: "Distraction improves storage in long-term memory", C: "The last words were only in short-term memory", D: "The list was learned in a different context" }, correct: "C" }
+      },
+      "GCSE-PSY-MEM-17": {
+        stem: "What is proactive interference?",
+        options: { A: "New learning disrupting old memories", B: "Old learning disrupting new memories", C: "A missing cue blocking retrieval", D: "A memory changed by a schema" },
+        correct: "B",
+        scaffold: "Proactive interference works forwards in time: something you learned earlier gets in the way of learning or recalling something new. For example, you keep writing last year's date in January, or keep using an old password. Retroactive interference works backwards: new learning disrupts older memories. Tip: 'pro' means forwards and 'retro' means backwards.",
+        reforge: { stem: "After moving house, Lee keeps giving his old address when asked for his new one. What is this?", options: { A: "Retroactive interference", B: "Context-dependent forgetting", C: "Reconstructive memory", D: "Proactive interference" }, correct: "D" }
+      },
+      "GCSE-PSY-MEM-18": {
+        stem: "What is retroactive interference?",
+        options: { A: "Old learning disrupting new memories", B: "A missing cue blocking retrieval", C: "New learning disrupting old memories", D: "A schema changing a memory's details" },
+        correct: "C",
+        scaffold: "Retroactive interference works backwards in time: something you learn now makes it harder to recall something you learned before. A teacher who learns this year's class names may struggle to remember last year's. Interference is strongest when the two sets of material are similar. Compare proactive interference, where old learning disrupts new.",
+        reforge: { stem: "After learning her new phone number, Mia can no longer remember her old one. Which type of forgetting is this?", options: { A: "Retroactive interference", B: "Proactive interference", C: "A false memory", D: "Context-dependent forgetting" }, correct: "A" }
+      },
+      "GCSE-PSY-MEM-19": {
+        stem: "What does context-dependent forgetting mean?",
+        options: { A: "Recall is worse when the setting at recall differs from learning", B: "Recall is worse when two sets of material learned are very similar", C: "Recall is changed to fit what the person already expects", D: "Recall is better for the first and last items in a list" },
+        correct: "A",
+        scaffold: "Context is the environment or situation in which you learn something. Features of that setting become cues that help you retrieve the memory later. If you try to recall in a different context, the cues are missing and you may forget. This is a failure of retrieval, not storage: the memory is still there. Tip: this is why revising in a similar setting to the exam can help.",
+        reforge: { stem: "Revising in a quiet room, then sitting the exam in a noisy sports hall, a student forgets material she knew well. What is the best explanation?", options: { A: "Proactive interference", B: "Context-dependent forgetting", C: "The recency effect", D: "Reconstructive memory and schemas" }, correct: "B" }
+      },
+      "GCSE-PSY-MEM-20": {
+        stem: "In Godden and Baddeley's study, divers learned words underwater or on land. When was recall best?",
+        options: { A: "When recall always took place on dry land", B: "When the divers had rehearsed all of the words aloud", C: "When the divers learned the list a second time", D: "When learning and recall were in the same place" },
+        correct: "D",
+        scaffold: "Godden and Baddeley had divers learn word lists either on the beach or underwater, then recall them in the same or the other setting. Recall was about 40% lower when the setting changed, whichever way round. This is strong evidence for context-dependent forgetting: the surroundings acted as cues. A criticism is that divers are an unusual sample and the task was artificial.",
+        reforge: { stem: "Why did divers who learned words underwater recall fewer of them on the beach?", options: { A: "Cues from the learning setting were missing", B: "The new words interfered with older ones they knew", C: "The words were coded by sound underwater", D: "The divers' short-term memory was full" }, correct: "A" }
+      },
+      "GCSE-PSY-MEM-21": {
+        stem: "What did Bartlett mean by 'effort after meaning'?",
+        options: { A: "Repeating information so it moves into long-term memory", B: "Trying to make unfamiliar material fit what we know", C: "Recalling the first and last items in a list best", D: "Using the place where we learned as a cue to recall" },
+        correct: "B",
+        scaffold: "Effort after meaning is the way we try to make sense of new, unfamiliar information by linking it to our existing schemas. In War of the Ghosts, participants found the story strange, so they changed it into something that made sense to them. The result is that memory is accurate in its gist but distorted in its details. This is the key idea in Bartlett's reconstructive memory theory.",
+        reforge: { stem: "A student hears a confusing story and later retells it in a way that makes more sense to him, adding a reason that was never given. What is this?", options: { A: "Maintenance rehearsal", B: "Proactive interference", C: "Effort after meaning", D: "The primacy effect" }, correct: "C" }
+      },
+      "GCSE-PSY-MEM-22": {
+        stem: "According to Bartlett, how do schemas affect memory?",
+        options: { A: "They keep every detail of a memory exactly as it was", B: "They only affect how much information short-term memory can hold", C: "They stop new learning from disrupting old memories", D: "They fill gaps and change details to fit expectations" },
+        correct: "D",
+        scaffold: "A schema is a mental framework built from past experience, such as your idea of what happens at a restaurant. When we recall, we use schemas to rebuild the memory, filling in missing details with what we expect and dropping what does not fit. So memory is reconstructive, not a recording. A limitation of Bartlett's study is that participants were not given standardised instructions, so some changes may have been guesses.",
+        reforge: { stem: "Asked to recall a scene of an office, people often 'remember' books that were never there. What does this show?", options: { A: "A schema filled in what was expected", B: "Retroactive interference from later learning", C: "A failure to encode by sound", D: "The limited capacity of the sensory register" }, correct: "A" }
+      },
+      "GCSE-PSY-MEM-23": {
+        stem: "How can information given after an event create a false memory?",
+        options: { A: "It replaces the original event in the sensory register", B: "It becomes mixed into the memory of the original event", C: "It increases the capacity of short-term memory", D: "It only ever makes the original memory more accurate" },
+        correct: "B",
+        scaffold: "Misleading information received after an event, from other witnesses, the news or questioning, can become blended into the original memory. The person then recalls the new detail as if they had seen it, and may be very confident about it. This supports Bartlett's view that memory is reconstructive. It is why police are careful not to let witnesses discuss events before giving statements.",
+        reforge: { stem: "Why do police try to stop witnesses discussing a crime with each other before they are interviewed?", options: { A: "Discussing it would increase their memory capacity", B: "Witnesses forget everything after talking to others", C: "Talking would move the memory into procedural memory", D: "Others' details could be added to their memories" }, correct: "D" }
+      },
+      "GCSE-PSY-MEM-24": {
+        stem: "Why can the wording of a question affect what an eyewitness remembers?",
+        options: { A: "Wording only affects how quickly a witness gives an answer", B: "Wording has no effect if the witness is honest", C: "Leading wording can suggest an answer and change recall", D: "Wording is only a problem for procedural memories" },
+        correct: "C",
+        scaffold: "A leading question is worded in a way that suggests a particular answer. Asking 'How fast was the car going when it smashed into the other car?' suggests high speed, and witnesses asked this way give higher estimates than those asked with the word 'hit'. Some even later report broken glass that was never there, so the question has changed the memory itself, creating a false memory.",
+        reforge: { stem: "Witnesses asked how fast cars were going when they 'smashed' gave higher estimates than those asked 'hit'. What does this show?", options: { A: "Question wording can change what is recalled", B: "Witnesses are always accurate about how fast cars go", C: "Speed is coded acoustically in memory", D: "The witnesses had poor short-term memory" }, correct: "A" }
+      },
+      "GCSE-PSY-MEM-25": {
+        tag: "MC-GPSY-MEMORY-REHEARSAL",
+        stem: "Which is a limitation of the multi-store model of memory?",
+        options: { A: "It has no supporting evidence from any study", B: "It says nothing about short-term memory", C: "It ignores the role of attention in memory completely", D: "It suggests rehearsal is the only way into LTM" },
+        correct: "D",
+        scaffold: "The multi-store model is supported by research such as Murdock's serial position curve, which is a strength. A limitation is its claim that rehearsal moves information into long-term memory: we remember many things we never rehearsed, such as a shocking news event, and simply repeating something is not the best way to learn. The model also treats STM and LTM as single stores, when there appear to be different types of LTM.",
+        reforge: { stem: "You remember where you were when you heard some shocking news, though you never repeated it to yourself. Which claim does this challenge?", options: { A: "That LTM has an unlimited capacity", B: "That only rehearsal moves information into LTM", C: "That short-term memory codes information by sound", D: "That memory involves encoding and retrieval" }, correct: "B" }
+      },
+      "GCSE-PHASE6-PSY-01": {
+        stem: "Why are the first few words of a list recalled well, according to the multi-store model?",
+        options: { A: "They are still being held in short-term memory", B: "They were learned in the same place as recall", C: "They have been rehearsed into long-term memory", D: "They fit the participant's existing schemas" },
+        correct: "C",
+        scaffold: "The primacy effect is explained by rehearsal. The first words in a list get more rehearsal than later ones, because there are fewer other words to repeat at that point, so they are more likely to be transferred into long-term memory. The recency effect, for the last words, is explained by those words still being in short-term memory at the moment of recall.",
+        reforge: { stem: "Which effect describes better recall for the first items in a list?", options: { A: "The recency effect", B: "The context effect", C: "The interference effect", D: "The primacy effect" }, correct: "D" }
+      },
+      "GCSE-PHASE6-PSY-02": {
+        stem: "When is interference most likely to cause forgetting?",
+        options: { A: "When the two things learned are very similar", B: "When something has been rehearsed many times", C: "When the setting at recall matches learning", D: "When the information is a practised skill" },
+        correct: "A",
+        scaffold: "Interference is greatest when two sets of information are similar, because similar memories compete with each other at retrieval. Learning French and Spanish vocabulary on the same evening is likely to cause interference; learning French and a dance routine is not. A criticism of interference research is that it often uses artificial word lists, so it may overstate how much everyday forgetting it explains.",
+        reforge: { stem: "Which pair of tasks learned on the same evening is most likely to cause interference?", options: { A: "A dance routine and a list of capital cities", B: "Two lists of German vocabulary", C: "A guitar chord and a new recipe", D: "A poem and a new bus timetable" }, correct: "B" }
+      }
+      },
+    "GCSE-PSY-PERCEPTION": {
+      "GCSE-PSY-PER-01": {
+        stem: "What is the difference between sensation and perception?",
+        options: { A: "Sensation detects stimuli; perception interprets them", B: "Perception detects stimuli; sensation interprets them", C: "Sensation and perception are two names for one process", D: "Sensation happens in the brain; perception in the eyes" },
+        correct: "A",
+        scaffold: "Sensation is the detection of physical energy, such as light hitting the eye or sound waves reaching the ear. Perception is what the brain does next: it organises and interprets that sensory information so it means something, such as recognising a face. You can sense something without perceiving it correctly, which is exactly what happens in a visual illusion.",
+        reforge: { stem: "Light from a road sign reaches your eyes, and you then recognise it as a 'stop' sign. Which part of this is perception?", options: { A: "The light reaching the retina", B: "Recognising what the sign means", C: "The nerve signals leaving the eye", D: "The eye detecting the colour red" }, correct: "B" }
+      },
+      "GCSE-PSY-PER-02": {
+        stem: "Which of these is a monocular depth cue?",
+        options: { A: "Retinal disparity", B: "Relative size", C: "Convergence", D: "Binocular overlap" },
+        correct: "B",
+        scaffold: "Monocular depth cues work with just one eye. They include relative size (smaller objects seem further away), height in plane, occlusion and linear perspective. Binocular cues need both eyes: retinal disparity (each eye gets a slightly different image) and convergence (the eyes turn inwards for close objects). Tip: 'mono' means one.",
+        reforge: { stem: "A person with sight in only one eye can still judge depth. Which cue could they be using?", options: { A: "Retinal disparity", B: "Convergence of the two eyes", C: "Height in plane", D: "Comparing the image from each eye" }, correct: "C" }
+      },
+      "GCSE-PSY-PER-03": {
+        stem: "What is retinal disparity?",
+        options: { A: "The eyes turning inwards to look at a near object", B: "Distant objects appearing higher in the visual field", C: "Each eye receiving a slightly different image", D: "Parallel lines appearing to meet in the distance" },
+        correct: "C",
+        scaffold: "Because our eyes are about 6 cm apart, each one sees a slightly different view. The brain compares the two images: the bigger the difference, the closer the object. This is retinal disparity, a binocular depth cue. You can see it by holding up a finger and closing each eye in turn; the finger seems to jump.",
+        reforge: { stem: "You hold a pen close to your face and close each eye in turn; the pen seems to jump. Which depth cue does this show?", options: { A: "Retinal disparity", B: "Linear perspective", C: "Occlusion", D: "Motion parallax" }, correct: "A" }
+      },
+      "GCSE-PSY-PER-04": {
+        stem: "What did Gibson's direct theory of perception claim?",
+        options: { A: "Perception relies on guesses based on past experience", B: "The environment contains enough information to perceive", C: "Perception is mostly shaped by the culture a person grows up in", D: "Perception depends on our motivation and emotions" },
+        correct: "B",
+        scaffold: "Gibson argued that perception is direct: the light reaching our eyes already contains all the information we need, so we do not have to make inferences. Cues such as motion parallax tell us about depth as we move. This is a nature view, because the ability is thought to be innate. Gregory's constructivist theory is the opposite: it says we construct perception using past experience.",
+        reforge: { stem: "Which side of the nature-nurture debate does Gibson's direct theory support?", options: { A: "Nurture, because perception is learned through culture", B: "Nature, because the ability to perceive is innate", C: "Neither, because perception is a conditioned reflex", D: "Nurture, because we infer from what we have learned" }, correct: "B" }
+      },
+      "GCSE-PSY-PER-05": {
+        stem: "What is perceptual set?",
+        options: { A: "A fixed set of depth cues that everyone uses equally", B: "The set of images received by each eye separately", C: "A readiness to perceive things in a particular way", D: "A group of illusions that fool all viewers equally" },
+        correct: "C",
+        scaffold: "Perceptual set is a tendency to notice or interpret things in a certain way, based on what we expect, want or have experienced. It is affected by culture, motivation, emotion and expectation. For example, if you are told a blurry shape is an animal you are more likely to see one. Perceptual set supports Gregory's view that perception is shaped by experience.",
+        reforge: { stem: "After watching a horror film, Sam sees a coat on a door as a person standing there. What best explains this?", options: { A: "Retinal disparity", B: "Perceptual set", C: "Size constancy", D: "Convergence" }, correct: "B" }
+      },
+      "GCSE-PSY-PER-06": {
+        stem: "Why does the Ponzo illusion work?",
+        options: { A: "Depth cues are misinterpreted on a flat picture", B: "The image can be seen in two different ways", C: "The brain fills in edges that are not really there", D: "The two eyes each receive an identical flat image" },
+        correct: "A",
+        scaffold: "In the Ponzo illusion, two identical lines are placed between converging lines like railway tracks. The converging lines act as a linear perspective cue, so the brain reads the top line as further away. Because it is 'further' but the same size on the retina, it is perceived as longer. This is an illusion caused by misinterpreted depth cues; the Müller-Lyer illusion works in a similar way.",
+        reforge: { stem: "In the Ponzo illusion, why does the top line look longer than the bottom one?", options: { A: "It is drawn in a darker colour", B: "It is judged to be further away", C: "It is the first line people look at", D: "It can be seen in two ways at once" }, correct: "B" }
+      },
+      "GCSE-PSY-PER-07": {
+        stem: "What did Gregory's constructivist theory propose?",
+        options: { A: "All the information we need is in the light reaching our eyes", B: "Perception is fixed at birth and does not change", C: "We build perception using inferences from past experience", D: "Perception depends only on retinal disparity" },
+        correct: "C",
+        scaffold: "Gregory argued that the information reaching our eyes is often incomplete, so the brain makes inferences, or best guesses, using past experience and knowledge. This is a nurture view of perception. It explains visual illusions well: the brain applies knowledge that usually works, such as size constancy, in a situation where it misleads. Gibson's direct theory is the contrasting nature view.",
+        reforge: { stem: "Which theory explains illusions as the brain applying past experience wrongly?", options: { A: "Gregory's constructivist theory", B: "Gibson's direct theory of perception", C: "The multi-store model", D: "Piaget's stage theory" }, correct: "A" }
+      },
+      "GCSE-PSY-PER-08": {
+        stem: "What is size constancy?",
+        options: { A: "Seeing a familiar object as the same size even at a distance", B: "Seeing every object in a scene as being the same size", C: "Judging distance by how quickly objects move past us as we travel", D: "Seeing two different interpretations of one picture" },
+        correct: "A",
+        scaffold: "As an object moves away, its image on the retina gets smaller, yet we still see it as its normal size. This is size constancy: the brain uses knowledge of the object and depth cues to adjust. It usually helps, but in the Ames room it misleads us: we assume the room is a normal shape, so people in the far corner seem to shrink.",
+        reforge: { stem: "A friend walks away from you and their image on your retina gets smaller, but they don't seem to shrink. Why?", options: { A: "Retinal disparity", B: "Size constancy", C: "Perceptual set", D: "Motion parallax" }, correct: "B" }
+      },
+      "GCSE-PSY-PER-09": {
+        stem: "What is the depth cue 'height in plane'?",
+        options: { A: "Closer objects seem to move faster as we travel", B: "The eyes turn upwards to look at distant objects", C: "Taller objects always seem nearer to the viewer", D: "Objects higher up in a picture seem further away" },
+        correct: "D",
+        scaffold: "Height in plane is a monocular depth cue: objects positioned higher in the visual field, closer to the horizon, are seen as further away. In a photo of a beach, the people near the top of the picture look more distant than those at the bottom. Artists use it to show depth on a flat page.",
+        reforge: { stem: "In a painting, a boat near the top of the canvas looks further away than one at the bottom. Which cue is the artist using?", options: { A: "Retinal disparity", B: "Convergence", C: "Height in plane", D: "Motion parallax" }, correct: "C" }
+      },
+      "GCSE-PSY-PER-10": {
+        stem: "What is occlusion as a depth cue?",
+        options: { A: "Lines that are parallel seem to meet far away", B: "The eyes turning inwards to focus on things near to us", C: "Smaller objects in a scene seem to be further away from us", D: "One object hiding part of another, so it seems nearer" },
+        correct: "D",
+        scaffold: "Occlusion (also called overlap or superimposition) is a monocular depth cue. When one object partly blocks our view of another, we perceive the blocking object as closer. It works even in a simple drawing, which is why a circle partly hidden behind a square seems to be behind it.",
+        reforge: { stem: "In a drawing, a tree partly hides a house. Which object is seen as nearer, and which cue is used?", options: { A: "The house, using linear perspective", B: "The house, using relative size", C: "The tree, using retinal disparity", D: "The tree, using occlusion" }, correct: "D" }
+      },
+      "GCSE-PSY-PER-11": {
+        stem: "What is linear perspective?",
+        options: { A: "Parallel lines seeming to converge in the distance", B: "Nearby objects appearing to move faster than far ones", C: "Objects higher in a picture seeming further away", D: "One object partly hiding another object behind it" },
+        correct: "A",
+        scaffold: "Linear perspective is a monocular depth cue: parallel lines, such as the edges of a road or railway tracks, appear to get closer together as they recede, meeting at a vanishing point on the horizon. The closer the lines look to each other, the further away that point seems. It is the cue that the Ponzo illusion exploits.",
+        reforge: { stem: "Looking down a long straight road, the two edges seem to meet on the horizon. Which cue is this?", options: { A: "Occlusion", B: "Linear perspective", C: "Relative size", D: "Convergence of the eyes" }, correct: "B" }
+      },
+      "GCSE-PSY-PER-12": {
+        stem: "What is convergence as a depth cue?",
+        options: { A: "Each eye receiving a slightly different image", B: "Parallel lines appearing to meet in the distance", C: "Nearby objects moving faster across our field of vision", D: "The eyes turning inwards more to look at near objects" },
+        correct: "D",
+        scaffold: "Convergence is a binocular depth cue. When we look at something close, our eyes turn inwards towards each other, and the brain uses feedback from the eye muscles to judge distance: the more the eyes converge, the closer the object. It only works for objects within a few metres. Do not confuse it with linear perspective, where lines seem to 'converge' on the horizon.",
+        reforge: { stem: "As you bring a finger towards your nose, you feel your eyes strain inwards. Which depth cue is this?", options: { A: "Convergence", B: "Linear perspective", C: "Height in plane", D: "Occlusion" }, correct: "A" }
+      },
+      "GCSE-PSY-PER-13": {
+        stem: "What is motion parallax?",
+        options: { A: "Moving objects seem larger than still ones nearby", B: "Distant objects appear to move faster than near ones", C: "Near objects seem to move faster past us than distant ones", D: "Objects seem to stay the same size as they move away from us" },
+        correct: "C",
+        scaffold: "Motion parallax happens when we move: objects close to us seem to rush past quickly, while distant ones move slowly or hardly at all. From a train window, the fence flashes by but the hills drift. Gibson saw motion parallax as a key part of his direct theory, because it gives depth information straight from the environment as we move through it.",
+        reforge: { stem: "From a car, fence posts flash past but distant mountains barely move. Which theory uses this cue as evidence?", options: { A: "Gregory's constructivist theory", B: "Gibson's direct theory", C: "Bruner and Minturn's study of set", D: "Bartlett's reconstructive memory" }, correct: "B" }
+      },
+      "GCSE-PSY-PER-14": {
+        stem: "Why do people seem to change size as they walk across the Ames room?",
+        options: { A: "The room is lit unevenly from one side only", B: "The image can be seen in two different ways", C: "The viewer uses both eyes to judge how far away people are", D: "We assume the room is a normal rectangular shape" },
+        correct: "D",
+        scaffold: "The Ames room is built in a distorted shape: one corner is much further away than the other, but from the viewing hole it looks like a normal rectangular room. Because we assume it is normal, we judge both corners to be equally far away, so a person in the far corner looks tiny. This shows our use of size constancy and past experience of rooms leading to an illusion.",
+        reforge: { stem: "The Ames room illusion is usually explained as a failure of which process?", options: { A: "Size constancy", B: "Retinal disparity", C: "Motion parallax", D: "Figure and ground" }, correct: "A" }
+      },
+      "GCSE-PSY-PER-15": {
+        stem: "Rubin's vase can be seen as a vase or as two faces. What kind of illusion is it?",
+        options: { A: "A size constancy illusion", B: "A fiction, with edges that are not there", C: "A misinterpreted depth cue", D: "An ambiguous figure-ground illusion" },
+        correct: "D",
+        scaffold: "Rubin's vase is an ambiguous figure: the same image supports two interpretations, depending on what we treat as the figure and what as the background (ground). If the white area is the figure, we see a vase; if the black areas are, we see two faces. We can switch between them, but not see both at once. The Necker cube is another ambiguous figure.",
+        reforge: { stem: "Why can't you see the vase and the two faces in Rubin's vase at the same moment?", options: { A: "The image is missing some of its edges", B: "One eye sees the vase and the other the faces", C: "The brain picks one area as figure at a time", D: "The faces are much smaller than the vase" }, correct: "C" }
+      },
+      "GCSE-PSY-PER-16": {
+        stem: "What happens when you look at the Necker cube for a while?",
+        options: { A: "It seems to shrink as you keep looking", B: "It flips between two ways of seeing its depth", C: "Edges appear around it that are not really there", D: "One side seems to move faster than the other" },
+        correct: "B",
+        scaffold: "The Necker cube is a line drawing of a cube with no depth cues to say which face is at the front. The brain flips between two equally good interpretations. Gregory used this as evidence for his theory: the brain forms a hypothesis about what it is seeing, and when the information supports two hypotheses equally, perception switches between them.",
+        reforge: { stem: "The Necker cube keeps flipping between two views. What does Gregory say this shows?", options: { A: "That perception is direct and needs no guesswork", B: "That the two eyes send conflicting images to the brain", C: "That size constancy has broken down", D: "That the brain tests hypotheses about what it sees" }, correct: "D" }
+      },
+      "GCSE-PSY-PER-17": {
+        stem: "In the Kanizsa triangle, what do people perceive that is not really there?",
+        options: { A: "A white triangle with edges", B: "A circle moving in depth", C: "Two lines of unequal length", D: "A room with sloping walls" },
+        correct: "A",
+        scaffold: "The Kanizsa triangle is made of three black 'Pac-Man' shapes arranged so their cut-outs line up. Most people see a bright white triangle with clear edges on top, but there are no lines there at all. This is called a fiction: the brain fills in a shape it expects to be there. Gregory explained it as the brain inferring the most likely explanation of the gaps.",
+        reforge: { stem: "Which type of illusion is the Kanizsa triangle?", options: { A: "A misinterpreted depth cue on paper", B: "A size constancy illusion in a room", C: "A fiction, with edges filled in", D: "An ambiguous figure" }, correct: "C" }
+      },
+      "GCSE-PSY-PER-18": {
+        stem: "What makes a picture an ambiguous figure?",
+        options: { A: "It has edges that the brain fills in itself", B: "It shows objects in an impossible room", C: "It uses depth cues that make it look 3D", D: "It can be interpreted in more than one way" },
+        correct: "D",
+        scaffold: "An ambiguous figure is one that the brain can interpret in two (or more) equally sensible ways, so perception switches between them. Examples are the Necker cube and Rubin's vase. Other kinds of illusion are different: fictions create edges that are not there (Kanizsa triangle), and misinterpreted depth cues make sizes look wrong (Ponzo, Müller-Lyer).",
+        reforge: { stem: "Which of these is an example of an ambiguous figure?", options: { A: "The Ponzo illusion", B: "The Kanizsa triangle", C: "The Ames room", D: "The Necker cube" }, correct: "D" }
+      },
+      "GCSE-PSY-PER-19": {
+        stem: "Hudson showed people from different cultures a picture of a hunter, an antelope and an elephant. What did he find?",
+        options: { A: "Everyone saw the elephant as further away than the antelope", B: "Only children could see the elephant clearly", C: "Some ignored depth cues and saw the elephant as nearer", D: "People could not tell which animal was which" },
+        correct: "C",
+        scaffold: "Hudson showed a drawing where the elephant was small and high in the picture, so it should look far away, with the hunter's spear pointing between the antelope and the elephant. Many people from cultures without much experience of pictures did not use these monocular cues and thought the hunter was aiming at the elephant. This suggests culture, a nurture factor, affects perceptual set.",
+        reforge: { stem: "What does Hudson's hunter-and-elephant study suggest about perception?", options: { A: "Using depth cues in pictures may be learned", B: "Depth perception is identical in all cultures", C: "Hunger makes pictures of food look brighter", D: "People only perceive what they expect to see" }, correct: "A" }
+      },
+      "GCSE-PSY-PER-20": {
+        stem: "How can motivation affect perception?",
+        options: { A: "It makes illusions disappear completely", B: "It makes us notice things linked to our needs", C: "It increases the number of depth cues that we use", D: "It only affects people who are very young" },
+        correct: "B",
+        scaffold: "Motivation is the drive to meet a need, such as hunger or thirst. A motivated person is more likely to notice and focus on things linked to that need, so their perceptual set changes. For example, a hungry person walking down a street notices food shops they would normally ignore. Gilchrist and Nesberg's study is the key evidence for this.",
+        reforge: { stem: "Walking home before lunch, Priya notices every café and bakery she passes. Which factor is affecting her perceptual set?", options: { A: "Culture", B: "Size constancy", C: "Convergence", D: "Motivation" }, correct: "D" }
+      },
+      "GCSE-PSY-PER-21": {
+        stem: "How can expectation affect perception?",
+        options: { A: "It makes images on the retina larger", B: "It stops us using depth cues correctly", C: "We tend to see what we expect to see", D: "It has no effect once we are adults" },
+        correct: "C",
+        scaffold: "Expectation is what we think we are going to see, based on context or past experience. It creates a perceptual set, so we interpret ambiguous information to fit. For example, most people read 'PARIS IN THE THE SPRING' without noticing the repeated word, because they expect a familiar phrase. Bruner and Minturn's study shows expectation in action.",
+        reforge: { stem: "Most people read 'Paris in the the spring' without spotting the repeated word. Why?", options: { A: "Expectation shapes what they perceive", B: "Each eye sees a different word", C: "Motivation makes the familiar words brighter", D: "The words are too far away to read" }, correct: "A" }
+      },
+      "GCSE-PSY-PER-22": {
+        stem: "In Bruner and Minturn's study, how was the ambiguous figure between 'A' and 'C' usually seen?",
+        options: { A: "As the number 13", B: "As the letter B", C: "As two separate shapes", D: "As a broken letter" },
+        correct: "B",
+        scaffold: "Bruner and Minturn showed participants an ambiguous figure that could be read as the letter B or the number 13. When it appeared between letters (A _ C), most people saw a B; between numbers (12 _ 14), most saw 13. The surrounding context created an expectation, which shaped perception. This supports the idea of perceptual set and Gregory's constructivist theory.",
+        reforge: { stem: "In Bruner and Minturn's study, what caused participants to see the same figure as either '13' or 'B'?", options: { A: "How hungry they were", B: "Their own culture", C: "The characters around it", D: "Which eye they used to look" }, correct: "C" }
+      },
+      "GCSE-PSY-PER-23": {
+        stem: "What did Gilchrist and Nesberg find about hungry participants?",
+        options: { A: "They judged food pictures to be brighter", B: "They were worse at using depth cues in pictures", C: "They saw the Ames room as normal", D: "They read ambiguous figures as letters" },
+        correct: "A",
+        scaffold: "Gilchrist and Nesberg had participants go without food for several hours, then rate the brightness of pictures. As hunger grew, participants rated food pictures as brighter, but not other pictures. This suggests motivation (the need for food) affects perception. A limitation is that the sample was small and the task artificial, so it may not reflect everyday perception.",
+        reforge: { stem: "Gilchrist and Nesberg's study is evidence that which factor affects perceptual set?", options: { A: "Culture", B: "Expectation", C: "Emotion", D: "Motivation" }, correct: "D" }
+      },
+      "GCSE-PSY-PER-24": {
+        stem: "In the nature-nurture debate about perception, what does 'nature' mean?",
+        options: { A: "Abilities learned through experience", B: "Influences from a person's culture", C: "Abilities we are born with", D: "Skills taught by parents" },
+        correct: "C",
+        scaffold: "Nature refers to abilities that are innate, meaning inherited and present from birth or developing through maturation. Nurture refers to abilities that come from experience and the environment. Gibson's direct theory is on the nature side, because it says we are born able to pick up information from the environment. Gregory's theory is on the nurture side.",
+        reforge: { stem: "Babies only a few months old will not crawl over an apparent drop. Which side of the debate does this support?", options: { A: "Nature, as depth perception may be innate", B: "Nurture, as babies learned this from parents", C: "Nurture, as it depends on their culture", D: "Neither, as babies cannot perceive depth" }, correct: "A" }
+      },
+      "GCSE-PSY-PER-25": {
+        stem: "Which finding supports the nurture side of the debate about perception?",
+        options: { A: "Gibson's account of motion parallax", B: "Hudson's cross-cultural picture study", C: "Young babies avoiding an apparent drop", D: "Retinal disparity in both eyes" },
+        correct: "B",
+        scaffold: "Nurture means perception is shaped by experience. Hudson found that people from different cultures interpreted depth cues in pictures differently, which suggests the skill is learned. Perceptual set research, such as Bruner and Minturn, supports nurture too. Gibson's theory and research showing young babies avoid an apparent drop (the visual cliff) support nature instead.",
+        reforge: { stem: "Gregory's constructivist theory is a nurture theory. Why?", options: { A: "It says perception is fully formed at birth", B: "It says we need no past experience to see", C: "It says depth comes only from the eyes", D: "It says perception draws on past experience" }, correct: "D" }
+      }
+      },
+    "GCSE-PSY-DEVELOPMENT": {
+      "GCSE-PSY-DEV-01": {
+        stem: "What is assimilation in Piaget's theory?",
+        options: { A: "Fitting a new experience into an existing schema", B: "Changing a schema so a new experience fits it", C: "Moving from one stage of development to the next", D: "Copying the behaviour of an adult role model" },
+        correct: "A",
+        scaffold: "A schema is a mental framework for understanding something. In assimilation, a child takes new information and fits it into a schema they already have, without changing the schema. A toddler who knows 'dog' and calls a cat a dog is assimilating. When the schema no longer works, the child must accommodate, which means changing the schema.",
+        reforge: { stem: "A toddler who knows the word 'ball' calls an orange a ball. Which process is this?", options: { A: "Accommodation", B: "Equilibration", C: "Assimilation", D: "Conservation" }, correct: "C" }
+      },
+      "GCSE-PSY-DEV-02": {
+        stem: "What is accommodation in Piaget's theory?",
+        options: { A: "Fitting a new experience into a schema the child already has", B: "Changing a schema, or making a new one, to fit something new", C: "Seeing the world only from your own point of view", D: "Understanding that objects still exist when out of sight" },
+        correct: "B",
+        scaffold: "Accommodation happens when new information does not fit an existing schema, so the child changes the schema or creates a new one. A child who calls all animals 'dog' learns that cats meow and climb trees, and forms a separate 'cat' schema. Accommodation is needed when assimilation fails, and together the two processes drive cognitive development.",
+        reforge: { stem: "A child who thought all men with beards were 'Grandad' learns that other men have beards too, and stops doing this. What has happened?", options: { A: "Assimilation", B: "Egocentrism", C: "Object permanence", D: "Accommodation" }, correct: "D" }
+      },
+      "GCSE-PSY-DEV-03": {
+        stem: "In which of Piaget's stages does object permanence develop?",
+        options: { A: "Pre-operational stage", B: "Concrete operational stage", C: "Sensorimotor stage", D: "Formal operational stage" },
+        correct: "C",
+        scaffold: "Piaget's four stages are sensorimotor (0-2 years), pre-operational (2-7), concrete operational (7-11) and formal operational (11+). In the sensorimotor stage, babies learn through their senses and movement. Object permanence, knowing that an object still exists when it is hidden, develops during this stage, at around 8 months.",
+        reforge: { stem: "Which is the correct order of Piaget's stages?", options: { A: "Sensorimotor, pre-operational, concrete operational, formal operational", B: "Pre-operational, sensorimotor, concrete operational, formal operational", C: "Sensorimotor, concrete operational, pre-operational, formal operational", D: "Pre-operational, concrete operational, sensorimotor, formal operational" }, correct: "A" }
+      },
+      "GCSE-PSY-DEV-04": {
+        stem: "What does Piaget mean by egocentrism?",
+        options: { A: "Being selfish and refusing to share with others", B: "Believing that quantity changes when appearance does", C: "Being unaware a hidden object still exists", D: "Seeing things only from your own point of view" },
+        correct: "D",
+        scaffold: "Egocentrism is not selfishness. It means a young child cannot imagine how something looks or seems from someone else's point of view, so assumes everyone sees what they see. Piaget tested it with the three mountains task: children in the pre-operational stage chose the picture showing their own view, not the doll's. He said egocentrism fades at around 7.",
+        reforge: { stem: "In the three mountains task, a 4-year-old picks a picture of her own view when asked what the doll can see. What does Piaget say this shows?", options: { A: "Conservation", B: "Egocentrism", C: "Object permanence", D: "A fixed mindset" }, correct: "B" }
+      },
+      "GCSE-PSY-DEV-05": {
+        stem: "What is conservation in Piaget's theory?",
+        options: { A: "Understanding that hidden objects still exist", B: "Being able to see a situation from another person's point of view", C: "Knowing an amount stays the same when its appearance changes", D: "Fitting new experiences into existing schemas" },
+        correct: "C",
+        scaffold: "Conservation is understanding that the amount of something stays the same even if it looks different. If water is poured from a short wide glass into a tall thin one, there is still the same amount. Pre-operational children usually say the tall glass has more, because they focus on one feature (height). Piaget said conservation develops in the concrete operational stage, at around 7.",
+        reforge: { stem: "Two rows of 6 counters are shown to a child. One row is spread out, and the child now says it has more. What can't the child do yet?", options: { A: "Conserve number", B: "Assimilate", C: "Use object permanence", D: "Think egocentrically" }, correct: "A" }
+      },
+      "GCSE-PSY-DEV-06": {
+        stem: "According to Dweck, what is a growth mindset?",
+        options: { A: "The belief that intelligence is fixed at birth", B: "The belief that ability can improve with effort", C: "The belief that some people are just naturally clever", D: "The belief that you should avoid tasks you might fail" },
+        correct: "B",
+        scaffold: "Dweck's mindset theory says people hold beliefs about whether ability can change. With a growth mindset, you believe ability develops through effort, practice and good strategies, so mistakes are a chance to learn. With a fixed mindset, you believe ability is set, so failure feels like proof you are not clever and you may avoid challenges.",
+        reforge: { stem: "After a low test score, Ella says 'I need a better way of revising, then I'll improve'. Which mindset does this show?", options: { A: "Fixed mindset", B: "Egocentric mindset", C: "Growth mindset", D: "Verbaliser mindset" }, correct: "C" }
+      },
+      "GCSE-PSY-DEV-07": {
+        stem: "According to Dweck, how do people with a growth mindset tend to react to a challenge?",
+        options: { A: "They avoid it so they will not look unintelligent", B: "They give up quickly if it does not come easily", C: "They feel that struggling proves they lack ability", D: "They see it as a chance to learn and keep going" },
+        correct: "D",
+        scaffold: "Dweck found that people with a growth mindset seek out challenges and persist when things get hard, because they see effort as the path to improvement. People with a fixed mindset are more likely to avoid challenges, give up after setbacks and see effort as a sign of low ability. Mindset therefore affects how much people learn, not just how they feel.",
+        reforge: { stem: "A student avoids the harder maths questions because getting them wrong would 'prove' she isn't clever. Which mindset is this?", options: { A: "A fixed mindset", B: "A growth mindset", C: "Formal operational thinking", D: "Egocentric thinking" }, correct: "A" }
+      },
+      "GCSE-PSY-DEV-08": {
+        stem: "What did Willingham criticise about learning styles?",
+        options: { A: "That students have no real preferences about how they like to learn", B: "That learning should be matched to a student's age", C: "That teachers should use pictures as well as words", D: "There is little evidence that matching teaching to styles works" },
+        correct: "D",
+        scaffold: "Learning styles theories claim students learn best when teaching matches their preferred style, such as visual or verbal. Willingham accepted people have preferences, but argued there is little evidence that matching teaching to them improves learning. Instead, the best way to teach depends on the content: a map is best learned visually by everyone.",
+        reforge: { stem: "According to Willingham, what should decide how a topic is best taught?", options: { A: "Each student's preferred learning style", B: "The nature of the content being learned", C: "Whether students are visualisers or verbalisers", D: "The student's stage of cognitive development" }, correct: "B" }
+      },
+      "GCSE-PSY-DEV-09": {
+        stem: "Which describes thinking in Piaget's pre-operational stage (about 2 to 7 years)?",
+        options: { A: "Children use symbols and language but are egocentric", B: "Children can reason about abstract ideas", C: "Children cannot yet use words or symbols in their play", D: "Children can conserve but only with real objects" },
+        correct: "A",
+        scaffold: "In the pre-operational stage, from about 2 to 7, children use symbols: language develops quickly and they enjoy pretend play. But their thinking is not yet logical. They are egocentric, cannot conserve, and focus on one feature of a situation at a time. Logical thinking with real objects comes in the concrete operational stage.",
+        reforge: { stem: "A 4-year-old pretends a stick is a sword but says a squashed ball of clay now has 'less' clay. Which stage is she in?", options: { A: "Sensorimotor", B: "Concrete operational", C: "Formal operational", D: "Pre-operational" }, correct: "D" }
+      },
+      "GCSE-PSY-DEV-10": {
+        stem: "Which describes thinking in Piaget's concrete operational stage (about 7 to 11 years)?",
+        options: { A: "Logical thinking, but mainly about real, physical objects", B: "Learning only through the senses and through their own movement", C: "Abstract thinking about purely hypothetical problems", D: "Pretend play, with no ability to conserve quantity" },
+        correct: "A",
+        scaffold: "In the concrete operational stage, children can think logically, conserve, and see other points of view, but their reasoning works best with real, concrete things they can see or handle. They struggle with abstract or hypothetical problems, such as 'if all purple dogs can fly...', which only become possible in the formal operational stage.",
+        reforge: { stem: "A 9-year-old can solve 'Sam is taller than Ali, Ali is taller than Jo' with dolls, but not in an abstract version. Which stage fits?", options: { A: "Pre-operational", B: "Concrete operational", C: "Sensorimotor stage", D: "Formal operational stage" }, correct: "B" }
+      },
+      "GCSE-PSY-DEV-11": {
+        stem: "Which ability first appears in Piaget's formal operational stage?",
+        options: { A: "Understanding that objects still exist when hidden", B: "Using words and symbols in pretend play", C: "Reasoning about abstract and hypothetical ideas", D: "Understanding that quantity stays the same" },
+        correct: "C",
+        scaffold: "The formal operational stage begins at about 11. Young people can now think in the abstract, reason about hypothetical situations ('what would happen if...?') and test ideas systematically, like a scientist. Piaget later accepted that not everyone reaches this stage in every area of thinking.",
+        reforge: { stem: "A 14-year-old can discuss 'What would society be like if nobody needed sleep?'. Which stage does this suggest?", options: { A: "Sensorimotor", B: "Concrete operational", C: "Pre-operational", D: "Formal operational" }, correct: "D" }
+      },
+      "GCSE-PSY-DEV-12": {
+        stem: "What is object permanence?",
+        options: { A: "Knowing that quantity stays the same when moved", B: "Knowing that objects exist even when out of sight", C: "Knowing that other people see things differently", D: "Knowing that schemas must change to fit new ideas" },
+        correct: "B",
+        scaffold: "Object permanence is understanding that things continue to exist when we cannot see, hear or touch them. Piaget found that young babies stop looking when a toy is covered, as if it no longer exists; from around 8 months they search for it. It develops in the sensorimotor stage. Later researchers suggest babies may understand this earlier than Piaget thought.",
+        reforge: { stem: "A 5-month-old stops reaching for a toy as soon as a blanket covers it. What has the baby not yet developed?", options: { A: "Conservation", B: "Egocentrism", C: "Object permanence", D: "Abstract reasoning" }, correct: "C" }
+      },
+      "GCSE-PSY-DEV-13": {
+        stem: "What did McGarrigle and Donaldson's 'naughty teddy' study suggest about Piaget's research?",
+        options: { A: "That children can only conserve at a much older age", B: "That young children can conserve earlier than he claimed", C: "That object permanence does not exist in babies", D: "That egocentrism lasts until the formal operational stage" },
+        correct: "B",
+        scaffold: "In Piaget's conservation of number task, an adult deliberately changes a row of counters, which may make children think the answer should change too. McGarrigle and Donaldson had a 'naughty teddy' mess up the row 'by accident'. Far more 6 to 7-year-olds now said the number was the same. This suggests Piaget underestimated young children because of how his tasks were set up.",
+        reforge: { stem: "Why did more children conserve when 'naughty teddy' moved the counters?", options: { A: "The teddy made the children more egocentric", B: "The children were older than in Piaget's study", C: "The change seemed accidental, so made more sense", D: "The counters were bigger and easier to count than before" }, correct: "C" }
+      },
+      "GCSE-PSY-DEV-14": {
+        stem: "What did Hughes's policeman doll study find?",
+        options: { A: "Most 3 to 5-year-olds could hide a doll from two policemen", B: "No child under 7 could take another person's point of view", C: "Children could only hide the doll after 11 years old", D: "Children could conserve number when a teddy was involved" },
+        correct: "A",
+        scaffold: "Hughes asked children aged 3 to 5 to hide a boy doll where two policemen dolls could not see him. About 90% succeeded, which requires taking the policemen's viewpoint. This suggests young children are less egocentric than Piaget claimed, because the task made sense to them, unlike the three mountains task.",
+        reforge: { stem: "Hughes's policeman doll study challenges which of Piaget's claims?", options: { A: "That object permanence appears in infancy", B: "That under-7s are egocentric", C: "That schemas can be accommodated", D: "That abstract thought comes last" }, correct: "B" }
+      },
+      "GCSE-PSY-DEV-15": {
+        stem: "According to Dweck, what is a fixed mindset?",
+        options: { A: "The belief that ability can grow with practice", B: "The belief that effort is the real key to success", C: "The belief that ability is set and cannot change", D: "The belief that mistakes help you learn" },
+        correct: "C",
+        scaffold: "With a fixed mindset, people believe intelligence and talent are set amounts. They tend to avoid challenges, give up quickly, and see effort as pointless or a sign of weakness. Dweck argues mindset can be changed, for example by how teachers and parents praise children.",
+        reforge: { stem: "Which of these comments shows a fixed mindset?", options: { A: "\"I'll practise until I get better at this\"", B: "\"Mistakes show me what I need to work on\"", C: "\"I just need a different strategy for this\"", D: "\"I'm just not a maths person, so why try?\"" }, correct: "D" }
+      },
+      "GCSE-PSY-DEV-16": {
+        stem: "According to Dweck, which kind of praise encourages a growth mindset?",
+        options: { A: "Praise for being clever or naturally talented", B: "Praise for getting the right answer quickly", C: "Praise for finishing first in the class", D: "Praise for effort and the strategies used" },
+        correct: "D",
+        scaffold: "Dweck found that praising children for being clever ('You're so smart') can encourage a fixed mindset: they then avoid hard tasks that might show they aren't. Praising effort and strategy ('You worked hard and tried a new method') encourages a growth mindset and more persistence after setbacks.",
+        reforge: { stem: "Which comment from a teacher is most likely to build a growth mindset?", options: { A: "\"You found that easy, so you're very bright\"", B: "\"You're a natural at this, aren't you?\"", C: "\"You must be the cleverest in the class\"", D: "\"You tried several methods until one worked\"" }, correct: "D" }
+      },
+      "GCSE-PSY-DEV-17": {
+        stem: "In learning styles theory, what is a visualiser?",
+        options: { A: "A learner who prefers spoken or written explanations", B: "A learner who prefers diagrams, pictures and images", C: "A learner who prefers to learn by doing activities", D: "A learner who prefers to work alone in silence" },
+        correct: "B",
+        scaffold: "Learning styles theories divide learners into types. A visualiser prefers information presented as pictures, diagrams, charts and mind maps. A verbaliser prefers words, whether written or spoken. Willingham's criticism is that, although people have such preferences, matching teaching to them has not been shown to improve learning.",
+        reforge: { stem: "Jas says he learns best from mind maps and labelled diagrams. Which learning style is he describing?", options: { A: "Verbaliser", B: "Kinaesthetic", C: "Visualiser", D: "Fixed mindset" }, correct: "C" }
+      },
+      "GCSE-PSY-DEV-18": {
+        stem: "In learning styles theory, what is a verbaliser?",
+        options: { A: "A learner who prefers pictures and diagrams", B: "A learner who prefers to learn by doing", C: "A learner who prefers to work as part of a group", D: "A learner who prefers words, written or spoken" },
+        correct: "D",
+        scaffold: "A verbaliser prefers to learn through words: reading text, listening to explanations, or writing notes. A visualiser prefers images and diagrams. Some learning styles theories add more types, such as kinaesthetic learners who learn by doing. Remember Willingham's point that a preference is not the same as better learning.",
+        reforge: { stem: "Amira prefers to revise by reading her notes and listening to recorded explanations. What would learning styles theory call her?", options: { A: "A verbaliser", B: "A visualiser", C: "A kinaesthetic learner", D: "A formal operational thinker" }, correct: "A" }
+      },
+      "GCSE-PSY-DEV-19": {
+        stem: "Which of these did Willingham argue improves learning?",
+        options: { A: "Teaching each student in their own learning style", B: "Grouping students as visualisers or verbalisers", C: "Practice and effort to build knowledge over time", D: "Avoiding tasks that students find difficult" },
+        correct: "C",
+        scaffold: "Willingham, a cognitive psychologist, argued that learning depends on things all students share: thinking hard about meaning, practising, building factual knowledge, and putting in effort. He argued against sorting students by learning style. A strength of his view is that it is based on research evidence; a limitation is that it may underplay individual differences.",
+        reforge: { stem: "Which teaching approach fits Willingham's ideas best?", options: { A: "Getting students to think about meaning and practise", B: "Giving visualisers pictures and verbalisers text", C: "Letting each student choose their learning style", D: "Testing students first to find out their learning style" }, correct: "A" }
+      },
+      "GCSE-PSY-DEV-20": {
+        stem: "Which is a criticism of Dweck's mindset theory?",
+        options: { A: "It suggests that ability can never change", B: "It only applies to children under 7 years old", C: "It ignores the role of praise from teachers and parents", D: "Effort alone may not overcome every barrier to success" },
+        correct: "D",
+        scaffold: "Dweck's theory is supported by research and has practical uses in schools, such as praising effort. A criticism is that it may place too much emphasis on effort: a student with a growth mindset may still struggle because of poor teaching, a learning difficulty or problems at home. Some later studies have also found smaller effects of mindset interventions than expected.",
+        reforge: { stem: "Which of these is a strength of Dweck's mindset theory?", options: { A: "It proves that intelligence is entirely inherited", B: "It has practical uses, such as how teachers praise", C: "It explains how schemas change throughout childhood", D: "It shows learning styles improve exam results" }, correct: "B" }
+      },
+      "GCSE-PSY-DEV-21": {
+        stem: "How does the brain develop in the womb and early childhood?",
+        options: { A: "It starts as a tube, and the brain stem forms before the cortex", B: "It is fully formed at birth and changes no further after that", C: "The cortex develops first, and the brain stem forms last of all", D: "It grows only after a child has started to go to school" },
+        correct: "A",
+        scaffold: "The brain begins as a neural tube a few weeks after conception. The brain stem and thalamus develop first, as they control the basic functions needed for survival. The cerebellum develops next, and the cortex, which handles complex thinking, keeps developing well into adolescence. This early development is mainly due to nature, though nurture shapes it too.",
+        reforge: { stem: "Which part of the brain continues developing the longest, into the teenage years?", options: { A: "The brain stem", B: "The cortex", C: "The thalamus", D: "The cerebellum" }, correct: "B" }
+      },
+      "GCSE-PSY-DEV-22": {
+        stem: "What does the cortex mainly do?",
+        options: { A: "Controls breathing and heart rate", B: "Relays sensory information to the cortex", C: "Handles complex thinking and language", D: "Co-ordinates balance and movement" },
+        correct: "C",
+        scaffold: "The cortex is the brain's wrinkled outer layer. It handles complex processes such as thinking, language, memory and perception. It is the last area to finish developing. Compare: the brain stem controls automatic functions such as breathing; the thalamus relays sensory information; the cerebellum co-ordinates movement and balance.",
+        reforge: { stem: "Which brain structure co-ordinates movement and balance?", options: { A: "The cerebellum", B: "The cortex", C: "The brain stem", D: "The thalamus" }, correct: "A" }
+      },
+      "GCSE-PSY-DEV-23": {
+        stem: "What does the brain stem control?",
+        options: { A: "Automatic functions such as breathing", B: "Language and long-term memory", C: "Balance and co-ordination of movement", D: "Planning and complex thinking" },
+        correct: "A",
+        scaffold: "The brain stem sits at the base of the brain, joining it to the spinal cord. It controls automatic (autonomic) functions needed for survival: breathing, heart rate, swallowing and sleep-wake cycles. It is one of the first parts to develop in the womb, which makes sense because a newborn needs these functions from birth.",
+        reforge: { stem: "Which brain structure relays information from the senses to the cortex?", options: { A: "The brain stem", B: "The cerebellum", C: "The thalamus", D: "The frontal lobe" }, correct: "C" }
+      },
+      "GCSE-PSY-DEV-24": {
+        stem: "What happens in Piaget's theory when a schema no longer fits the child's experience?",
+        options: { A: "The child moves straight to the formal stage", B: "The child becomes more egocentric to cope", C: "The child ignores the experience for good", D: "Disequilibrium, leading to accommodation" },
+        correct: "D",
+        scaffold: "When an experience does not fit an existing schema, the child feels confused or uncomfortable; Piaget called this disequilibrium. To restore balance, the child accommodates by changing the schema or creating a new one. Piaget saw this drive to restore balance (equilibration) as the engine of cognitive development.",
+        reforge: { stem: "A child who believes all big things sink sees a large ship floating and feels confused. What is this state called?", options: { A: "Object permanence", B: "Conservation", C: "Assimilation", D: "Disequilibrium" }, correct: "D" }
+      },
+      "GCSE-PSY-DEV-25": {
+        stem: "What is equilibration in Piaget's theory?",
+        options: { A: "Fitting new information into a schema with no change", B: "The drive to restore balance between schemas and experience", C: "Understanding that quantities stay the same when they are moved", D: "Seeing the world only from your own point of view" },
+        correct: "B",
+        scaffold: "Equilibration is the process of restoring mental balance. When new experience conflicts with a schema (disequilibrium), the child is motivated to resolve it through assimilation or accommodation, returning to equilibrium. Piaget believed this cycle drives children to develop more complex schemas and move through the stages.",
+        reforge: { stem: "Which process did Piaget see as driving children to develop more complex schemas?", options: { A: "Egocentrism", B: "Object permanence", C: "Equilibration", D: "Conservation" }, correct: "C" }
+      }
+      },
+    "GCSE-PSY-SOCIAL": {
+      "GCSE-PSY-SOC-01": {
+        stem: "What is conformity?",
+        options: { A: "Changing your behaviour or views to match a group", B: "Following a direct order from an authority figure", C: "Helping a stranger who is in need of assistance", D: "Putting in less effort when working in a group" },
+        correct: "A",
+        scaffold: "Conformity is changing what you do or say so that it fits in with a group, usually because of real or imagined group pressure. Nobody has to give an order: that would be obedience. Conformity is often explained by the wish to be accepted (normative influence) or by uncertainty about the right answer (informational influence).",
+        reforge: { stem: "Ben dislikes a band, but when his friends all praise it he says he likes it too. What is this?", options: { A: "Obedience", B: "Social loafing", C: "Conformity", D: "Deindividuation" }, correct: "C" }
+      },
+      "GCSE-PSY-SOC-02": {
+        stem: "In Asch's line study, roughly what proportion of the critical trials did participants conform on?",
+        options: { A: "Almost none of them", B: "About a third of them", C: "About two thirds of them", D: "Every single one" },
+        correct: "B",
+        scaffold: "Asch asked participants to say which of three lines matched a standard line, in a group of confederates who sometimes all gave the same wrong answer. Participants conformed on about a third (32%) of these critical trials, and about 75% conformed at least once. But most answers were still correct, so people often resisted. On their own, participants almost never made mistakes.",
+        reforge: { stem: "Why did Asch include a control condition where people judged the lines alone?", options: { A: "To find out which participants were most obedient", B: "To make the confederates seem more convincing", C: "To show the task was easy without group pressure", D: "To give participants practice before the real test" }, correct: "C" }
+      },
+      "GCSE-PSY-SOC-03": {
+        stem: "What is obedience?",
+        options: { A: "Changing behaviour to fit in with a group of peers", B: "Acting on a direct order from an authority figure", C: "Helping someone without expecting any reward", D: "Losing your sense of identity in a large crowd" },
+        correct: "B",
+        scaffold: "Obedience is following a direct instruction from someone with authority, such as a teacher, police officer or manager. The key difference from conformity is that there is an order, and a difference in status between the two people. Milgram's study is the classic research on obedience.",
+        reforge: { stem: "A pupil picks up litter because the headteacher tells her to. What is she showing?", options: { A: "Conformity", B: "Social loafing", C: "Informational influence", D: "Obedience" }, correct: "D" }
+      },
+      "GCSE-PSY-SOC-04": {
+        stem: "In Milgram's variations, which change reduced obedience?",
+        options: { A: "The experimenter wearing a lab coat", B: "Running the study at Yale University", C: "The experimenter giving orders by phone", D: "The experimenter standing next to the participant" },
+        correct: "C",
+        scaffold: "In Milgram's baseline study, 65% of participants went to the maximum 450 volts. In variations, obedience fell when the experimenter gave orders by telephone (about 21%), when the study moved to a run-down office, and when the participant was closer to the learner. Being close to the authority figure, and authority symbols such as a lab coat, increased obedience.",
+        reforge: { stem: "Obedience in Milgram's study fell when it moved from Yale to a run-down office. Which situational factor does this show?", options: { A: "The legitimacy of the setting", B: "The size of the majority", C: "The difficulty of the task", D: "The participant's personality" }, correct: "A" }
+      },
+      "GCSE-PSY-SOC-05": {
+        tag: "MC-GPSY-SOC-CONFORMITY",
+        stem: "How might a person's locus of control affect whether they conform?",
+        options: { A: "People with an internal locus are more likely to conform", B: "Locus of control only affects how much people obey", C: "Locus of control has no link to any social behaviour", D: "People with an external locus are more likely to conform" },
+        correct: "D",
+        scaffold: "Locus of control is a dispositional (personality) factor. People with an internal locus believe they control what happens to them, so they rely on their own judgement and resist group pressure more. People with an external locus believe outcomes depend on luck or other people, so they are more likely to go along with the group. Expertise is another dispositional factor: experts conform less.",
+        reforge: { stem: "Which of these is a dispositional factor affecting conformity?", options: { A: "The size of the group", B: "How hard the task is", C: "Whether answers are anonymous", D: "The person's expertise" }, correct: "D" }
+      },
+      "GCSE-PSY-SOC-06": {
+        tag: "MC-GPSY-SOC-BYSTANDER",
+        stem: "What did Piliavin's subway study find about helping a man who collapsed?",
+        options: { A: "Nobody helped him when the carriage was crowded", B: "People helped a 'drunk' man more than an 'ill' one", C: "People helped an 'ill' man more than a 'drunk' one", D: "Only women helped him when he collapsed" },
+        correct: "C",
+        scaffold: "Piliavin staged collapses on a New York subway train. A man with a cane (ill) was helped in about 95% of trials, while a man smelling of alcohol (drunk) was helped about half the time. Unlike lab studies of the bystander effect, help was usually quick, even with many people present. This suggests the cost of helping matters: helping a drunk person may seem riskier or more unpleasant.",
+        reforge: { stem: "Why was Piliavin's 'drunk' victim helped less often, according to the cost of helping?", options: { A: "Helping him seemed more unpleasant or risky", B: "There were fewer people in the train carriage", C: "He seemed more similar to the passengers", D: "The passengers had been told not to help" }, correct: "A" }
+      },
+      "GCSE-PSY-SOC-07": {
+        stem: "Why can deindividuation increase antisocial behaviour in a crowd?",
+        options: { A: "Being in a crowd makes people much more aware of their own values", B: "Anonymity lowers self-awareness, so personal norms weaken", C: "People in crowds always copy the behaviour of the leader", D: "Large crowds make people feel more personally responsible" },
+        correct: "B",
+        scaffold: "Deindividuation is losing your sense of personal identity in a crowd. Anonymity, such as wearing a mask or being one of many, reduces self-awareness and fear of being identified, so people's usual personal and moral standards have less control over behaviour. This can lead to antisocial acts such as looting, but it can also make people follow prosocial crowd norms, as at a charity event.",
+        reforge: { stem: "Rioters who wear masks are more likely to damage property. Which concept best explains this?", options: { A: "Social loafing", B: "Informational influence", C: "Social support", D: "Deindividuation" }, correct: "D" }
+      },
+      "GCSE-PSY-SOC-08": {
+        stem: "Which situation shows prosocial behaviour in a crowd?",
+        options: { A: "Fans throwing objects onto a pitch after a defeat", B: "A crowd looting shops after a power cut", C: "A crowd at a vigil raising money for a family", D: "People in a crowd chanting abuse at a referee" },
+        correct: "C",
+        scaffold: "Prosocial behaviour is behaviour that helps others or society. Crowds are not always antisocial: crowds at charity runs, vigils or after disasters often help strangers. Whether a crowd behaves prosocially or antisocially depends partly on its norms: deindividuated people follow the crowd's norms rather than their own, whichever way those go.",
+        reforge: { stem: "Why might the same deindividuation process make one crowd violent and another generous?", options: { A: "People in crowds follow the norms of that crowd", B: "Deindividuation only happens in small groups of friends", C: "Generous crowds are never anonymous", D: "Only violent crowds have a leader" }, correct: "A" }
+      },
+      "GCSE-PSY-SOC-09": {
+        stem: "What is normative social influence?",
+        options: { A: "Conforming because others might know the right answer", B: "Obeying because an order comes from an authority", C: "Conforming to be liked and accepted by the group", D: "Helping because others are present and watching" },
+        correct: "C",
+        scaffold: "Normative social influence is conforming because we want to be accepted and avoid rejection or ridicule. The person often still privately disagrees. In Asch's study, many participants said afterwards they knew the answer was wrong but did not want to stand out. Compare informational social influence, where we conform because we think the group is right.",
+        reforge: { stem: "In Asch's study, a participant later said 'I knew they were wrong but didn't want to look odd'. Which influence is this?", options: { A: "Informational social influence", B: "Normative social influence", C: "Deindividuation", D: "Agentic state" }, correct: "B" }
+      },
+      "GCSE-PSY-SOC-10": {
+        stem: "What is informational social influence?",
+        options: { A: "Conforming to avoid being rejected by the group", B: "Obeying an order because of the speaker's uniform", C: "Putting in less effort because others will do it", D: "Conforming because we think others know better" },
+        correct: "D",
+        scaffold: "Informational social influence happens when we are unsure of the right answer or how to behave, so we look to others as a source of information and accept their view. It is most likely in ambiguous or difficult situations, or when others seem to be experts. Unlike normative influence, the person usually changes their private opinion as well.",
+        reforge: { stem: "On her first day in a new country, Mia watches how others queue for the bus and copies them. Which influence is this?", options: { A: "Informational social influence", B: "Normative social influence", C: "Obedience to an authority figure", D: "Diffusion of responsibility" }, correct: "A" }
+      },
+      "GCSE-PSY-SOC-11": {
+        stem: "How does task difficulty affect conformity?",
+        options: { A: "Harder tasks lead to less conformity", B: "Harder tasks lead to more conformity", C: "Task difficulty has no effect at all", D: "Only easy tasks lead to conformity" },
+        correct: "B",
+        scaffold: "Task difficulty is a situational factor. When a task is hard or the answer is unclear, people are less sure of themselves and look to others for guidance, so conformity increases (informational influence). In Asch's variations, making the lines more similar increased conformity. Other situational factors are group size and anonymity.",
+        reforge: { stem: "In one of Asch's variations the lines were made very similar in length. What happened to conformity?", options: { A: "It disappeared", B: "It stayed the same", C: "It fell sharply", D: "It increased" }, correct: "D" }
+      },
+      "GCSE-PSY-SOC-12": {
+        stem: "How does anonymity affect conformity?",
+        options: { A: "Giving answers privately reduces conformity", B: "Giving answers privately increases conformity", C: "Anonymity only affects obedience, not conformity", D: "Anonymity only matters in very large groups" },
+        correct: "A",
+        scaffold: "Anonymity is a situational factor. When people can give their answers privately, such as in writing, conformity falls, because there is less pressure to fit in. In an Asch variation where the participant wrote their answer down, conformity dropped sharply. This shows normative influence was a key reason for conformity in his study.",
+        reforge: { stem: "Conformity in Asch-type studies falls when people write their answers privately. What does this suggest?", options: { A: "Participants could not see the lines clearly", B: "The task was too difficult to answer aloud", C: "Wanting to fit in was a key reason to conform", D: "Participants did not trust the experimenter at all" }, correct: "C" }
+      },
+      "GCSE-PSY-SOC-13": {
+        stem: "According to Milgram's agency theory, what is the autonomous state?",
+        options: { A: "Acting on someone else's orders and feeling no responsibility", B: "Acting on your own wishes and feeling responsible for it", C: "Losing your sense of identity because you are in a crowd", D: "Copying a group because you are unsure what is right" },
+        correct: "B",
+        scaffold: "Milgram's agency theory describes two states. In the autonomous state, we act on our own free will and feel responsible for our actions. In the agentic state, we see ourselves as an agent carrying out someone else's wishes, so we feel the responsibility lies with them. The shift from autonomous to agentic is called the agentic shift.",
+        reforge: { stem: "A participant in Milgram's study refuses to continue, saying 'I won't do this, it's wrong'. Which state is he in?", options: { A: "The agentic state", B: "Deindividuation", C: "The autonomous state", D: "Diffusion of responsibility" }, correct: "C" }
+      },
+      "GCSE-PSY-SOC-14": {
+        stem: "What is the agentic state in Milgram's agency theory?",
+        options: { A: "Feeling fully responsible for your own actions", B: "Losing self-awareness while in a crowd", C: "Conforming to be accepted by the group", D: "Seeing yourself as acting for an authority" },
+        correct: "D",
+        scaffold: "In the agentic state, a person sees themselves as an agent of an authority figure, carrying out orders on that person's behalf. They feel the responsibility for what happens lies with the authority, not with themselves. Milgram used this to explain why ordinary people gave what they thought were dangerous shocks: 'the experimenter is responsible'.",
+        reforge: { stem: "Some of Milgram's participants asked 'Who is responsible if he gets hurt?' and continued when told it was the experimenter. What does this show?", options: { A: "The agentic state", B: "Normative influence", C: "The autonomous state", D: "Social loafing" }, correct: "A" }
+      },
+      "GCSE-PSY-SOC-15": {
+        stem: "How did increasing the shocks in 15-volt steps help keep participants obeying in Milgram's study?",
+        options: { A: "Each small step made it harder to justify stopping", B: "It made the shocks feel completely painless", C: "It made the experimenter seem much less important", D: "It made the learner's protests far easier to hear clearly" },
+        correct: "A",
+        scaffold: "Milgram's shocks went up in small 15-volt steps. Once participants had given one shock, refusing the next, only slightly bigger, one would mean admitting the earlier ones were wrong. This gradual commitment helps explain why so many continued to 450 volts. It links to agency theory: small steps make the agentic shift easier to maintain.",
+        reforge: { stem: "A new employee is first asked to bend a small rule, then gradually bigger ones, and goes along each time. Which idea from obedience research fits?", options: { A: "Social support", B: "Gradual commitment", C: "Deindividuation", D: "Informational influence" }, correct: "B" }
+      },
+      "GCSE-PSY-SOC-16": {
+        tag: "MC-GPSY-SOC-OBEDIENCE",
+        stem: "According to Adorno, what is a person with an authoritarian personality likely to do?",
+        options: { A: "Question authority and refuse any unfair orders", B: "Put in less effort when working in a group", C: "Help strangers much more often than most other people", D: "Obey authority and look down on lower-status groups" },
+        correct: "D",
+        scaffold: "Adorno argued that some people have an authoritarian personality, measured with his F-scale. They respect and obey authority, hold rigid views of right and wrong, and are hostile to people they see as lower status. Adorno linked it to a strict upbringing. This is a dispositional explanation of obedience, in contrast to Milgram's situational explanation.",
+        reforge: { stem: "Adorno's explanation of obedience is described as dispositional. Why?", options: { A: "It explains obedience through the setting", B: "It explains obedience through personality", C: "It explains obedience through group size", D: "It explains obedience through uniforms" }, correct: "B" }
+      },
+      "GCSE-PSY-SOC-17": {
+        tag: "MC-GPSY-SOC-OBEDIENCE",
+        stem: "Which is a limitation of Adorno's theory of the authoritarian personality?",
+        options: { A: "It cannot explain why whole societies obey at once", B: "It suggests that personality affects obedience", C: "It was based on a questionnaire called the F-scale", D: "It links personality to a strict upbringing" },
+        correct: "A",
+        scaffold: "A key limitation is that personality cannot easily explain why huge numbers of people in a society, such as in Nazi Germany, obeyed: they cannot all have had the same personality. Situational explanations such as Milgram's may explain this better. The F-scale has also been criticised, because agreeing with every item scored as authoritarian, so people who tend to agree may score highly.",
+        reforge: { stem: "Most people in Milgram's baseline study obeyed. Why is this a problem for Adorno's theory?", options: { A: "Milgram's participants were all authoritarian", B: "Adorno studied children, not adults", C: "Milgram's study had no lab coat or uniform", D: "So many cannot all have had that personality" }, correct: "D" }
+      },
+      "GCSE-PSY-SOC-18": {
+        stem: "What is social loafing?",
+        options: { A: "Losing your identity when you are in a large crowd", B: "Putting in less effort when working as part of a group", C: "Conforming to a group to be liked by its members", D: "Being less likely to help when other people are present" },
+        correct: "B",
+        scaffold: "Social loafing is putting in less effort on a task when working in a group than when working alone, often because individual effort cannot be identified. It is more common in individualist cultures, where people focus on themselves, than in collectivist ones, where group success matters more. Making each person's contribution visible reduces it.",
+        reforge: { stem: "In a group project, one student does little work because nobody will know who did what. What is this?", options: { A: "Social loafing", B: "Deindividuation", C: "Normative influence", D: "Gradual commitment" }, correct: "A" }
+      },
+      "GCSE-PSY-SOC-19": {
+        stem: "What is the bystander effect?",
+        options: { A: "People are more likely to help when others are present", B: "People in a crowd copy the most confident person", C: "People are less likely to help when others are present", D: "People obey whoever is wearing a uniform in an emergency" },
+        correct: "C",
+        scaffold: "The bystander effect is the finding that people are less likely to help someone in need when other people are around. Explanations include diffusion of responsibility (everyone assumes someone else will help) and informational influence (if nobody else is helping, it may not be an emergency). Piliavin's subway study found much more helping, showing the situation matters.",
+        reforge: { stem: "A woman drops her shopping on a busy street and nobody stops, but on a quiet street a passer-by helps. What does this show?", options: { A: "Social loafing", B: "The bystander effect", C: "The agentic state", D: "The autonomous state" }, correct: "B" }
+      },
+      "GCSE-PSY-SOC-20": {
+        stem: "What is diffusion of responsibility?",
+        options: { A: "Feeling less personally responsible to help when others are near", B: "Feeling responsible for following orders from an authority figure", C: "Feeling more responsible to help as the crowd gets bigger", D: "Feeling responsible for the success of a group project" },
+        correct: "A",
+        scaffold: "Diffusion of responsibility is one explanation of the bystander effect. When many people witness an emergency, each feels less personal responsibility, because the responsibility is shared, or each assumes someone else will act. When you are the only witness, all the responsibility falls on you, so you are more likely to help.",
+        reforge: { stem: "Why is a lone witness to an accident more likely to help than one of twenty witnesses?", options: { A: "A lone witness is more likely to be deindividuated", B: "A lone witness cannot share responsibility with others", C: "Twenty people are more likely to feel anonymous together", D: "A crowd always contains a medical expert" }, correct: "B" }
+      },
+      "GCSE-PSY-SOC-21": {
+        stem: "How does group size affect conformity in Asch-type studies?",
+        options: { A: "Conformity falls steadily as the group gets bigger", B: "Conformity is the same with one or with fifteen", C: "Conformity only happens with two people in the group", D: "Conformity rises as the group grows, then levels off" },
+        correct: "D",
+        scaffold: "Group size is a situational factor. Asch found very little conformity with just one confederate, more with two, and around a third of answers conformed with three. After that, adding more confederates made little difference. So a small unanimous group is enough to create strong pressure to conform.",
+        reforge: { stem: "In Asch's variations, which group size produced very little conformity?", options: { A: "One confederate", B: "Three confederates", C: "Seven confederates", D: "Fifteen confederates" }, correct: "A" }
+      },
+      "GCSE-PSY-SOC-22": {
+        tag: "MC-GPSY-SOC-GROUP",
+        stem: "How might culture affect social loafing?",
+        options: { A: "It is much more common in collectivist cultures", B: "It is the same in every culture studied", C: "It only occurs in very large crowds", D: "It is more common in individualist cultures" },
+        correct: "D",
+        scaffold: "Culture is a factor in collective behaviour. Individualist cultures, such as the UK and USA, value personal achievement, so people may put in less effort when their own work is not seen. Collectivist cultures, such as China, value the group's success, and research has found less social loafing there, sometimes even more effort in groups.",
+        reforge: { stem: "Research found less social loafing in China than in the USA. Which explanation fits best?", options: { A: "Chinese participants were all experts at the task", B: "American groups were always much bigger", C: "Collectivist cultures put more value on the group", D: "Social loafing only happens in the classroom" }, correct: "C" }
+      },
+      "GCSE-PSY-SOC-23": {
+        tag: "MC-GPSY-SOC-GROUP",
+        stem: "How can a person's morality affect their behaviour in a crowd?",
+        options: { A: "Strong morals may stop someone joining in antisocial acts", B: "People with strong morals are always deindividuated", C: "Morality only affects obedience, not how people act in crowds", D: "Morality has no effect once someone is in a crowd" },
+        correct: "A",
+        scaffold: "Personality and morality are dispositional factors in crowd behaviour. Someone with a strong sense of right and wrong may refuse to join in with looting or violence even when anonymous, and may even try to stop others. This shows that not everyone in a crowd behaves the same way, so situational explanations like deindividuation are not the whole story.",
+        reforge: { stem: "During a riot, most people loot shops but some refuse and help shopkeepers instead. Which factor best explains the difference?", options: { A: "The overall size of the crowd", B: "Anonymity in the crowd", C: "Each person's own morality", D: "The time of day it happened" }, correct: "C" }
+      },
+      "GCSE-PSY-SOC-24": {
+        stem: "What is an ethical issue in Milgram's obedience study?",
+        options: { A: "The sample was too large to be practical", B: "Participants were deceived and put under severe stress", C: "Participants were paid far too much money to take part", D: "The study took place in a natural setting" },
+        correct: "B",
+        scaffold: "Milgram's participants were deceived: they believed the shocks were real and that the learner was another volunteer. Many showed severe distress, sweating, shaking and nervous laughter. The experimenter's prods ('You have no other choice, you must go on') also made the right to withdraw unclear. Milgram did debrief participants, and most said they were glad to have taken part.",
+        reforge: { stem: "The experimenter told participants 'you have no other choice, you must go on'. Which ethical guideline did this undermine?", options: { A: "Confidentiality", B: "Informed consent at the start", C: "Debriefing at the end", D: "The right to withdraw" }, correct: "D" }
+      },
+      "GCSE-PSY-SOC-25": {
+        stem: "Why might Asch's line study lack ecological validity?",
+        options: { A: "Judging line lengths is unlike real-life group decisions", B: "It used far too many participants to be at all realistic", C: "Every participant conformed on every trial", D: "The study took place in the participants' homes" },
+        correct: "A",
+        scaffold: "Ecological validity is whether findings apply to real-life settings. Judging lines with a group of strangers is an artificial task with little at stake, unlike real decisions with friends, so the results may not generalise. Asch's study was also done in 1950s America, a conformist era, so it may lack historical validity too.",
+        reforge: { stem: "Milgram's study was done in a laboratory with an unusual task. Which criticism does this raise?", options: { A: "It had no control over variables", B: "It may lack ecological validity", C: "It used an opportunity sample", D: "It had too few participants to analyse" }, correct: "B" }
+      }
+      },
+    "GCSE-PSY-LANGUAGE": {
+      "GCSE-PSY-LAN-01": {
+        stem: "What does the Sapir-Whorf hypothesis claim?",
+        options: { A: "The language we speak affects how we think", B: "Thought develops first and language follows it", C: "Language and thought develop completely separately", D: "All humans think in the same way whatever language they speak" },
+        correct: "A",
+        scaffold: "The Sapir-Whorf hypothesis says that the language we speak shapes or limits the way we think and see the world. Its strong version (linguistic determinism) says language determines thought; its weak version (linguistic relativity) says language only influences it. Piaget took the opposite view: thought comes first, and language develops from it.",
+        reforge: { stem: "Which theorist argued that thought comes first and language depends on it?", options: { A: "Sapir", B: "Whorf", C: "Piaget", D: "Von Frisch" }, correct: "C" }
+      },
+      "GCSE-PSY-LAN-02": {
+        stem: "Which ability is found in human language but not in animal communication?",
+        options: { A: "Warning others that a predator is close by", B: "Signalling to attract a mate", C: "Talking about past and future events", D: "Showing others where to find food" },
+        correct: "C",
+        scaffold: "Animal communication is mostly about the here and now, and serves a few survival functions: warning of danger, attracting a mate, defending territory and finding food. Human language can refer to things that are not present: we can describe past events, plan for the future, and discuss abstract or imaginary ideas. We can also create an unlimited number of new sentences.",
+        reforge: { stem: "A person tells a friend about a holiday they plan to take next year. Which feature of human language does this show?", options: { A: "Communication about food sources", B: "Communication about the future", C: "Communication to defend territory", D: "Communication for reproduction" }, correct: "B" }
+      },
+      "GCSE-PSY-LAN-03": {
+        stem: "Which of these is a function of animal communication?",
+        options: { A: "Discussing abstract ideas such as fairness", B: "Defending territory from rivals", C: "Planning events weeks in advance", D: "Describing what happened last year" },
+        correct: "B",
+        scaffold: "Animal communication serves four main functions: survival (such as alarm calls warning of predators), reproduction (such as courtship displays), territory (such as birdsong or scent marking) and food (such as the bee dances). All of these help the animal survive or reproduce. Abstract ideas and talking about the distant past or future are features of human language.",
+        reforge: { stem: "A male peacock spreads its tail feathers in front of a female. Which function of animal communication is this?", options: { A: "Reproduction", B: "Food", C: "Territory", D: "Survival from predators" }, correct: "A" }
+      },
+      "GCSE-PSY-LAN-04": {
+        stem: "In von Frisch's bee study, what did the round dance tell other bees?",
+        options: { A: "That food was close to the hive", B: "That a predator was near the hive", C: "That food was far from the hive", D: "That the queen was about to leave" },
+        correct: "A",
+        scaffold: "Von Frisch marked bees and watched them in glass-walled hives. A bee returning from food close to the hive performed a round dance, circling one way then the other, which told others food was nearby. For food further away it performed a waggle dance, which also gave the direction and distance. The other bees then flew to the food.",
+        reforge: { stem: "A bee returns from a food source a long way from the hive. What will it do, according to von Frisch?", options: { A: "A round dance", B: "Release an alarm scent", C: "A waggle dance", D: "Stay silent and lead the way" }, correct: "C" }
+      },
+      "GCSE-PSY-LAN-05": {
+        tag: "MC-GPSY-LANG-COGNITION",
+        stem: "According to Piaget, how are language and thought linked?",
+        options: { A: "Language determines what we are able to think", B: "Language and thought are exactly the same thing", C: "Language and thought develop with no link at all", D: "Language depends on thought, which comes first" },
+        correct: "D",
+        scaffold: "Piaget argued that cognitive development comes first. A child can only use words correctly once they have the concept those words describe. For example, a child may say 'bigger' or 'more' but only use them accurately once they have reached the stage where they can conserve. Language reflects a child's thinking rather than creating it.",
+        reforge: { stem: "A child only starts using the word 'more' correctly once she can conserve. Which view does this support?", options: { A: "The strong version of Sapir-Whorf", B: "Piaget's view that thought comes first", C: "The weak version of Sapir-Whorf", D: "Darwin's theory of how humans communicate" }, correct: "B" }
+      },
+      "GCSE-PSY-LAN-06": {
+        tag: "MC-GPSY-LANG-COGNITION",
+        stem: "According to Piaget, what does language do for a child's development?",
+        options: { A: "It creates the child's concepts out of nothing at all", B: "It has no role at all in cognitive development", C: "It lets the child express what they understand", D: "It fixes the child's thinking so it cannot change" },
+        correct: "C",
+        scaffold: "For Piaget, language is a tool for expressing thought, not the source of it. As children move through the stages, their language develops to match their thinking: they first need the schema, then they can attach and use the words. Teaching a child words for an idea they cannot yet grasp will not, on its own, give them the concept.",
+        reforge: { stem: "A teacher teaches a 4-year-old the word 'conservation', but the child still cannot conserve. How would Piaget explain this?", options: { A: "Learning a word does not give the child the idea", B: "The child's language decides what they can think", C: "The child has learned a fixed mindset", D: "The child is in the formal operational stage" }, correct: "A" }
+      },
+      "GCSE-PSY-LAN-07": {
+        stem: "What is non-verbal communication?",
+        options: { A: "Communicating only through written words", B: "Talking to yourself silently inside your own head", C: "Sending messages without using words", D: "Any communication between two animals" },
+        correct: "C",
+        scaffold: "Non-verbal communication (NVC) is any way of sending a message without words. It includes eye contact, facial expressions, body language (posture, gestures, touch) and personal space. NVC can show emotion, signal attraction, regulate conversation, and support or even contradict what is said aloud.",
+        reforge: { stem: "Which of these is an example of non-verbal communication?", options: { A: "Writing a text message", B: "Giving a spoken answer", C: "Reading a book aloud", D: "Crossing your arms" }, correct: "D" }
+      },
+      "GCSE-PSY-LAN-08": {
+        tag: "MC-GPSY-LANG-COGNITION",
+        stem: "Which is a criticism of Piaget's view that thought comes before language?",
+        options: { A: "Language may help thinking to develop, not just reflect it", B: "It says that language develops before any kind of thought at all", C: "It ignores the role of cognitive development entirely", D: "It is based only on research with animals" },
+        correct: "A",
+        scaffold: "Piaget saw language as reflecting thought. Critics argue that language also helps thinking develop: for example, children may learn concepts faster when adults talk them through problems, and having a word for something may make it easier to think about. This suggests the relationship may work in both directions, which partly supports the Sapir-Whorf hypothesis.",
+        reforge: { stem: "Children learn to sort shapes faster when an adult names each group for them. Which claim does this challenge?", options: { A: "That NVC is learned from our culture", B: "That bees communicate by dancing", C: "That thought comes before language", D: "That animals cannot discuss the future" }, correct: "C" }
+      },
+      "GCSE-PSY-LAN-09": {
+        tag: "MC-GPSY-LANG-STRUCTURE",
+        stem: "How does human language differ from animal communication?",
+        options: { A: "Only humans communicate to warn others of danger", B: "Animals can create an endless number of new messages", C: "Animals use language to discuss abstract ideas", D: "Humans can create an endless number of new sentences" },
+        correct: "D",
+        scaffold: "Animals use a fixed and limited set of signals, each with a set meaning, such as a particular alarm call for a particular predator. Humans can combine words to make an unlimited number of new sentences that have never been said before. Animals do warn each other of danger, so that is not a difference.",
+        reforge: { stem: "A vervet monkey has different alarm calls for eagles and snakes. How does this differ from human language?", options: { A: "It is a fixed signal about the present", B: "It can describe the danger from last week", C: "It can create unlimited new messages", D: "It is used to discuss abstract ideas" }, correct: "A" }
+      },
+      "GCSE-PSY-LAN-10": {
+        tag: "MC-GPSY-LANG-STRUCTURE",
+        stem: "Why is animal communication mainly about the 'here and now'?",
+        options: { A: "Animals have no way of sending signals to each other", B: "Its signals relate to immediate survival needs", C: "Animals can only communicate with their own young", D: "Animals only communicate once they are fully grown" },
+        correct: "B",
+        scaffold: "Animal signals usually respond to something happening right now: a predator is here, there is food over there, this territory is taken, I am ready to mate. They serve immediate survival and reproduction needs. Animals do not appear to discuss past events or make plans with each other, though the bee dance does refer to food the bee is no longer near.",
+        reforge: { stem: "Which of these is a human ability that animal signals do not seem to have?", options: { A: "Signalling where food can be found", B: "Warning others of a nearby predator", C: "Reporting an event from years ago", D: "Marking the edge of its territory" }, correct: "C" }
+      },
+      "GCSE-PSY-LAN-11": {
+        tag: "MC-GPSY-LANG-EARLY-SPEECH",
+        stem: "In von Frisch's waggle dance, what showed other bees the direction of the food?",
+        options: { A: "The angle of the waggle run", B: "How loudly the bee buzzed during the dance", C: "How many other bees were watching it", D: "The time of day the dance took place" },
+        correct: "A",
+        scaffold: "In the waggle dance, the bee runs in a straight line while waggling, then loops back and repeats. The angle of that straight run compared with vertical shows the direction of the food relative to the sun. The length of the waggle run shows the distance: the longer the waggle, the further the food.",
+        reforge: { stem: "In the waggle dance, what told other bees how far away the food was?", options: { A: "The colour of the pollen it carried", B: "The number of bees in the hive", C: "The angle it danced at", D: "How long the waggle part lasted" }, correct: "D" }
+      },
+      "GCSE-PSY-LAN-12": {
+        tag: "MC-GPSY-LANG-EARLY-SPEECH",
+        stem: "How did von Frisch study bee communication?",
+        options: { A: "He trained bees to respond to spoken words", B: "He interviewed beekeepers about what they had seen", C: "He marked bees and watched them in glass hives", D: "He studied bees only in the wild, with no equipment" },
+        correct: "C",
+        scaffold: "Von Frisch placed food sources at different distances and directions from a hive, marked the bees that visited them with paint, and watched their dances through the glass walls of special hives. He then checked where the other bees flew. This gave careful, repeated observations, and later studies, including ones using robot bees, supported his findings.",
+        reforge: { stem: "Why did von Frisch put food sources at different distances from the hive?", options: { A: "To see whether bees could be trained to talk", B: "To keep the bees away from any predators", C: "To see how the dance changed with distance", D: "To find out which bees were the strongest" }, correct: "C" }
+      },
+      "GCSE-PSY-LAN-13": {
+        tag: "MC-GPSY-LANG-EARLY-SPEECH",
+        stem: "Which is a limitation of von Frisch's bee research?",
+        options: { A: "It found that bees could not communicate at all", B: "It was never replicated by any other researcher", C: "It used human participants instead of bees", D: "Bees may not tell us much about other animals" },
+        correct: "D",
+        scaffold: "Von Frisch's research was careful and has been supported by later studies, which is a strength. A limitation is generalisation: bee communication is highly specialised, so findings about bees may not apply to other animals, let alone to humans. Some researchers also argued bees might find food partly by smell rather than only from the dance.",
+        reforge: { stem: "Which is a strength of von Frisch's research?", options: { A: "It shows that bees can discuss the past", B: "Later studies, using robot bees, supported it", C: "It proves all animals communicate the same way", D: "It was based on interviews with beekeepers" }, correct: "B" }
+      },
+      "GCSE-PSY-LAN-14": {
+        tag: "MC-GPSY-LANG-EARLY-SPEECH",
+        stem: "A bird sings loudly from the edge of its patch whenever another male approaches. Which function of animal communication is this?",
+        options: { A: "Finding food", B: "Avoiding predators", C: "Attracting a mate", D: "Territory" },
+        correct: "D",
+        scaffold: "Many animals communicate to defend territory: birdsong, scent marking and aggressive displays all tell rivals the area is taken. This saves the animal from fighting, which would risk injury. The other functions of animal communication are survival (such as alarm calls), reproduction (such as courtship) and food (such as the bee dances).",
+        reforge: { stem: "A meerkat gives a sharp call when it sees a hawk, and the group runs for cover. Which function is this?", options: { A: "Reproduction", B: "Survival", C: "Territory", D: "Food" }, correct: "B" }
+      },
+      "GCSE-PSY-LAN-15": {
+        tag: "MC-GPSY-LANG-NONVERBAL",
+        stem: "How does eye contact help to regulate the flow of a conversation?",
+        options: { A: "Looking away always shows that a person is lying to you", B: "Speakers look at the listener to hand over the turn", C: "Eye contact stops the other person from speaking", D: "Constant staring helps people take turns smoothly" },
+        correct: "B",
+        scaffold: "Eye contact helps people take turns in conversation. Speakers tend to look away while talking and then look back at the listener as they finish, signalling that the listener can now speak. Eye contact also shows interest and attraction (pupils dilate when we like what we see) and can signal hostility if prolonged. It is not a reliable sign of lying.",
+        reforge: { stem: "Which is a function of eye contact?", options: { A: "Showing the distance to food", B: "Measuring someone's IQ", C: "Showing interest or attraction", D: "Defending territory from rivals" }, correct: "C" }
+      },
+      "GCSE-PSY-LAN-16": {
+        tag: "MC-GPSY-LANG-NONVERBAL",
+        stem: "What is postural echo?",
+        options: { A: "Copying the posture of the person you talk to", B: "Crossing your arms to protect yourself from others", C: "Standing further away from a stranger in a queue", D: "Repeating someone's exact words back to them" },
+        correct: "A",
+        scaffold: "Postural echo (mirroring) is when one person copies the body position of another, such as both leaning forward or crossing their legs the same way. It usually happens without awareness and suggests rapport, agreement or liking. Closed postures, such as folded arms, can signal disagreement or defensiveness, while open postures signal openness.",
+        reforge: { stem: "Two friends chatting both lean on one elbow in the same way. What does psychology suggest this shows?", options: { A: "They are hostile to each other", B: "They are bored and want to leave", C: "They are both lying to each other", D: "They feel rapport with each other" }, correct: "D" }
+      },
+      "GCSE-PSY-LAN-17": {
+        tag: "MC-GPSY-LANG-RELATIVITY",
+        stem: "The claim that Inuit people have many words for snow is used to support which theory?",
+        options: { A: "Piaget's view that thought comes first", B: "Darwin's theory of non-verbal communication", C: "The Sapir-Whorf hypothesis", D: "Von Frisch's theory of bee dances" },
+        correct: "C",
+        scaffold: "Whorf claimed the Inuit had many words for snow, so they could notice and think about kinds of snow that English speakers could not. This was used to support the idea that language shapes thought. Critics point out that the number of words was exaggerated, and that English speakers can also describe slush, sleet and powder when they need to, which weakens the evidence.",
+        reforge: { stem: "Why has the 'Inuit words for snow' example been criticised as evidence for Sapir-Whorf?", options: { A: "Inuit people cannot see snow clearly", B: "The number of words was exaggerated", C: "English has no words for snow at all", D: "It was a study of bees, not of people" }, correct: "B" }
+      },
+      "GCSE-PSY-LAN-18": {
+        tag: "MC-GPSY-LANG-RELATIVITY",
+        stem: "How might the words a language has for colours affect people, according to the Sapir-Whorf hypothesis?",
+        options: { A: "People cannot see any colour that has no name of its own", B: "Colour names have no effect on perception at all", C: "Only children are affected by colour words", D: "Colours with separate names are easier to tell apart" },
+        correct: "D",
+        scaffold: "Some languages divide colours differently: one language may have a single word for blue and green. Research suggests speakers find it easier to recognise and remember differences between colours that their language names separately. This supports the weak version of Sapir-Whorf: language influences perception and memory, but people can still see colours they have no word for.",
+        reforge: { stem: "Speakers of a language with one word for blue and green are slower to tell them apart, but can still do it. Which version of the theory does this support?", options: { A: "The weak version: language influences thought", B: "The strong version: language decides all thought", C: "Piaget's view that thought comes first", D: "Darwin's view that NVC is innate in us" }, correct: "A" }
+      },
+      "GCSE-PSY-LAN-19": {
+        tag: "MC-GPSY-LANG-NONVERBAL",
+        stem: "What does an open posture usually communicate?",
+        options: { A: "Hostility and a wish to end the conversation", B: "Boredom with what the other person is saying", C: "Openness to the other person and their views", D: "That the person feels threatened or defensive" },
+        correct: "C",
+        scaffold: "An open posture, with arms and legs uncrossed and the body facing the other person, signals openness, acceptance and interest. A closed posture, with arms folded or legs crossed, can signal disagreement or defensiveness. Research suggests people in open postures are rated more positively. Posture is one part of body language, along with gestures and touch.",
+        reforge: { stem: "During an argument, Tom folds his arms tightly and turns slightly away. Which kind of body language is this?", options: { A: "A closed posture", B: "An open posture", C: "Postural echo", D: "A dominant posture" }, correct: "A" }
+      },
+      "GCSE-PSY-LAN-20": {
+        tag: "MC-GPSY-LANG-NONVERBAL",
+        stem: "How can touch act as non-verbal communication?",
+        options: { A: "Touch always means the same thing in every culture", B: "It can show support, but its meaning depends on context", C: "Touch can only ever show aggression between two strangers", D: "Touch has no meaning unless words go with it" },
+        correct: "B",
+        scaffold: "Touch is part of body language and can communicate comfort, support, friendship or dominance. Its meaning depends on who is touching whom, where, and the culture: a hand on the arm from a friend may be supportive, but from a stranger may feel threatening. Research has found that a light touch from staff, such as librarians or waiters, can make people respond more positively.",
+        reforge: { stem: "A friend puts a hand on your shoulder after you hear bad news. What is the touch most likely to communicate?", options: { A: "Dominance over you", B: "Hostility towards you", C: "A wish to end the talk", D: "Support and sympathy" }, correct: "D" }
+      },
+      "GCSE-PSY-LAN-21": {
+        tag: "MC-GPSY-LANG-CONTEXT",
+        stem: "What is personal space?",
+        options: { A: "The area of a room that belongs to one person", B: "The space a bee dances in to show the direction", C: "The invisible area around us that feels ours", D: "The time we spend on our own each day" },
+        correct: "C",
+        scaffold: "Personal space is the invisible area around a person that they treat as their own. If someone comes too close, we feel uncomfortable and may step back. Hall described zones: intimate (up to about 45 cm), personal, social and public. How much space we want depends on culture, status and gender, and on how well we know the other person.",
+        reforge: { stem: "On a crowded train, people avoid eye contact and stand stiffly. Which idea best explains their discomfort?", options: { A: "Their personal space is being invaded", B: "They are showing postural echo with others", C: "They are performing a waggle dance", D: "Their language limits their thinking" }, correct: "A" }
+      },
+      "GCSE-PSY-LAN-22": {
+        tag: "MC-GPSY-LANG-CONTEXT",
+        stem: "How does culture affect personal space?",
+        options: { A: "Personal space is the same size in every culture", B: "People from contact cultures tend to stand closer", C: "Only people from non-contact cultures have personal space", D: "Culture affects personal space only in children" },
+        correct: "B",
+        scaffold: "Personal space varies between cultures. In contact cultures, such as many Arab and southern European countries, people usually stand closer and touch more. In non-contact cultures, such as the UK and Northern Europe, people tend to prefer more space. This can cause misunderstandings when people from different cultures meet. Status and gender also affect personal space.",
+        reforge: { stem: "Which factor, besides culture, affects how much personal space people keep?", options: { A: "The time of year it is", B: "How tall the room is", C: "The weather outside today", D: "The other person's status" }, correct: "D" }
+      },
+      "GCSE-PSY-LAN-23": {
+        tag: "MC-GPSY-LANG-CODE",
+        stem: "How did Darwin explain non-verbal communication?",
+        options: { A: "It is learned entirely from parents and culture", B: "It evolved because it helped survival", C: "It develops only after language is learned", D: "It is a skill only humans possess" },
+        correct: "B",
+        scaffold: "Darwin argued that non-verbal communication is evolved and adaptive. Signals such as baring teeth or showing fear helped our ancestors survive, because they warned others or avoided fights, so they were passed on through natural selection. This makes NVC innate. Evidence includes newborns and people born blind showing similar facial expressions to everyone else.",
+        reforge: { stem: "People born blind smile and frown in the same way as sighted people. What does this suggest?", options: { A: "That NVC is learned by copying others", B: "That NVC is only found in animals", C: "That NVC depends on language", D: "That some NVC is innate" }, correct: "D" }
+      },
+      "GCSE-PSY-LAN-24": {
+        tag: "MC-GPSY-LANG-RELATIVITY",
+        stem: "What is the difference between the strong and weak versions of the Sapir-Whorf hypothesis?",
+        options: { A: "Strong: language decides thought. Weak: it only influences it", B: "Strong: thought comes before language. Weak: language comes before it", C: "Strong: it applies to animals. Weak: it applies only to humans", D: "Strong: language influences thought. Weak: language decides it" },
+        correct: "A",
+        scaffold: "The strong version, linguistic determinism, says language determines thought: we cannot think about something we have no words for. The weak version, linguistic relativity, says language influences thought, making some ideas easier to notice or remember. Most evidence supports only the weak version, because people can think about things they have no word for.",
+        reforge: { stem: "A person learns to tell apart two shades of green after being taught separate words for them. Which version of Sapir-Whorf does this support?", options: { A: "Neither, as it shows thought comes first", B: "The strong version, because words fix our thought", C: "The weak version, because words make it easier", D: "Darwin's version, because it is innate" }, correct: "C" }
+      },
+      "GCSE-PSY-LAN-25": {
+        tag: "MC-GPSY-LANG-CODE",
+        stem: "In Yuki's study, how did Japanese and American participants interpret emoticons?",
+        options: { A: "Both groups focused on the mouth", B: "Both groups focused on the eyes", C: "Neither group could read any of the emoticons", D: "Japanese on the eyes, Americans on the mouth" },
+        correct: "D",
+        scaffold: "Yuki showed Japanese and American students emoticons with different eye and mouth combinations. Japanese participants paid more attention to the eyes, and Americans to the mouth, when judging emotion. This suggests that how we read facial expressions is partly learned from our culture, which challenges Darwin's view that NVC is entirely innate.",
+        reforge: { stem: "What does Yuki's emoticon study suggest about non-verbal communication?", options: { A: "It is entirely innate and the same everywhere", B: "It is partly learned from our culture", C: "It is only found in written messages", D: "It is the same in humans and bees" }, correct: "B" }
+      }
+      },
+    "GCSE-PSY-BRAIN": {
+      "GCSE-PSY-BR-01": {
+        stem: "Which lobe of the brain contains the motor area and Broca's area?",
+        options: { A: "The frontal lobe", B: "The temporal lobe", C: "The parietal lobe", D: "The occipital lobe" },
+        correct: "A",
+        scaffold: "The cortex is divided into four lobes. The frontal lobe, at the front, contains the motor area (controlling voluntary movement) and Broca's area (speech production); it is also involved in planning and decision-making. The temporal lobe contains the auditory area and Wernicke's area, the parietal lobe the somatosensory area, and the occipital lobe the visual area.",
+        reforge: { stem: "After a head injury, a man struggles to plan his day and make decisions. Which part of the brain is most likely affected?", options: { A: "The occipital lobe", B: "The cerebellum", C: "The frontal lobe", D: "The temporal lobe" }, correct: "C" }
+      },
+      "GCSE-PSY-BR-02": {
+        stem: "What is the main role of the cerebellum?",
+        options: { A: "Processing what we see", B: "Understanding what others are saying", C: "Producing fluent, clear speech", D: "Co-ordinating movement and balance" },
+        correct: "D",
+        scaffold: "The cerebellum is at the back of the brain, beneath the occipital lobe. It co-ordinates movement, balance and posture, so that actions such as walking or catching a ball are smooth and accurate. Damage to it can cause clumsy, unsteady movement even though the person can still decide to move.",
+        reforge: { stem: "After a head injury, a woman can decide to walk but sways and stumbles. Which structure is most likely damaged?", options: { A: "Broca's area", B: "The occipital lobe", C: "The cerebellum", D: "Wernicke's area" }, correct: "C" }
+      },
+      "GCSE-PSY-BR-03": {
+        stem: "What happens to someone with damage to Broca's area?",
+        options: { A: "They understand speech but struggle to say words", B: "They speak fluently, but make little sense", C: "They lose their sense of touch on one side of the body", D: "They can no longer see objects clearly at all now" },
+        correct: "A",
+        scaffold: "Broca's area is in the left frontal lobe and is involved in speech production. Broca studied a patient, 'Tan', who understood what was said to him but could only say the word 'tan'. People with damage here speak slowly and with great effort, but usually understand language well. This is evidence for localisation of function.",
+        reforge: { stem: "A patient understands questions but answers slowly, in short, effortful phrases. Where is the damage most likely?", options: { A: "Wernicke's area", B: "Broca's area", C: "The cerebellum", D: "The occipital lobe" }, correct: "B" }
+      },
+      "GCSE-PSY-BR-04": {
+        stem: "What happens to someone with damage to Wernicke's area?",
+        options: { A: "They understand speech, but cannot produce it fluently", B: "They lose the ability to move one side of their body", C: "They speak fluently, but what they say makes little sense", D: "They lose the ability to recognise familiar people's faces" },
+        correct: "C",
+        scaffold: "Wernicke's area is in the left temporal lobe and is involved in understanding language. People with damage here can speak fluently, with normal rhythm, but their sentences often make little sense, and they struggle to understand what others say. Compare Broca's area damage, where understanding is fine but producing speech is hard.",
+        reforge: { stem: "Which brain area is mainly involved in understanding language?", options: { A: "Wernicke's area", B: "Broca's area", C: "The motor area", D: "The visual area" }, correct: "A" }
+      },
+      "GCSE-PSY-BR-05": {
+        stem: "What does an fMRI scan show?",
+        options: { A: "Only the structure of the brain, using X-rays", B: "Brain activity, from changes in blood oxygen", C: "Electrical activity, from sensors on the scalp only", D: "Brain damage, using a radioactive substance" },
+        correct: "B",
+        scaffold: "Functional MRI (fMRI) detects changes in blood oxygen levels. Active brain areas use more oxygen, so fMRI shows which areas are working during a task, such as reading. It produces clear images and does not use radiation. A limitation is that it is expensive and the person must lie still in a noisy scanner, which is very different from real life.",
+        reforge: { stem: "A researcher wants to see which brain areas are active when people solve puzzles, without using radiation. Which scan suits best?", options: { A: "A CT scan", B: "A PET scan", C: "An X-ray scan", D: "An fMRI scan" }, correct: "D" }
+      },
+      "GCSE-PSY-BR-06": {
+        tag: "MC-GPSY-BRAIN-RECOVERY",
+        stem: "According to Hebb's theory, what happens in the brain when we learn something?",
+        options: { A: "New brain cells replace all the old ones", B: "Links between neurons that fire together get stronger", C: "The brain stops changing once a person becomes an adult", D: "Each new fact is stored in one single neuron" },
+        correct: "B",
+        scaffold: "Hebb argued that learning changes the brain. When neurons fire together repeatedly, the connections between them strengthen, forming cell assemblies; this is often summed up as 'neurons that fire together, wire together'. Practice makes these pathways stronger and faster, which is why skills improve with repetition. It shows the brain is plastic: it changes with experience.",
+        reforge: { stem: "A pianist practises a piece every day until she can play it easily. How would Hebb explain her improvement?", options: { A: "She has simply inherited a musical brain", B: "Her cerebellum has grown to twice its size", C: "Practice strengthened links between neurons", D: "Her neurons have stopped firing quite so often" }, correct: "C" }
+      },
+      "GCSE-PSY-BR-07": {
+        stem: "What did Tulving's 'gold' memory study find using PET scans?",
+        options: { A: "Episodic and semantic memories activated different areas", B: "All types of memory were stored in the cerebellum", C: "Semantic memories activated the same areas as episodic ones did", D: "Memory activity could only be seen in the occipital lobe" },
+        correct: "A",
+        scaffold: "Tulving injected himself and colleagues with a small amount of radioactive gold and used PET scans while they thought about either personal events (episodic memories) or facts (semantic memories). Episodic memories produced more activity at the front of the brain, and semantic memories more towards the back. This suggests different memory types are localised in different areas.",
+        reforge: { stem: "Which is a limitation of Tulving's gold memory study?", options: { A: "It used a very large and varied sample", B: "It did not use any form of brain scanning at all", C: "Only six people took part, Tulving included", D: "It found no differences between memories" }, correct: "C" }
+      },
+      "GCSE-PSY-BR-08": {
+        tag: "MC-GPSY-BRAIN-RECOVERY",
+        stem: "How might a stroke that damages the motor area affect a person?",
+        options: { A: "Difficulty seeing objects clearly", B: "Difficulty remembering simple facts", C: "Difficulty understanding speech", D: "Difficulty moving parts of the body" },
+        correct: "D",
+        scaffold: "A stroke happens when the blood supply to part of the brain is cut off, so brain cells in that area die. The effects depend on where it happens. Damage to the motor area can cause weakness or paralysis; damage to the somatosensory area can cause loss of feeling; damage to Broca's or Wernicke's area can affect language. This is why studying stroke patients helps us understand localisation.",
+        reforge: { stem: "After a stroke, a man can move his hand but cannot feel when it is touched. Which area is most likely damaged?", options: { A: "The motor area", B: "Broca's area", C: "The visual area at the back", D: "The somatosensory area" }, correct: "D" }
+      },
+      "GCSE-PSY-BR-09": {
+        stem: "Where in the brain is the visual area?",
+        options: { A: "The occipital lobe, at the back", B: "The parietal lobe, at the top", C: "The frontal lobe, at the front", D: "The temporal lobe, at the sides" },
+        correct: "A",
+        scaffold: "The visual area is in the occipital lobe, at the back of the brain. It receives and processes information from the eyes. Damage to it can cause partial or complete loss of sight, even if the eyes themselves are healthy. Tip: occipital and optical both start with 'o'.",
+        reforge: { stem: "After a fall onto the back of her head, a woman has problems with her vision although her eyes are undamaged. Which part of the brain is most likely injured?", options: { A: "The frontal lobe", B: "The temporal lobe", C: "The occipital lobe", D: "The somatosensory area" }, correct: "C" }
+      },
+      "GCSE-PSY-BR-10": {
+        stem: "Which lobe contains the auditory area?",
+        options: { A: "The frontal lobe", B: "The temporal lobe", C: "The occipital lobe", D: "The parietal lobe" },
+        correct: "B",
+        scaffold: "The temporal lobes are at the sides of the brain, near the ears. They contain the auditory area, which processes sounds, and Wernicke's area, which helps us understand language. They are also involved in memory. Damage to the auditory area can affect the ability to hear or make sense of sounds.",
+        reforge: { stem: "Which two areas are found in the temporal lobe?", options: { A: "The motor area and Broca's area", B: "The visual area and the cerebellum below it", C: "The somatosensory and motor areas", D: "The auditory area and Wernicke's area" }, correct: "D" }
+      },
+      "GCSE-PSY-BR-11": {
+        stem: "What does the somatosensory area in the parietal lobe do?",
+        options: { A: "Plans and controls voluntary movements", B: "Processes sounds from the ears", C: "Processes touch, pain and temperature", D: "Produces the words we speak" },
+        correct: "C",
+        scaffold: "The somatosensory area is in the parietal lobe, just behind the motor area. It receives information about touch, pressure, pain and temperature from the skin. Body parts that are very sensitive, such as the lips and fingertips, have a larger share of this area. Do not confuse it with the motor area, which controls movement rather than feeling.",
+        reforge: { stem: "Why do the fingertips have a large share of the somatosensory area?", options: { A: "They are very sensitive to touch", B: "They move more than other body parts", C: "They are closest to the brain", D: "They are controlled by the cerebellum" }, correct: "A" }
+      },
+      "GCSE-PSY-BR-12": {
+        tag: "MC-GPSY-BRAIN-NEURAL",
+        stem: "What makes up the central nervous system?",
+        options: { A: "The nerves in the arms and legs", B: "The brain and spinal cord", C: "The somatic and autonomic systems", D: "The heart and lungs" },
+        correct: "B",
+        scaffold: "The nervous system has two main parts. The central nervous system (CNS) is the brain and spinal cord; it processes information and makes decisions. The peripheral nervous system (PNS) is all the other nerves, carrying messages between the CNS and the body. The PNS is divided into the somatic system (voluntary movement and senses) and the autonomic system (automatic functions).",
+        reforge: { stem: "Which part of the nervous system controls automatic functions such as heart rate?", options: { A: "The somatic nervous system", B: "The central nervous system only", C: "The cerebellum", D: "The autonomic nervous system" }, correct: "D" }
+      },
+      "GCSE-PSY-BR-13": {
+        tag: "MC-GPSY-BRAIN-NEURAL",
+        stem: "What happens in the body during the fight or flight response?",
+        options: { A: "Heart rate and breathing slow down", B: "Digestion speeds up to provide energy", C: "Heart rate and breathing increase", D: "The pupils get smaller to focus" },
+        correct: "C",
+        scaffold: "When we sense a threat, the sympathetic branch of the autonomic nervous system triggers fight or flight. Adrenaline is released, heart rate and breathing increase, pupils dilate and digestion slows, preparing the body to fight or run. Once the threat passes, the parasympathetic branch returns the body to its resting state.",
+        reforge: { stem: "Which branch of the autonomic nervous system returns the body to rest after a threat?", options: { A: "The parasympathetic branch", B: "The sympathetic branch", C: "The somatic nervous system", D: "The central nervous system" }, correct: "A" }
+      },
+      "GCSE-PSY-BR-14": {
+        tag: "MC-GPSY-BRAIN-NEURAL",
+        stem: "According to the James-Lange theory, what comes first when we meet something frightening?",
+        options: { A: "The feeling of fear, then the bodily changes", B: "A conscious decision to feel afraid", C: "The emotion and bodily changes at the same moment", D: "The bodily changes, then the feeling of fear" },
+        correct: "D",
+        scaffold: "The James-Lange theory says that an event first causes physical changes, such as a racing heart, and we then interpret those changes as an emotion: 'I am trembling, so I must be afraid'. This reverses the common-sense view that the emotion comes first. A criticism is that the same bodily changes occur in different emotions, so they cannot fully explain which emotion we feel.",
+        reforge: { stem: "Which is a criticism of the James-Lange theory of emotion?", options: { A: "It says emotions have no link at all to the body", B: "Similar bodily changes occur in many emotions", C: "It says the emotion always comes first of all", D: "It only explains emotions in animals" }, correct: "B" }
+      },
+      "GCSE-PSY-BR-15": {
+        stem: "What does a CT scan show?",
+        options: { A: "Which brain areas are active during a task", B: "Changes in blood oxygen over time", C: "The structure of the brain, using X-rays", D: "Electrical signals between neurons" },
+        correct: "C",
+        scaffold: "A CT (computerised tomography) scan takes many X-ray images from different angles and combines them into a detailed picture of the brain's structure. It can show damage, tumours or bleeding, so it is useful after a stroke or head injury. It does not show activity, and it uses radiation, so it is not used more often than needed.",
+        reforge: { stem: "A doctor needs a quick picture of the structure of a patient's brain after a fall. Which scan suits best?", options: { A: "A CT scan", B: "An fMRI scan", C: "A PET scan", D: "A memory test" }, correct: "A" }
+      },
+      "GCSE-PSY-BR-16": {
+        stem: "How does a PET scan show brain activity?",
+        options: { A: "By measuring electrical signals at the scalp", B: "By taking several X-ray images", C: "By detecting blood oxygen without using any injection", D: "By tracking a radioactive substance in the brain" },
+        correct: "D",
+        scaffold: "In a PET (positron emission tomography) scan, a person is injected with a mildly radioactive substance, usually a form of glucose. The most active brain areas use the most glucose, so they show up brightly on the scan. PET shows activity rather than structure. A limitation is the radiation involved, so a person cannot have many PET scans.",
+        reforge: { stem: "Which is a limitation of PET scans?", options: { A: "They only show the structure of the brain", B: "They involve injecting a radioactive tracer", C: "They cannot show which areas are active", D: "They can be used on anyone as often as needed" }, correct: "B" }
+      },
+      "GCSE-PSY-BR-17": {
+        tag: "MC-GPSY-BRAIN-SCANS",
+        stem: "Which is a strength of using scans such as fMRI in neuropsychology?",
+        options: { A: "They show the living brain at work, with no surgery", B: "They show exactly what a person is thinking, word for word", C: "They are cheap and quick to carry out", D: "They are completely natural, just like real life" },
+        correct: "A",
+        scaffold: "Brain scans let researchers see the living brain without surgery, and fMRI and PET can show which areas are active during a task. This gives objective evidence about localisation. But scans only show where activity happens, not exactly what the person is thinking; they are expensive; and lying in a scanner is unlike everyday life.",
+        reforge: { stem: "Why might fMRI findings lack ecological validity?", options: { A: "fMRI uses radioactive tracers", B: "fMRI cannot show any brain activity", C: "fMRI only works on animals", D: "People lie still in a noisy scanner" }, correct: "D" }
+      },
+      "GCSE-PSY-BR-18": {
+        stem: "A stroke damages the motor area in the left hemisphere. Which side of the body is most likely to be affected?",
+        options: { A: "The left side", B: "The right side", C: "Both sides equally", D: "Neither side" },
+        correct: "B",
+        scaffold: "Each hemisphere controls the opposite side of the body: this is called contralateral control. The motor area in the left hemisphere controls movement on the right side of the body, and vice versa. So a stroke in the left motor area often causes weakness on the right. The left hemisphere also contains Broca's and Wernicke's areas in most people, so speech may be affected too.",
+        reforge: { stem: "A woman feels nothing when her left hand is touched. Where is the brain damage most likely to be?", options: { A: "The somatosensory area on the right", B: "The somatosensory area on the left side", C: "The visual area on the left side", D: "The cerebellum on the left side" }, correct: "A" }
+      },
+      "GCSE-PSY-BR-19": {
+        stem: "What is aphasia?",
+        options: { A: "Loss of balance after damage to the cerebellum", B: "Loss of feeling on one side of the body", C: "Loss of sight after damage to the occipital lobe", D: "Difficulty with language caused by brain damage" },
+        correct: "D",
+        scaffold: "Aphasia is a difficulty producing or understanding language, caused by brain damage such as a stroke. Damage to Broca's area causes problems producing speech, while damage to Wernicke's area causes problems understanding language. Cases of aphasia gave some of the first evidence that particular functions are localised in particular brain areas.",
+        reforge: { stem: "Why were patients with aphasia important in the history of neuropsychology?", options: { A: "They showed that brain scans are always accurate", B: "They showed language may depend on specific areas", C: "They proved the brain stops changing in adulthood", D: "They showed that the cerebellum controls speech" }, correct: "B" }
+      },
+      "GCSE-PSY-BR-20": {
+        stem: "What does localisation of function mean?",
+        options: { A: "Particular brain areas have particular jobs", B: "Every area of the brain does every job equally", C: "The brain only works in one hemisphere at a time", D: "Only the cerebellum controls our behaviour" },
+        correct: "A",
+        scaffold: "Localisation of function is the idea that specific areas of the brain are responsible for specific functions, such as the visual area for vision and Broca's area for speech production. Evidence comes from patients with brain damage, from scans such as fMRI and PET, and from Penfield's work stimulating the brain. Many complex abilities still involve several areas working together.",
+        reforge: { stem: "Which finding supports localisation of function?", options: { A: "The brain is already fully formed at birth", B: "Damage to Broca's area affects speech", C: "Neurons use neurotransmitters to communicate", D: "People feel emotions after bodily changes" }, correct: "B" }
+      },
+      "GCSE-PSY-BR-21": {
+        stem: "What did Penfield find when he stimulated the cortex of patients during brain surgery?",
+        options: { A: "Patients felt nothing whatever area was stimulated", B: "Stimulating any area produced the same response", C: "Some areas triggered vivid memories and feelings", D: "Patients lost the ability to speak permanently" },
+        correct: "C",
+        scaffold: "Penfield operated on epilepsy patients while they were awake and stimulated their cortex with a small electrical probe. Stimulating some areas of the temporal lobe, which he called the interpretive cortex, made patients recall vivid memories or feelings of familiarity. This supports localisation of function. A limitation is that his patients had epilepsy, so their brains may not be typical.",
+        reforge: { stem: "Why might Penfield's findings not apply to everyone?", options: { A: "His patients had epilepsy", B: "He used no electrical stimulation", C: "His patients were all asleep", D: "He only studied the cerebellum" }, correct: "A" }
+      },
+      "GCSE-PSY-BR-22": {
+        tag: "MC-GPSY-BRAIN-RECOVERY",
+        stem: "What causes a stroke?",
+        options: { A: "Too much activity in the visual area", B: "A lack of neurotransmitters at the synapse", C: "An injury to the cerebellum during a sports match", D: "The blood supply to part of the brain being cut" },
+        correct: "D",
+        scaffold: "A stroke happens when the blood supply to part of the brain is blocked or a blood vessel bursts. Without oxygen, brain cells in that area die. The person loses whatever abilities that area controlled, such as movement, feeling or language. Some abilities can partly recover with rehabilitation, as other areas take over or connections are rebuilt.",
+        reforge: { stem: "Why do strokes in different places cause different problems?", options: { A: "Different brain areas control different skills", B: "Every stroke damages the whole brain equally", C: "Strokes only ever affect the cerebellum", D: "The body heals some strokes but not the others" }, correct: "A" }
+      },
+      "GCSE-PSY-BR-23": {
+        tag: "MC-GPSY-BRAIN-RECOVERY",
+        stem: "What does a cognitive neuroscientist study?",
+        options: { A: "How the brain's structure relates to mental processes", B: "How people behave in large groups and in crowds", C: "How animals communicate with each other out in the wild", D: "How children's schemas change as they get older" },
+        correct: "A",
+        scaffold: "Cognitive neuroscience studies how the structure and function of the brain relate to mental processes such as memory, language and perception. It uses methods such as brain scans and studies of people with brain damage. Tulving's gold memory study is an example: it linked types of memory to particular brain areas.",
+        reforge: { stem: "Which study is an example of cognitive neuroscience?", options: { A: "Bartlett's War of the Ghosts", B: "Asch's line study", C: "Tulving's gold memory study", D: "Von Frisch's bee study" }, correct: "C" }
+      },
+      "GCSE-PSY-BR-24": {
+        stem: "What happens at a synapse?",
+        options: { A: "An electrical impulse jumps directly to the next neuron", B: "Neurotransmitters cross the gap to the next neuron", C: "The neuron produces a new copy of itself", D: "Blood carries the signal to the next neuron" },
+        correct: "B",
+        scaffold: "When an electrical impulse reaches the end of a neuron, it causes chemicals called neurotransmitters to be released into the synapse, the tiny gap between neurons. They cross the gap and bind to receptors on the next neuron. Excitatory neurotransmitters make the next neuron more likely to fire, while inhibitory ones make it less likely.",
+        reforge: { stem: "What does an inhibitory neurotransmitter do?", options: { A: "Makes the next neuron more likely to fire", B: "Carries a signal through the bloodstream", C: "Joins two hemispheres of the brain together", D: "Makes the next neuron less likely to fire" }, correct: "D" }
+      },
+      "GCSE-PSY-BR-25": {
+        stem: "Which type of neuron carries messages from the CNS to the muscles?",
+        options: { A: "Sensory neurons", B: "Relay neurons", C: "Motor neurons", D: "Mirror neurons" },
+        correct: "C",
+        scaffold: "There are three main types of neuron. Sensory neurons carry messages from the senses to the CNS. Relay neurons, found within the CNS, pass messages between sensory and motor neurons. Motor neurons carry messages from the CNS to muscles and glands, telling them to act. Tip: sensory in, relay between, motor out.",
+        reforge: { stem: "Which neurons carry messages from the skin to the spinal cord?", options: { A: "Motor neurons", B: "Sensory neurons", C: "Relay neurons", D: "Neurotransmitters" }, correct: "B" }
+      }
+      },
+    "GCSE-PSY-PROBLEMS": {
+      "GCSE-PSY-PP-01": {
+        stem: "Which is one of the key symptoms of depression in ICD-10?",
+        options: { A: "Low mood that lasts for at least two weeks", B: "A strong craving for a particular substance", C: "Short periods of feeling high and full of energy", D: "Seeing or hearing things that are not there" },
+        correct: "A",
+        scaffold: "ICD-10 lists three key symptoms of depression: low mood, loss of interest and enjoyment (anhedonia), and reduced energy or fatigue. At least two must last for at least two weeks. Other symptoms include poor sleep, low self-confidence and changes in appetite. Severity (mild, moderate or severe) depends on how many symptoms are present.",
+        reforge: { stem: "For two months, Jo has felt flat, stopped enjoying football and feels exhausted every day. How many ICD-10 key symptoms does she show?", options: { A: "None of the three", B: "Only one of them", C: "All three of them", D: "Two of the three" }, correct: "C" }
+      },
+      "GCSE-PSY-PP-02": {
+        stem: "What is the difference between unipolar and bipolar depression?",
+        options: { A: "Unipolar is short-lived, while bipolar lasts for many years", B: "Bipolar involves episodes of mania as well as depression", C: "Unipolar is caused by genes, and bipolar by stress", D: "Bipolar only affects adults, and unipolar only children" },
+        correct: "B",
+        scaffold: "Unipolar depression involves periods of low mood, with no extreme high periods. Bipolar depression (bipolar disorder) involves swings between depression and mania: periods of very high energy, little need for sleep, and sometimes risky behaviour. The GCSE course focuses on unipolar depression, which is far more common.",
+        reforge: { stem: "Sam has weeks of low mood, then weeks where he barely sleeps, talks fast and spends money recklessly. Which condition fits best?", options: { A: "Unipolar depression", B: "Substance dependence", C: "Bipolar depression", D: "Learned helplessness" }, correct: "C" }
+      },
+      "GCSE-PSY-PP-03": {
+        stem: "Which of these is a biological explanation of depression?",
+        options: { A: "Negative schemas about the self and about the future", B: "Learning to use substances from friends", C: "A faulty attributional style learned in childhood", D: "An imbalance of neurotransmitters, such as serotonin" },
+        correct: "D",
+        scaffold: "The biological explanation is that depression is linked to an imbalance of neurotransmitters, especially low levels of serotonin, which is involved in mood. Support comes from the fact that drugs which raise serotonin (SSRIs) can reduce symptoms. But it is hard to say whether low serotonin causes depression or results from it, and drugs do not help everyone.",
+        reforge: { stem: "Why is it difficult to be sure that low serotonin causes depression?", options: { A: "Low serotonin may be a result of depression", B: "Serotonin has no link to a person's mood at all", C: "Serotonin levels can never be measured", D: "Depression is only ever caused by genes" }, correct: "A" }
+      },
+      "GCSE-PSY-PP-04": {
+        stem: "How does cognitive behavioural therapy (CBT) treat depression?",
+        options: { A: "It raises serotonin levels in the synapse", B: "It challenges negative thoughts and behaviour", C: "It pairs a substance with an unpleasant feeling or taste", D: "It removes the person from society for a time" },
+        correct: "B",
+        scaffold: "CBT is a talking therapy. The therapist helps the client spot negative, irrational thoughts and challenge them, for example by looking for evidence against them. The client also sets behavioural goals, such as doing an activity they used to enjoy. Changing thoughts and behaviour is meant to improve mood. CBT needs time and effort, but it tackles causes rather than just symptoms.",
+        reforge: { stem: "A therapist asks a client, 'What evidence is there that everyone thinks you're a failure?'. Which treatment is this part of?", options: { A: "Antidepressant drug therapy", B: "Aversion therapy", C: "A self-help 12-step programme", D: "Cognitive behavioural therapy" }, correct: "D" }
+      },
+      "GCSE-PSY-PP-05": {
+        stem: "How does aversion therapy treat addiction?",
+        options: { A: "It pairs the substance with something unpleasant", B: "It challenges negative beliefs about the future", C: "It raises serotonin levels to improve mood", D: "It lets people choose when to use the substance again" },
+        correct: "A",
+        scaffold: "Aversion therapy uses classical conditioning. The addictive substance is paired with an unpleasant experience, for example alcohol with a drug that causes sickness. After repeated pairings, the person associates the substance with feeling ill, so they no longer want it. It can work in the short term, but the effect may wear off once the unpleasant drug is stopped.",
+        reforge: { stem: "Aversion therapy is based on which type of learning?", options: { A: "Learning by observation", B: "Classical conditioning", C: "Cognitive restructuring", D: "Neural plasticity" }, correct: "B" }
+      },
+      "GCSE-PSY-PP-06": {
+        stem: "How do SSRI antidepressants work?",
+        options: { A: "They stop serotonin being made in the brain", B: "They make the person feel sick if they drink alcohol", C: "They help the client to challenge negative thoughts", D: "They increase the amount of serotonin in the synapse" },
+        correct: "D",
+        scaffold: "SSRIs (selective serotonin reuptake inhibitors) stop serotonin being reabsorbed by the neuron that released it, so more stays in the synapse and can stimulate the next neuron. This is thought to improve mood. A strength is that they are easy to take; limitations are side effects such as nausea, and that they treat symptoms rather than the causes of depression.",
+        reforge: { stem: "Which is a limitation of antidepressant drugs?", options: { A: "They need long weekly sessions with a therapist", B: "They can cause side effects such as nausea", C: "They cannot be taken by people with depression", D: "They require the person to challenge thoughts" }, correct: "B" }
+      },
+      "GCSE-PSY-PP-07": {
+        stem: "How can a significant mental health problem affect the individual?",
+        options: { A: "It only ever affects the person's physical health", B: "It always makes people more sociable than before", C: "It can harm relationships, work and self-care", D: "It has no effect unless it has been diagnosed" },
+        correct: "C",
+        scaffold: "Significant mental health problems can affect many parts of a person's life: relationships may suffer, it may be hard to work or study, and self-care such as eating and sleeping well can slip. There are also effects on society, such as the cost of treatment and lost working days. Stigma, negative attitudes towards people with mental health problems, can make things worse by stopping people seeking help.",
+        reforge: { stem: "Which of these is an effect of mental health problems on society, rather than on the individual?", options: { A: "The cost of treatment and lost working days", B: "Difficulty getting out of bed in the morning", C: "Feeling unable to enjoy hobbies any more", D: "Losing touch with close friends" }, correct: "A" }
+      },
+      "GCSE-PSY-PP-08": {
+        stem: "In ICD-10, what decides whether depression is mild, moderate or severe?",
+        options: { A: "How old the person was when it started", B: "Whether the person has had treatment before", C: "Whether the person has a family history of it", D: "How many symptoms the person has" },
+        correct: "D",
+        scaffold: "ICD-10 rates depression by the number of symptoms. Mild depression involves at least two key symptoms plus a few others; moderate involves more; severe involves all three key symptoms and several others. Using a symptom checklist like this is meant to make diagnosis more reliable, so different doctors would reach the same conclusion.",
+        reforge: { stem: "Why does ICD-10 use a fixed list of symptoms to diagnose depression?", options: { A: "To make sure every patient gets the same drug", B: "To help doctors reach the same diagnosis", C: "To show that depression is caused only by genes", D: "To avoid ever needing to talk to the patient" }, correct: "B" }
+      },
+      "GCSE-PSY-PP-09": {
+        stem: "According to the psychological explanation, what are negative schemas?",
+        options: { A: "Low levels of serotonin in the brain", B: "Patterns of drug use copied from friends", C: "Pessimistic frameworks for seeing the world", D: "Unpleasant feelings paired with a substance" },
+        correct: "C",
+        scaffold: "A schema is a mental framework built from experience. Beck argued that people with depression develop negative schemas, often from difficult experiences in childhood, so they interpret events in a pessimistic way. These schemas lead to the negative triad: negative thoughts about the self, the world and the future. CBT aims to challenge and change them.",
+        reforge: { stem: "A student who gets a B thinks 'I'm useless, the teacher hates me, and I'll fail everything'. Which explanation of depression fits best?", options: { A: "Negative schemas", B: "Low serotonin", C: "Peer influence", D: "Hereditary factors" }, correct: "A" }
+      },
+      "GCSE-PSY-PP-10": {
+        stem: "Which three areas does Beck's negative triad involve?",
+        options: { A: "The self, the world, the future", B: "Mood, sleep and appetite levels", C: "Genes, the brain and the hormones", D: "Family, friends and school life" },
+        correct: "A",
+        scaffold: "Beck's negative triad is three types of negative thinking found in depression: about the self ('I'm worthless'), the world ('everyone is against me') and the future ('nothing will ever get better'). These thoughts are automatic and keep depression going. CBT targets them directly by asking the person to test whether they are true.",
+        reforge: { stem: "'Nothing will ever get better for me.' Which part of the negative triad is this?", options: { A: "The self", B: "The world", C: "The future", D: "Other people" }, correct: "C" }
+      },
+      "GCSE-PSY-PP-11": {
+        stem: "What kind of attributional style is linked to depression?",
+        options: { A: "Blaming failures on bad luck that will soon pass", B: "Blaming yourself, and seeing it as permanent", C: "Blaming failures only on other people", D: "Never thinking about why things go wrong" },
+        correct: "B",
+        scaffold: "Attributional style is how we explain why things happen. People prone to depression tend to explain bad events as internal (my fault), stable (it will always be like this) and global (it affects everything). Someone who fails a test may think 'I'm stupid and always will be' rather than 'that test was hard'. This style makes low mood more likely.",
+        reforge: { stem: "After a failed driving test, which thought shows a depressive attributional style?", options: { A: "\"The examiner was in a really bad mood today\"", B: "\"I was really unlucky with the traffic that day\"", C: "\"I just need a few more lessons on my parking\"", D: "\"I'm hopeless at everything, and always will be\"" }, correct: "D" }
+      },
+      "GCSE-PSY-PP-12": {
+        stem: "What is dependence on a substance?",
+        options: { A: "Using a substance once to see what it is like", B: "A strong need, with tolerance or withdrawal", C: "Refusing to try a substance under any pressure", D: "Taking a medicine exactly as the doctor said" },
+        correct: "B",
+        scaffold: "Dependence means a person has a strong physical and/or psychological need for a substance. Signs include tolerance (needing more for the same effect) and withdrawal (unpleasant symptoms when stopping). ICD-10 diagnoses dependence syndrome when three or more signs have been present together in the past year. Addiction is a broader term for a compulsion to keep using something despite harm.",
+        reforge: { stem: "Over months, Kim needs more and more caffeine to feel awake, and gets headaches without it. Which two signs of dependence is she showing?", options: { A: "Tolerance and withdrawal", B: "Anhedonia and fatigue", C: "Mania, and then low mood", D: "Stigma and then relapse" }, correct: "A" }
+      },
+      "GCSE-PSY-PP-13": {
+        stem: "What is the difference between substance misuse and substance abuse?",
+        options: { A: "Misuse involves legal drugs, and abuse illegal ones", B: "There is no difference, as they are the same thing", C: "Misuse is occasional; abuse is frequent and damaging", D: "Abuse is occasional; misuse is frequent and damaging" },
+        correct: "C",
+        scaffold: "Substance misuse is using a substance in a way it was not intended, or occasionally to excess, which may cause harm. Substance abuse is frequent, regular overuse that damages the person's health, relationships or work. Both can apply to legal substances, such as alcohol, as well as illegal drugs. Dependence and addiction go further, involving a strong need for the substance.",
+        reforge: { stem: "Drinking heavily at one party, but rarely otherwise, is best described as what?", options: { A: "Substance abuse", B: "Dependence syndrome", C: "Addiction", D: "Substance misuse" }, correct: "D" }
+      },
+      "GCSE-PSY-PP-14": {
+        stem: "What did Kaij's twin study of alcohol abuse find?",
+        options: { A: "Identical and non-identical twins had equal concordance", B: "Non-identical twins had a higher concordance rate", C: "None of the twins showed any alcohol abuse at all", D: "Identical twins had a higher concordance rate" },
+        correct: "D",
+        scaffold: "Kaij studied pairs of male twins in Sweden where at least one twin abused alcohol. Concordance (both twins abusing alcohol) was about 54% for identical (MZ) twins and 28% for non-identical (DZ) twins. Because MZ twins share all their genes, this suggests hereditary factors play a part in addiction. But concordance was not 100%, so environment matters too.",
+        reforge: { stem: "In Kaij's study, MZ concordance was about 54%, not 100%. What does this suggest?", options: { A: "Genes are the only cause of addiction", B: "Twins never share the same environment", C: "Environmental factors also play a part", D: "Alcohol abuse cannot be inherited" }, correct: "C" }
+      },
+      "GCSE-PSY-PP-15": {
+        stem: "What did Wiles et al's study find about CBT for depression?",
+        options: { A: "Adding CBT to usual care helped more people", B: "CBT made depression worse for most patients", C: "CBT had no effect compared with usual care", D: "Drugs alone helped more patients than CBT did" },
+        correct: "A",
+        scaffold: "Wiles et al studied patients whose depression had not improved with antidepressants. Half received CBT alongside their usual care, and half continued with usual care alone. After six months, the CBT group were about twice as likely to show a large reduction in symptoms. This supports CBT as an effective treatment, though some patients dropped out, and it is costly.",
+        reforge: { stem: "In Wiles et al's study, what did the control group receive?", options: { A: "No treatment of any kind", B: "Their usual care, without CBT", C: "Aversion therapy for depression", D: "A placebo instead of their drugs" }, correct: "B" }
+      },
+      "GCSE-PSY-PP-16": {
+        stem: "What is a self-management programme for addiction, such as a 12-step programme?",
+        options: { A: "A drug that makes the substance unpleasant", B: "A long hospital stay that removes all choice", C: "A plan to take control, with group support", D: "A brain scan to measure the brain's reward system" },
+        correct: "C",
+        scaffold: "Self-management programmes help people take responsibility for overcoming addiction. In 12-step programmes, such as Alcoholics Anonymous, members work through steps such as admitting they have a problem and making amends, supported by group meetings and a sponsor. They are free and widely available, but success depends heavily on the person's motivation, and drop-out rates are high.",
+        reforge: { stem: "Which is a limitation of 12-step self-management programmes?", options: { A: "They are very expensive to run", B: "They are rarely available", C: "They need special equipment", D: "Success depends on motivation" }, correct: "D" }
+      },
+      "GCSE-PSY-PP-17": {
+        stem: "What is a relapse?",
+        options: { A: "The very first time a person tries a substance", B: "Symptoms coming back after a person improves", C: "The point at which a person seeks treatment", D: "A side effect of antidepressant medication" },
+        correct: "B",
+        scaffold: "A relapse is when symptoms come back after a person has improved, such as returning to drinking after months sober, or depression returning after treatment. Relapse rates matter when comparing treatments: some research suggests people who have CBT are less likely to relapse than those who only take medication, because CBT teaches skills they can keep using.",
+        reforge: { stem: "Why might CBT lead to fewer relapses than drug treatment alone?", options: { A: "It teaches skills the person can keep using", B: "It raises serotonin for the rest of their life", C: "It is much quicker than taking medication", D: "It does not need the person to take part" }, correct: "A" }
+      },
+      "GCSE-PSY-PP-18": {
+        stem: "Why might some people stop taking their antidepressants?",
+        options: { A: "The drugs work instantly, so are not needed after", B: "Unpleasant side effects, or slow to start working", C: "The drugs require long weekly talking sessions", D: "The drugs are only given to people with mania" },
+        correct: "B",
+        scaffold: "Antidepressants often take several weeks before mood improves, and they can cause side effects such as nausea, headaches or weight change. Some people stop taking them for these reasons, which reduces how well the treatment works. Adherence, meaning sticking to a treatment plan, is a practical issue for both drug therapy and CBT.",
+        reforge: { stem: "What is meant by treatment adherence?", options: { A: "The cost of a course of treatment", B: "How quickly a treatment starts to work", C: "Whether symptoms return after treatment", D: "Sticking to the treatment as planned" }, correct: "D" }
+      },
+      "GCSE-PSY-PP-19": {
+        tag: "MC-GPSY-PROB-CONCEPTS",
+        stem: "How does peer influence explain addiction?",
+        options: { A: "Addiction is passed on through genes from parents", B: "Low serotonin makes people seek out substances", C: "People copy friends and want to be accepted", D: "Negative schemas make people blame themselves" },
+        correct: "C",
+        scaffold: "Peer influence is a psychological explanation. Young people may start using substances because their friends do, through social learning (copying people they identify with) and the wish to fit in. Peers may also make substance use seem normal or exciting. It helps explain why people start using substances, but not why only some go on to become addicted.",
+        reforge: { stem: "Which is a limitation of the peer influence explanation of addiction?", options: { A: "It can't explain why only some people get addicted", B: "It ignores the role of friends and wider social groups", C: "It is only based on twin studies", D: "It suggests addiction is caused by genes" }, correct: "A" }
+      },
+      "GCSE-PSY-PP-20": {
+        stem: "What does it mean to call depression 'treatment-resistant'?",
+        options: { A: "It has not improved with standard care", B: "It has been cured by antidepressant drugs", C: "It only ever lasts for a week or two", D: "It is the mildest form in ICD-10" },
+        correct: "A",
+        scaffold: "Depression is described as treatment-resistant when it has not improved enough after standard treatment, usually antidepressants. Wiles et al studied this group and found that adding CBT helped many of them. This shows that combining treatments can work when one alone has not, and that no single treatment suits everyone.",
+        reforge: { stem: "A patient's depression has not lifted after a year on antidepressants. Based on Wiles et al, what might help?", options: { A: "Stopping all treatment", B: "Using aversion therapy", C: "Adding CBT to their care", D: "Waiting for it all to pass" }, correct: "C" }
+      },
+      "GCSE-PSY-PP-21": {
+        stem: "In ICD-10, how is dependence syndrome diagnosed?",
+        options: { A: "By one use of an illegal drug at a party", B: "By a brain scan showing damage", C: "By three or more signs in the past year", D: "By the person saying they enjoy it" },
+        correct: "C",
+        scaffold: "ICD-10 diagnoses dependence syndrome when three or more of these signs have been present together at some point in the past year: a strong desire to use, difficulty controlling use, withdrawal, tolerance, neglecting other interests, and continuing despite clear harm. A checklist like this aims to make diagnosis reliable.",
+        reforge: { stem: "Which of these is one of the ICD-10 signs of dependence syndrome?", options: { A: "Using a substance only once at a party", B: "Feeling happier than usual for one day only", C: "Carrying on despite clear signs of harm", D: "Having a parent who drinks alcohol" }, correct: "C" }
+      },
+      "GCSE-PSY-PP-22": {
+        tag: "MC-GPSY-PROB-BIOLOGY",
+        stem: "What does the hereditary explanation of addiction claim?",
+        options: { A: "People inherit genes that make addiction likelier", B: "People copy addictive behaviour from their friends", C: "People become addicted only through their thoughts", D: "Addiction is caused by being treated in hospital" },
+        correct: "A",
+        scaffold: "The hereditary explanation says some people inherit a genetic vulnerability that makes them more likely to become addicted if they are exposed to a substance. Twin studies, such as Kaij's, support it: identical twins are more often both addicted than non-identical twins. But genes do not act alone; environment, such as peer influence, also matters.",
+        reforge: { stem: "Why are twin studies used to test whether addiction is inherited?", options: { A: "Twins are more likely to have friends who drink", B: "Twins always grow up in different families", C: "Twins never become addicted to substances", D: "Identical twins share all their genes" }, correct: "D" }
+      },
+      "GCSE-PSY-PP-23": {
+        stem: "Why does culture matter when deciding whether behaviour is a mental health problem?",
+        options: { A: "Mental health problems only exist in some cultures", B: "What counts as normal varies between cultures", C: "Every culture defines mental health in the same way", D: "Culture only affects physical health, not mental health" },
+        correct: "B",
+        scaffold: "Beliefs about mental health vary between cultures. Behaviour seen as a sign of illness in one culture, such as hearing the voice of a dead relative, may be seen as normal or even spiritual in another. Diagnosing someone using the norms of a different culture risks cultural bias. Attitudes to seeking help, and stigma, also differ between cultures.",
+        reforge: { stem: "A doctor diagnoses a patient using norms from a different culture to the patient's own. What risk does this create?", options: { A: "Treatment adherence", B: "Cultural bias", C: "Tolerance", D: "Concordance" }, correct: "B" }
+      },
+      "GCSE-PSY-PP-24": {
+        tag: "MC-GPSY-PROB-STIGMA",
+        stem: "Which is one of Jahoda's characteristics of good mental health?",
+        options: { A: "Always agreeing with other people", B: "Never feeling any stress at all", C: "Avoiding any change in your life", D: "Being able to cope with stress" },
+        correct: "D",
+        scaffold: "Jahoda described ideal mental health as a set of characteristics, including a positive attitude towards yourself, personal growth (self-actualisation), being able to cope with stress, independence (autonomy), seeing the world accurately, and being able to manage everyday life. A criticism is that few people meet all of them, and they reflect Western, individualist values.",
+        reforge: { stem: "Which is a criticism of Jahoda's characteristics of good mental health?", options: { A: "They reflect Western, individualist values", B: "They only describe people with depression", C: "They were written for diagnosing addiction", D: "They are far too easy for everyone to meet" }, correct: "A" }
+      },
+      "GCSE-PSY-PP-25": {
+        tag: "MC-GPSY-PROB-STIGMA",
+        stem: "Why might modern living increase the risk of mental health problems?",
+        options: { A: "People today have no stress in their lives", B: "Modern medicine has removed all illness", C: "People now spend all day with family", D: "Isolation and pressure have increased" },
+        correct: "D",
+        scaffold: "Researchers suggest modern living brings new challenges for mental health: more people live alone or far from family, so isolation has increased; cities can be crowded and stressful; and there may be more pressure from work, money and social media. Greater awareness and less stigma may also mean more people now seek a diagnosis, which makes rates look higher.",
+        reforge: { stem: "Why might the rise in diagnosed mental health problems not all be caused by modern living?", options: { A: "Diagnoses have stopped being recorded", B: "People are now more willing to seek help", C: "Modern living has no stress in it", D: "Mental health problems are all inherited" }, correct: "B" }
+      }
+      }
+  };
+  for (const bankId of Object.keys(rewritesByBank)) {
+    const bank = BANKS[bankId];
+    const rewrites = rewritesByBank[bankId];
+    for (const question of bank ? bank.questions : []) {
+      const rewrite = rewrites[question.id];
+      if (!rewrite) continue;
+      Object.assign(question, rewrite);
+    }
+  }
+}());
+// End of GCSE Psychology topic-bank rewrites.
+
 // Subjects locked until their questions have had more quality control
 // (2026-11-22). Each was padded to 200 from 16-40 hand-written questions, and
 // the padded copies borrow answer options from unrelated questions. A locked
