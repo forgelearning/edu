@@ -1203,7 +1203,7 @@ BANKS["PSY-ATT"] = {
       options:{A:"Classical conditioning — infants attach to whoever feeds them.",B:"An innate, evolutionary drive",C:"Operant conditioning — attachment forms through reinforcement of crying.",D:"Social learning — infants imitate the attachment behaviours they observe."},
       correct:"B",tag:"MC-ATT-01",
       scaffold:"Bowlby's monotropic theory: attachment is innate (evolutionary — keeps the infant near a protective caregiver), monotropy (one primary attachment figure), critical period (0–2.5 years), and the internal working model (template for future relationships). This is NOT conditioning — Bowlby explicitly rejected the cupboard love explanation.",
-      reforge:{stem:"Lorenz's (1935) imprinting study with geese supports Bowlby's theory because:",options:{A:"It shows that geese attach to whoever happens to feed them",B:"An innate, time-limited attachment mechanism rather than learning",C:"Geese and human infants have entirely identical attachment systems",D:"It proves the existence of the internal working model"},correct:"B"}
+      reforge:{stem:"Lorenz's (1935) imprinting study with geese supports Bowlby's theory because:",options:{A:"It shows that geese attach to whoever happens to feed them",B:"It shows an innate, time-limited mechanism rather than learning",C:"Geese and human infants have entirely identical attachment systems",D:"It proves the existence of the internal working model"},correct:"B"}
     },
     {
       id:"ATT-02",stem:"Ainsworth's Strange Situation (1969) classified infants into attachment types based on:",
@@ -8417,7 +8417,7 @@ BANKS["PSY-PATH"] = {
       },
       correct:"A",tag:"MC-PATH-06",
       scaffold:"SSRIs (Selective Serotonin Reuptake Inhibitors) — e.g. fluoxetine (Prozac). The low serotonin hypothesis: depression associated with low serotonin levels. SSRIs block the reuptake transporter so serotonin remains in the synapse longer, increasing postsynaptic receptor activation. Evidence: SSRIs are effective (Kirsch meta-analysis shows effect; BUT effect size is often modest compared to placebo for mild-moderate depression). Side effects limit compliance.",
-      reforge:{stem:"A patient stops taking SSRIs after two weeks because they 'don't feel any better'. What should they be told?",options:{A:"SSRIs take two to four weeks to reach therapeutic levels",B:"SSRIs work immediately, so they should simply try a completely different drug",C:"The diagnosis of depression must be wrong.",D:"They should double the dose to speed up the effect."},correct:"A"}
+      reforge:{stem:"A patient stops taking SSRIs after two weeks because they 'don't feel any better'. What should they be told?",options:{A:"SSRIs often take several weeks before mood starts to improve",B:"SSRIs work immediately, so they should simply try a completely different drug",C:"The diagnosis of depression must be wrong.",D:"They should double the dose to speed up the effect."},correct:"A"}
     },
     {
       id:"PATH-07",
@@ -12399,7 +12399,7 @@ BANKS["PSY-APP"] = {
       options:{
         A:"Humanistic and cognitive, since both emphasise conscious control over choices",
         B:"Humanistic and behaviourist, as both reject the idea of any inner causes",
-        C:"Biological and behaviourist, as both see behaviour as externally caused",
+        C:"Biological and behaviourist, as both deny behaviour is freely chosen",
         D:"Psychodynamic and humanistic, as both focus on early childhood experience"
       },
       correct:"C",tag:"MC-APP-COMPARE",
@@ -13706,7 +13706,7 @@ BANKS["PSY-RM"] = {
         A:"Opportunity sampling, which uses whoever happens to be readily available at the time",
         B:"Volunteer sampling, recruiting people who respond to an advertisement",
         C:"Random sampling, where every member of the population has an equal chance",
-        D:"Systematic sampling, selecting every nth person from an unordered list"
+        D:"Snowball sampling, where each participant recruits people they know"
       },
       correct:"C",tag:"MC-RM-SAMPLE",
       scaffold:"Random sampling gives every member of the target population an equal chance of selection — names drawn from a hat, or a random number generator applied to a complete list. That equal-chance property is what makes it the least biased method in principle, though it is not a guarantee: a random sample can still turn out unrepresentative by chance, and it requires a complete list of the population, which is often impossible. Compare the biases of the others: opportunity sampling over-represents whoever is nearby and is the most common method in practice; volunteer sampling attracts a particular personality type, producing volunteer bias. Stratified sampling is the most representative of all but is the most laborious.",
@@ -14304,7 +14304,7 @@ BANKS["PSY-SI"].questions.push(
         D:"Conformity rose to its highest recorded level across all of the variations"
       },
       correct:"B",tag:"MC-SI-01",
-      scaffold:"Asch found conformity dropped from 33% to around 5.5% when one confederate dissented — and crucially it fell even when the dissenter gave a different wrong answer. That second finding is the important one: what matters is not having an ally who is right, but breaking the group's unanimity, which frees the participant to act independently. The other two variables Asch tested: group size, where conformity rose steeply up to three confederates then plateaued, so a small majority is enough; and task difficulty, where making the lines more similar increased conformity, because informational social influence takes over when the correct answer is genuinely unclear.",
+      scaffold:"Asch found conformity dropped from about 37% to around 5.5% when one confederate dissented — and crucially it fell even when the dissenter gave a different wrong answer. That second finding is the important one: what matters is not having an ally who is right, but breaking the group's unanimity, which frees the participant to act independently. The other two variables Asch tested: group size, where conformity rose steeply up to three confederates then plateaued, so a small majority is enough; and task difficulty, where making the lines more similar increased conformity, because informational social influence takes over when the correct answer is genuinely unclear.",
       reforge:{stem:"Why did conformity fall even when the dissenter gave a different wrong answer?",options:{A:"The participant no longer wished to be accurate",B:"Breaking unanimity is what frees the participant to dissent",C:"The task had become considerably easier to judge",D:"The group size had effectively been reduced down to zero people"},correct:"B"}
     },
     {
@@ -16284,9 +16284,9 @@ BANKS["PSY-COG"] = {
       reforge:{stem:"Which is a limitation of Vygotsky's theory?",options:{A:"It ignores the role of language in cognitive development",B:"It has generated no practical educational applications",C:"It denies that children can learn from other people",D:"Its concepts are vague and harder to test than Piaget's"},correct:"D"}
     },
     {
-      id:"COG-17",stem:"An eight-year-old understands that a friend is upset because she believes, wrongly, that she has been excluded. Which Selman level is this?",
+      id:"COG-17",stem:"A nine-year-old realises a friend will see his choice as unfair, and explains it to her in advance. Which Selman level is this?",
       options:{A:"Self-reflective role-taking, understanding another's viewpoint",B:"Egocentric perspective-taking, typical of three to six year olds",C:"Social and conventional system role-taking, seen after twelve",D:"Mutual role-taking, viewing a relationship from outside"},correct:"A",tag:"MC-COG-SELMAN",
-      scaffold:"Self-reflective role-taking, at roughly eight to ten, is the level at which a child can genuinely put themselves in another's shoes and recognise that the other person's beliefs — even mistaken ones — drive their feelings. The child can take the other's perspective but cannot yet hold both perspectives simultaneously, which is the next level, mutual role-taking. Selman's model is developmental rather than all-or-nothing, so it complements theory of mind research by describing gradual refinement after the false belief milestone. Evaluate by noting his samples were small and Western, and that perspective-taking may vary by situation rather than being a fixed level.",
+      scaffold:"Self-reflective role-taking, at roughly eight to ten, is the level at which a child can step into another's shoes and see their own actions from the other person's point of view, anticipating how they will be judged. The child can take the other's perspective but cannot yet hold both perspectives simultaneously, which is the next level, mutual role-taking. Selman's model is developmental rather than all-or-nothing, so it complements theory of mind research by describing gradual refinement after the false belief milestone. Evaluate by noting his samples were small and Western, and that perspective-taking may vary by situation rather than being a fixed level.",
       reforge:{stem:"What distinguishes mutual from self-reflective role-taking?",options:{A:"The child can view both perspectives simultaneously from outside",B:"The child recognises that others may hold different information",C:"The child cannot yet distinguish their own view from others'",D:"The child understands perspectives shaped by wider social systems"},correct:"A"}
     },
     {
