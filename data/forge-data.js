@@ -990,7 +990,7 @@ BANKS["PSY-SI"] = {
       options:{A:"Seeing oneself as carrying out another's wishes rather than acting autonomously",B:"A state of autonomous conscience in which a person acts on their own judgement",C:"A state of complete free will in which social influence has no effect at all on us",D:"A stable personality type characterised by a natural obedience to all authority"},
       correct:"A",tag:"MC-SI-04",
       scaffold:"Agentic state (Milgram): the person acts as an 'agent' of the authority, giving up personal responsibility. Opposite = autonomous state (acting on own free will). The 'agentic shift' occurs when someone perceives a legitimate authority and enters the agentic state. This explains WHY people obey even when distressed — they don't feel personally responsible.",
-      reforge:{stem:"A nurse administers a drug she thinks is too high a dose because the doctor ordered it. She says: 'I was just following orders.' This illustrates:",options:{A:"The autonomous state — she made her own free decision",B:"Internalisation — she genuinely believes the dose is correct here",C:"The agentic state — she has shifted responsibility to the doctor",D:"Minority influence."},correct:"C"}
+      reforge:{stem:"A nurse administers a drug she thinks is too high a dose because the doctor ordered it. She says: 'I was just following orders.' This illustrates:",options:{A:"The autonomous state — she made her own free decision",B:"Internalisation — she genuinely believes the dose is correct here",C:"The agentic state — she has shifted responsibility to the doctor",D:"Minority influence — she is persuaded by a consistent few"},correct:"C"}
     },
     {
       id:"SI-05",stem:"Moscovici's (1969) blue-green slide study investigated minority influence. What was his key finding about consistency?",
@@ -1001,10 +1001,10 @@ BANKS["PSY-SI"] = {
     },
     {
       id:"SI-06",stem:"A student confuses normative social influence (NSI) and informational social influence (ISI). Which correctly distinguishes them?",
-      options:{A:"NSI = conforming because you want to be right; ISI = conforming because you want to be liked.",B:"They are the same concept.",C:"NSI = conforming to be accepted/avoid rejection (need for social approval)",D:"NSI only applies to Milgram; ISI only applies to Asch."},
+      options:{A:"NSI = wanting to be right; ISI = wanting to be liked and accepted",B:"NSI leads to internalisation; ISI leads only to public compliance",C:"NSI = wanting to be liked and accepted; ISI = wanting to be right",D:"NSI applies only to Milgram's study; ISI applies only to Asch's"},
       correct:"C",tag:"MC-SI-06",
       scaffold:"NSI = 'I'll go along so they like me' (driven by desire to fit in — leads to compliance). ISI = 'They probably know better than me' (driven by uncertainty — more likely to lead to internalisation). NSI operates most strongly when: group is important, fear of rejection. ISI operates most strongly when: task is ambiguous, experts present.",
-      reforge:{stem:"During a fire alarm, you're unsure if it's real. You see everyone calmly staying in their seats, so you stay too. This is most likely:",options:{A:"NSI — you want the others to like and accept you",B:"Obedience — someone in authority told you to stay where you are",C:"ISI — the situation is ambiguous so you look to others",D:"Minority influence."},correct:"C"}
+      reforge:{stem:"During a fire alarm, you're unsure if it's real. You see everyone calmly staying in their seats, so you stay too. This is most likely:",options:{A:"NSI — you want the others to like and accept you",B:"Obedience — someone in authority told you to stay where you are",C:"ISI — the situation is ambiguous so you look to others",D:"Minority influence — a few people are changing your view"},correct:"C"}
     },
     {
       id:"SI-07",stem:"Evaluate Milgram's research in terms of ethical issues. (4 marks)",
@@ -1015,7 +1015,7 @@ BANKS["PSY-SI"] = {
     },
     {
       id:"SI-08",stem:"Which of the following is a limitation of Asch's conformity research?",
-      options:{A:"It has no limitations — it is a perfect study.",B:"Too many participants were used.",C:"It was a field experiment with no controls.",D:"It lacks ecological validity"},
+      options:{A:"Its participants were all women, so it shows gender bias",B:"The lines were so similar that nobody knew the right answer",C:"It was a field experiment, so variables were poorly controlled",D:"The line task was artificial, so it lacks ecological validity"},
       correct:"D",tag:"MC-SI-08",
       scaffold:"Asch limitations: (1) Artificial task — conforming about line lengths ≠ conforming about opinions/behaviour. (2) Androcentric sample — all male, potentially different results with women. (3) Cultural/temporal bias — 1950s America (McCarthyism) may have increased conformity. (4) Demand characteristics — participants may have guessed the aim. Strengths: high control, replicable, clear operationalised DV.",
       reforge:{stem:"A student says: 'Asch's findings prove that conformity is universal across all cultures.' Why is this claim problematic?",options:{A:"It is correct, since conformity is genuinely universal everywhere",B:"Culture has no effect whatsoever on human behaviour",C:"Asch did not actually study conformity at all",D:"Asch used only American men; conformity varies by culture"},correct:"D"}
@@ -1078,7 +1078,7 @@ BANKS["PSY-MEM"] = {
     },
     {
       id:"MEM-08",stem:"A student confuses proactive and retroactive interference. Which correctly defines each?",
-      options:{A:"Proactive = new learning interferes with old; Retroactive = old learning interferes with new.",B:"Proactive = old learning interferes with recall of new information",C:"They are the same thing.",D:"Proactive = forgetting from STM; Retroactive = forgetting from LTM."},
+      options:{A:"Proactive = new learning disrupts old; retroactive = old disrupts new",B:"Proactive = old learning disrupts new; retroactive = new disrupts old",C:"Both mean forgetting caused by a missing cue at the time of recall",D:"Proactive = forgetting from STM; retroactive = forgetting from LTM"},
       correct:"B",tag:"MC-MEM-08",
       scaffold:"Proactive: previously learned material interferes FORWARD in time (old disrupts new). Example: you learned French first, now Spanish vocab keeps coming out as French. Retroactive: newly learned material interferes BACKWARD in time (new disrupts old). Example: you learn a new phone number and can no longer remember the old one. PRO = forward, RETRO = backward.",
       reforge:{stem:"A teacher learns 200 new student names in September. By October, she struggles to recall last year's students' names. This is:",options:{A:"Proactive interference — the old names disrupt the new",B:"Retroactive interference — new names disrupt the old",C:"Decay, because a long time has simply passed",D:"Retrieval failure due to the absence of cues"},correct:"B"}
@@ -1221,7 +1221,7 @@ BANKS["PSY-ATT"] = {
     },
     {
       id:"ATT-04",stem:"Which of the following is a valid evaluation of the Strange Situation?",
-      options:{A:"The procedure lacks ecological validity",B:"It has no limitations — it is perfectly valid.",C:"It is too time-consuming to be a useful research tool.",D:"It only works with infants over 3 years old."},
+      options:{A:"It is an artificial lab setting, so it may lack ecological validity",B:"It relies on parents' reports rather than on direct observation",C:"Observers rarely agree on behaviour, so inter-rater reliability is poor",D:"It can only be used with children older than about three years"},
       correct:"A",tag:"MC-ATT-04",
       scaffold:"Strange Situation evaluations: Strength — standardised, replicable, clear behavioural categories, high inter-rater reliability. Limitations — artificial (lab-based), may cause distress (ethics), categories may be culturally biased (e.g. German infants often classified as avoidant but this may reflect cultural norms of independence), doesn't capture all attachment types (Main and Solomon added Type D — disorganised).",
       reforge:{stem:"Cross-cultural research by van IJzendoorn and Kroonenberg (1988) found that Type B (secure) attachment was most common across all cultures, but proportions of A and C varied. This suggests:",options:{A:"Secure attachment is universal, but insecure patterns vary by culture",B:"The Strange Situation is entirely invalid for all cross-cultural research work",C:"German infants are far more securely attached than American infants",D:"Attachment type is entirely determined by inherited genes"},correct:"A"}
@@ -1244,7 +1244,7 @@ BANKS["PSY-ATT"] = {
       id:"ATT-07",stem:"A student answers a question about Bowlby by only describing his theory without any evaluation. On a 16-mark essay, what is the likely issue?",
       options:{A:"There is no issue, since description alone is all that is needed",B:"The student will lose marks for having been far too detailed",C:"A 16-mark essay requires only knowledge and never any evaluation at all",D:"They score AO1 marks only and lose all the AO3 evaluation marks"},
       correct:"D",tag:"MC-TECH-02",
-      scaffold:"AQA 16-mark essays: AO1 (knowledge/description) = up to 6 marks. AO3 (evaluation/analysis) = up to 10 marks. Evaluation means: using studies to support or contradict the theory, identifying methodological limitations, considering alternative explanations, and reaching a conclusion. Description-only answers are capped at the lowest band regardless of quality.",
+      scaffold:"AQA 16-mark essays: AO1 (knowledge/description) = up to 6 marks. AO3 (evaluation/analysis) = up to 10 marks. Evaluation means: using studies to support or contradict the theory, identifying methodological limitations, considering alternative explanations, and reaching a conclusion. A description-only answer can earn at most the 6 AO1 marks, however good it is.",
       reforge:{stem:"To access the top band in a 16-mark AQA Psychology essay, a student must:",options:{A:"Write considerably more than four full pages",B:"Refer to at least ten separate named studies within the answer that is given",C:"Include a clearly labelled diagram",D:"Sustain an evaluative argument with evidence and a reasoned conclusion"},correct:"D"}
     },
     {
@@ -8421,7 +8421,7 @@ BANKS["PSY-PATH"] = {
     },
     {
       id:"PATH-07",
-      stem:"Which statement correctly identifies a limitation of the deviation from social norms definition of abnormality?",
+      stem:"What is a limitation of the deviation from social norms definition of abnormality?",
       options:{
         A:"It is too objective, relying only on statistics and ignoring all context",
         B:"Social norms vary across cultures and change over time, so labels shift",
@@ -12156,7 +12156,7 @@ BANKS["PSY-APP"] = {
         D:"Only observable behaviour should be studied, as it can be measured"
       },
       correct:"D",tag:"MC-APP-BEHAV",
-      scaffold:"Behaviourism rests on three assumptions: (1) only observable, measurable behaviour is a valid subject for study — internal mental states are a 'black box'; (2) we are born a blank slate (tabula rasa), so behaviour is learned from the environment; (3) the basic learning processes are the same in humans and other animals, which is why rats and pigeons are legitimate research subjects. Each distractor here names a different approach: A is psychodynamic, B is cognitive, C is humanistic. Examiner tip: exam questions often give you a scenario and ask which approach explains it — match on the mechanism (conditioning, schema, unconscious, self-concept), not on the topic.",
+      scaffold:"Behaviourism rests on three assumptions: (1) only observable, measurable behaviour is a valid subject for study — internal mental states are a 'black box'; (2) we are born a blank slate (tabula rasa), so behaviour is learned from the environment; (3) the basic learning processes are the same in humans and other animals, which is why rats and pigeons are legitimate research subjects. Each wrong option names a different approach: unconscious conflict is psychodynamic, computer models are cognitive, and self-actualisation is humanistic. Examiner tip: exam questions often give you a scenario and ask which approach explains it — match on the mechanism (conditioning, schema, unconscious, self-concept), not on the topic.",
       reforge:{stem:"Why do behaviourists consider research on rats and pigeons valid for humans?",options:{A:"Because the basic laws of learning are assumed to be the same across species",B:"Because animal studies are much cheaper and far quicker to run in a laboratory",C:"Because animals possess the same conscious experience as people",D:"Because animals cannot give informed consent to take part in studies"},correct:"A"}
     },
     {
@@ -12195,7 +12195,7 @@ BANKS["PSY-APP"] = {
         D:"It studied animals in natural habitats, raising ecological validity"
       },
       correct:"C",tag:"MC-APP-OPERANT",
-      scaffold:"The Skinner box isolates one variable: the consequence of pressing a lever. Everything else — food deprivation, lighting, the chamber itself — is held constant, so a change in lever-pressing can be attributed to the reinforcement schedule rather than to anything else. That is a textbook cause-and-effect design and it is why behaviourism is regarded as the most scientific of the approaches. Balance it in evaluation with the standard cost: extrapolating from a rat in a bare box to human behaviour is questionable, because humans have cognition and language that mediate reinforcement. Note that D is the opposite of the truth — the Skinner box is a highly artificial environment.",
+      scaffold:"The Skinner box isolates one variable: the consequence of pressing a lever. Everything else — food deprivation, lighting, the chamber itself — is held constant, so a change in lever-pressing can be attributed to the reinforcement schedule rather than to anything else. That is a textbook cause-and-effect design and it is why behaviourism is regarded as the most scientific of the approaches. Balance it in evaluation with the standard cost: extrapolating from a rat in a bare box to human behaviour is questionable, because humans have cognition and language that mediate reinforcement. The option about natural habitats is the opposite of the truth — the Skinner box is a highly artificial environment.",
       reforge:{stem:"Which is a legitimate criticism of Skinner's research?",options:{A:"Extrapolating from caged animals to humans is questionable",B:"His findings could not be replicated by any other researchers",C:"He never used any form of reinforcement in his studies",D:"He failed to control the variables inside the chamber"},correct:"A"}
     },
     {
@@ -12221,7 +12221,7 @@ BANKS["PSY-APP"] = {
         D:"Seeing a model rewarded, making imitation of them more likely"
       },
       correct:"D",tag:"MC-APP-SLT",
-      scaffold:"Vicarious means 'experienced through someone else'. The observer is not rewarded — the model is — but the observer's likelihood of imitating still rises because they have learned that the behaviour pays off. This is the key mechanism that lets social learning theory explain behaviours nobody has personally been reinforced for, such as a child copying a sibling who got away with something. The mirror concept is vicarious punishment: seeing a model punished makes imitation less likely. Option A describes ordinary direct reinforcement, which is operant conditioning, so it is the classic distractor. Identification and modelling are the related terms: we imitate models we identify with because of perceived similarity or status.",
+      scaffold:"Vicarious means 'experienced through someone else'. The observer is not rewarded — the model is — but the observer's likelihood of imitating still rises because they have learned that the behaviour pays off. This is the key mechanism that lets social learning theory explain behaviours nobody has personally been reinforced for, such as a child copying a sibling who got away with something. The mirror concept is vicarious punishment: seeing a model punished makes imitation less likely. Being rewarded directly yourself is ordinary operant conditioning, which is why it is the classic wrong answer here. Identification and modelling are the related terms: we imitate models we identify with because of perceived similarity or status.",
       reforge:{stem:"Why is identification important in social learning theory?",options:{A:"It removes the need for any cognitive mediational processes",B:"It guarantees that the observed behaviour will always then be performed later",C:"People are more likely to imitate models they see as similar or high status",D:"It explains why reinforcement has no effect on learning"},correct:"C"}
     },
     {
@@ -12260,7 +12260,7 @@ BANKS["PSY-APP"] = {
         D:"Because cognitive psychologists reject the use of scientific methods"
       },
       correct:"C",tag:"MC-APP-COG",
-      scaffold:"Inference means drawing conclusions about unobservable internal processes from observable behaviour. You cannot see rehearsal happening, but if a distractor task that blocks rehearsal destroys recall, you can infer that rehearsal was doing the work. This is the cognitive approach's answer to the behaviourist 'black box' objection: you can study the mind scientifically without observing it directly. The trade-off, and the standard evaluation point, is that inference can drift into machine reductionism — comparing the mind to a computer captures information flow but ignores emotion and motivation, which demonstrably affect memory. Note that D is false: the cognitive approach is strongly scientific, using controlled lab experiments.",
+      scaffold:"Inference means drawing conclusions about unobservable internal processes from observable behaviour. You cannot see rehearsal happening, but if a distractor task that blocks rehearsal destroys recall, you can infer that rehearsal was doing the work. This is the cognitive approach's answer to the behaviourist 'black box' objection: you can study the mind scientifically without observing it directly. The trade-off, and the standard evaluation point, is that inference can drift into machine reductionism — comparing the mind to a computer captures information flow but ignores emotion and motivation, which demonstrably affect memory. It is not that cognitive psychologists reject science: the approach is strongly scientific, using controlled lab experiments.",
       reforge:{stem:"What is the main limitation of the computer analogy used by cognitive psychologists?",options:{A:"It treats memory as reconstructive rather than as stored representation",B:"It ignores the influence of emotion and motivation on processing",C:"It relies entirely on introspective self-report data",D:"It prevents cognitive psychologists from using laboratory experiments"},correct:"B"}
     },
     {
@@ -12317,7 +12317,7 @@ BANKS["PSY-APP"] = {
     },
     {
       id:"APP-16",
-      stem:"Which statement correctly describes the ego in Freud's model of personality?",
+      stem:"In Freud's model of personality, what is the ego?",
       options:{
         A:"It is driven by the pleasure principle and demands immediate gratification",
         B:"It is present from birth and represents our internalised sense of right and wrong",
@@ -12325,7 +12325,7 @@ BANKS["PSY-APP"] = {
         D:"It stores repressed memories that cannot be reached by conscious thought"
       },
       correct:"C",tag:"MC-APP-PSYDYN",
-      scaffold:"Freud's tripartite personality: the id is present from birth, is entirely unconscious and runs on the pleasure principle, demanding immediate gratification. The superego forms around age five at the end of the phallic stage, internalising the same-sex parent's morality, and punishes with guilt. The ego develops around age two, runs on the reality principle, and manages the conflict between the other two using defence mechanisms. Note how the distractors here each describe a different component: A is the id, B is the superego (with the wrong age), D is the unconscious mind generally. Getting the ages and principles paired correctly is where marks are won.",
+      scaffold:"Freud's tripartite personality: the id is present from birth, is entirely unconscious and runs on the pleasure principle, demanding immediate gratification. The superego forms around age five at the end of the phallic stage, internalising the same-sex parent's morality, and punishes with guilt. The ego develops around age two, runs on the reality principle, and manages the conflict between the other two using defence mechanisms. The wrong options each describe something else: the pleasure principle is the id, the internalised sense of right and wrong is the superego (which forms around five, not at birth), and stored repressed memories belong to the unconscious mind generally. Getting the ages and principles paired correctly is where marks are won.",
       reforge:{stem:"At which psychosexual stage does the superego develop?",options:{A:"The oral stage, during the very first year of life",B:"The anal stage, at around two years old",C:"The genital stage, beginning at puberty",D:"The phallic stage, at around five years old"},correct:"D"}
     },
     {
@@ -12351,7 +12351,7 @@ BANKS["PSY-APP"] = {
         D:"Traits such as smoking, nail-biting or being critical of others"
       },
       correct:"D",tag:"MC-APP-PSYDYN",
-      scaffold:"The five psychosexual stages are oral (0-1), anal (1-3), phallic (3-6), latency and genital. Unresolved conflict at a stage produces fixation, and adult personality carries the mark of it. Oral fixation: smoking, nail-biting, sarcasm and criticism — all mouth-focused. Anal fixation splits two ways: anal-retentive (perfectionist, obsessively tidy, from harsh toilet training) and anal-expulsive (thoughtless, messy). Phallic fixation: narcissistic, reckless, possibly homophobic. Note option A describes anal-retentive and B describes phallic-stage conflict, so this question is really testing whether you can keep the stages apart rather than whether you can recall a list.",
+      scaffold:"The five psychosexual stages are oral (0-1), anal (1-3), phallic (3-6), latency and genital. Unresolved conflict at a stage produces fixation, and adult personality carries the mark of it. Oral fixation: smoking, nail-biting, sarcasm and criticism — all mouth-focused. Anal fixation splits two ways: anal-retentive (perfectionist, obsessively tidy, from harsh toilet training) and anal-expulsive (thoughtless, messy). Phallic fixation: narcissistic, reckless, possibly homophobic. Excessive tidiness is anal-retentive, aggression linked to toilet training is anal, and an unresolved Oedipus complex is phallic, so this question is really testing whether you can keep the stages apart rather than whether you can recall a list.",
       reforge:{stem:"Which adult personality does Freud attribute to anal-retentive fixation?",options:{A:"Sarcastic and highly critical of other people",B:"Perfectionist, obsessively tidy and controlling",C:"Reckless, vain and narcissistic in relationships",D:"Thoughtless, disorganised and messy in habits"},correct:"B"}
     },
     {
@@ -12364,7 +12364,7 @@ BANKS["PSY-APP"] = {
         D:"The gap between a person's self-concept and their ideal self"
       },
       correct:"C",tag:"MC-APP-HUM",
-      scaffold:"Rogers argued that parents who offer love only when a child meets certain standards ('I will love you if you do well at school') impose conditions of worth. The child internalises these, so self-acceptance becomes conditional and the self-concept drifts away from the ideal self — producing incongruence and low self-worth that persist into adulthood. The therapeutic answer is unconditional positive regard: the client-centred therapist accepts the client entirely, without judgement, dissolving the conditions of worth so the person can move toward self-actualisation. Note that D describes incongruence, which is the consequence, not the cause — a common mix-up.",
+      scaffold:"Rogers argued that parents who offer love only when a child meets certain standards ('I will love you if you do well at school') impose conditions of worth. The child internalises these, so self-acceptance becomes conditional and the self-concept drifts away from the ideal self — producing incongruence and low self-worth that persist into adulthood. The therapeutic answer is unconditional positive regard: the client-centred therapist accepts the client entirely, without judgement, dissolving the conditions of worth so the person can move toward self-actualisation. The gap between self-concept and ideal self is incongruence, which is the consequence, not the cause — a common mix-up.",
       reforge:{stem:"What does a client-centred therapist provide to counter conditions of worth?",options:{A:"A token economy that rewards desirable behaviour",B:"A structured programme of systematic desensitisation",C:"Interpretation of the client's dreams and their early childhood conflicts",D:"Unconditional positive regard, accepting the client without judgement"},correct:"D"}
     },
     {
@@ -12982,7 +12982,7 @@ BANKS["PSY-BIO"] = {
         D:"To convert neurotransmitters back into electrical impulses in the brain"
       },
       correct:"C",tag:"MC-BIO-NS",
-      scaffold:"The spinal cord is the communication cable of the CNS: it carries sensory information up to the brain and motor commands back down to the body. It also mediates simple reflex actions independently of the brain, which is why you pull your hand from a hot surface before you consciously feel pain — the reflex arc runs sensory neuron to relay neuron to motor neuron within the spinal cord. That speed advantage is the whole evolutionary point of the arrangement. Note option A describes the endocrine system, which is the slower chemical communication network working alongside the nervous system rather than part of it.",
+      scaffold:"The spinal cord is the communication cable of the CNS: it carries sensory information up to the brain and motor commands back down to the body. It also mediates simple reflex actions independently of the brain, which is why you pull your hand from a hot surface before you consciously feel pain — the reflex arc runs sensory neuron to relay neuron to motor neuron within the spinal cord. That speed advantage is the whole evolutionary point of the arrangement. Secreting hormones into the bloodstream describes the endocrine system, which is the slower chemical communication network working alongside the nervous system rather than part of it.",
       reforge:{stem:"Why is the reflex arc faster than a conscious response?",options:{A:"It uses hormones rather than electrical impulses",B:"It travels along a shorter route and bypasses the brain",C:"It involves far more synapses than a conscious response does",D:"It is controlled by the parasympathetic branch"},correct:"B"}
     },
     {
@@ -12995,7 +12995,7 @@ BANKS["PSY-BIO"] = {
         D:"Adrenaline is secreted into the bloodstream to arouse the whole body"
       },
       correct:"B",tag:"MC-BIO-SYNAPSE",
-      scaffold:"Transmission within a neuron is electrical; transmission between neurons is chemical. When the action potential reaches the presynaptic terminal it triggers vesicles to release neurotransmitter into the synaptic cleft. The neurotransmitter diffuses across and binds to receptors on the postsynaptic membrane, where it is converted back into an electrical signal. Leftover neurotransmitter is then reabsorbed by reuptake — which matters enormously, because SSRIs treat depression precisely by blocking serotonin reuptake and leaving more available in the cleft. Synaptic transmission is unidirectional: receptors sit only on the postsynaptic side, which is why option C is impossible.",
+      scaffold:"Transmission within a neuron is electrical; transmission between neurons is chemical. When the action potential reaches the presynaptic terminal it triggers vesicles to release neurotransmitter into the synaptic cleft. The neurotransmitter diffuses across and binds to receptors on the postsynaptic membrane, where it is converted back into an electrical signal. Leftover neurotransmitter is then reabsorbed by reuptake — which matters enormously, because SSRIs treat depression precisely by blocking serotonin reuptake and leaving more available in the cleft. Synaptic transmission is unidirectional: receptors sit only on the postsynaptic side, which is why the impulse cannot travel back along the axon.",
       reforge:{stem:"Why is synaptic transmission described as unidirectional?",options:{A:"Neurotransmitters can only travel downwards under gravity alone",B:"The axon is insulated along its entire length",C:"Only one neurotransmitter exists in the human brain",D:"Receptor sites are found only on the postsynaptic membrane"},correct:"D"}
     },
     {
@@ -13034,7 +13034,7 @@ BANKS["PSY-BIO"] = {
         D:"Parasympathetic branch activates first, raising heart rate and breathing rate"
       },
       correct:"C",tag:"MC-BIO-FIGHT",
-      scaffold:"Learn the acute pathway as a chain: the amygdala appraises the threat and signals the hypothalamus; the hypothalamus activates the sympathetic branch of the ANS; the sympathetic branch stimulates the adrenal medulla, which floods the bloodstream with adrenaline. Adrenaline then produces the physical changes — increased heart rate and blood pressure to move oxygen to muscles, dilated pupils, faster breathing, and digestion and salivation suppressed because they are not survival priorities. Once the threat passes, the parasympathetic branch acts as the brake, returning the body to baseline. This is the rest-and-digest response, and it is the opposite of what option D claims.",
+      scaffold:"Learn the acute pathway as a chain: the amygdala appraises the threat and signals the hypothalamus; the hypothalamus activates the sympathetic branch of the ANS; the sympathetic branch stimulates the adrenal medulla, which floods the bloodstream with adrenaline. Adrenaline then produces the physical changes — increased heart rate and blood pressure to move oxygen to muscles, dilated pupils, faster breathing, and digestion and salivation suppressed because they are not survival priorities. Once the threat passes, the parasympathetic branch acts as the brake, returning the body to baseline. This is the rest-and-digest response, so the parasympathetic branch never raises heart rate in the first place.",
       reforge:{stem:"Which bodily change is caused by the parasympathetic branch?",options:{A:"Pupils dilate and breathing becomes more rapid",B:"Blood is redirected away from the stomach",C:"Adrenaline floods into the bloodstream",D:"Heart rate slows and digestion is stimulated"},correct:"D"}
     },
     {
@@ -13060,7 +13060,7 @@ BANKS["PSY-BIO"] = {
         D:"Specific areas of the brain are responsible for specific behaviours"
       },
       correct:"D",tag:"MC-BIO-LOCAL",
-      scaffold:"Localisation theory holds that particular functions are carried out by particular regions, and it replaced the earlier holistic view (option A) that the whole brain participates in every process. The regions AQA requires: motor cortex (frontal lobe, voluntary movement), somatosensory cortex (parietal lobe, sensory information from skin), visual cortex (occipital lobe), auditory cortex (temporal lobe), Broca's area (left frontal, speech production) and Wernicke's area (left temporal, language comprehension). The strongest support comes from case studies of brain damage where a specific deficit follows damage to a specific site, which is exactly what a holistic theory cannot easily explain.",
+      scaffold:"Localisation theory holds that particular functions are carried out by particular regions, and it replaced the earlier holistic view that the whole brain participates in every process. The regions AQA requires: motor cortex (frontal lobe, voluntary movement), somatosensory cortex (parietal lobe, sensory information from skin), visual cortex (occipital lobe), auditory cortex (temporal lobe), Broca's area (left frontal, speech production) and Wernicke's area (left temporal, language comprehension). The strongest support comes from case studies of brain damage where a specific deficit follows damage to a specific site, which is exactly what a holistic theory cannot easily explain.",
       reforge:{stem:"Damage to which lobe would most directly impair vision?",options:{A:"The frontal lobe",B:"The temporal lobe of the brain",C:"The occipital lobe",D:"The parietal lobe"},correct:"C"}
     },
     {
@@ -13137,7 +13137,7 @@ BANKS["PSY-BIO"] = {
         D:"Hormone release from the pituitary gland repairs the affected tissue"
       },
       correct:"B",tag:"MC-BIO-PLAST",
-      scaffold:"Functional recovery is plasticity following injury. Secondary neural pathways that are normally dormant are unmasked and activated to compensate, and structural changes support this: axonal sprouting, where surviving neurons grow new nerve endings to connect with undamaged cells; reformation of blood vessels; and recruitment of homologous areas on the opposite side of the brain — for example, the right-hemisphere equivalent of Broca's area taking over some speech function. Recovery is typically fast at first then slows, which is the rationale for intensive early neurorehabilitation. Damaged neurons themselves do not regrow, which is why option A is wrong.",
+      scaffold:"Functional recovery is plasticity following injury. Secondary neural pathways that are normally dormant are unmasked and activated to compensate, and structural changes support this: axonal sprouting, where surviving neurons grow new nerve endings to connect with undamaged cells; reformation of blood vessels; and recruitment of homologous areas on the opposite side of the brain — for example, the right-hemisphere equivalent of Broca's area taking over some speech function. Recovery is typically fast at first then slows, which is the rationale for intensive early neurorehabilitation. Damaged neurons themselves do not regrow, so recovery depends on the intact areas around them.",
       reforge:{stem:"What is axonal sprouting?",options:{A:"The complete regeneration of destroyed neurons in the cortex",B:"The pruning of unused synapses during adolescence",C:"Undamaged neurons growing new nerve endings to reconnect",D:"The release of neurotransmitter across the synaptic cleft"},correct:"C"}
     },
     {
@@ -13173,7 +13173,7 @@ BANKS["PSY-BIO"] = {
         A:"It exposes participants to ionising radiation during each scan",
         B:"Its poor temporal resolution means there is a delay of several seconds",
         C:"It provides no information about the location of brain activity",
-        D:"It requires electrodes to be surgically implanted into the cortex"
+        D:"It can only show the brain's structure, not which areas are active in a task"
       },
       correct:"B",tag:"MC-BIO-SCAN",
       scaffold:"The fMRI trade-off is spatial precision bought at the cost of timing. The haemodynamic response lags neural activity by around five seconds, so fMRI cannot resolve the fast sequence of processes that make up a cognitive task — it tells you where, not precisely when. A second limitation is that it measures blood flow, which is an indirect proxy for neural activity rather than a direct measure of neuron firing. It is also expensive and requires the participant to remain completely still, which limits the tasks that can be studied. Balance these against its genuine strengths: non-invasive, no radiation, and spatial resolution good enough to localise function.",
@@ -13202,7 +13202,7 @@ BANKS["PSY-BIO"] = {
         D:"An external cue that resets the body's internal biological clock"
       },
       correct:"A",tag:"MC-BIO-RHYTHM",
-      scaffold:"Three rhythm types, distinguished by duration. Circadian: about 24 hours — the sleep-wake cycle and core body temperature, which dips to its lowest around 4am. Infradian: longer than 24 hours — the menstrual cycle at roughly 28 days, and seasonal affective disorder as a yearly rhythm. Ultradian: shorter than 24 hours, occurring more than once a day — the stages of sleep, which cycle roughly every 90 minutes through NREM stages 1-4 and REM. Option D defines an exogenous zeitgeber, an external cue such as light that entrains the rhythm, which is a separate concept examined alongside endogenous pacemakers.",
+      scaffold:"Three rhythm types, distinguished by duration. Circadian: about 24 hours — the sleep-wake cycle and core body temperature, which dips to its lowest around 4am. Infradian: longer than 24 hours — the menstrual cycle at roughly 28 days, and seasonal affective disorder as a yearly rhythm. Ultradian: shorter than 24 hours, occurring more than once a day — the stages of sleep, which cycle roughly every 90 minutes through NREM stages 1-4 and REM. An external cue that resets the clock is an exogenous zeitgeber, such as light that entrains the rhythm, which is a separate concept examined alongside endogenous pacemakers.",
       reforge:{stem:"The stages of sleep cycling roughly every 90 minutes is an example of which rhythm?",options:{A:"A circadian rhythm",B:"An ultradian rhythm",C:"An infradian rhythm",D:"An exogenous zeitgeber"},correct:"B"}
     },
     {
@@ -13222,7 +13222,7 @@ BANKS["PSY-BIO"] = {
       id:"PSYBIO-21",
       stem:"Which structure acts as the main endogenous pacemaker for the sleep-wake cycle?",
       options:{
-        A:"The pineal gland, located deep within the temporal lobe",
+        A:"The pineal gland, which secretes melatonin in darkness",
         B:"The adrenal medulla, sitting on top of each of the kidneys",
         C:"The suprachiasmatic nucleus, in the hypothalamus",
         D:"The corpus callosum, connecting the two cerebral hemispheres"
@@ -13248,13 +13248,13 @@ BANKS["PSY-BIO"] = {
       id:"PSYBIO-23",
       stem:"Which finding supports the view that the menstrual cycle can be influenced externally?",
       options:{
-        A:"Stein and Schwartz found cycle length was entirely fixed by genetics",
+        A:"Twin studies found cycle length was entirely fixed by genetics",
         B:"Siffre's cycle lengthened to twenty-five hours while living underground",
         C:"Reinberg found a woman's cycle shortened while in a dimly lit cave",
         D:"DeCoursey found chipmunks lost their rhythm after SCN destruction"
       },
       correct:"C",tag:"MC-BIO-RHYTHM",
-      scaffold:"The menstrual cycle is the standard infradian example, and the debate is how far it is endogenous. Reinberg documented a woman whose cycle shortened from 28 to 25.7 days while spending three months in a cave with very dim lighting, suggesting light influences it. Stern and McClintock's pheromone study is the better-known evidence: samples of underarm sweat from donor women, applied to recipients' upper lips, shifted 68% of recipients' cycles toward the donor's. The evolutionary reading is that synchronisation allowed collective childcare, though the counter-argument is that synchrony would create competition for the highest-quality males. Note options B and D concern circadian rhythms, not infradian ones.",
+      scaffold:"The menstrual cycle is the standard infradian example, and the debate is how far it is endogenous. Reinberg documented a woman whose cycle shortened from 28 to 25.7 days while spending three months in a cave with very dim lighting, suggesting light influences it. Stern and McClintock's pheromone study is the better-known evidence: samples of underarm sweat from donor women, applied to recipients' upper lips, shifted 68% of recipients' cycles toward the donor's. The evolutionary reading is that synchronisation allowed collective childcare, though the counter-argument is that synchrony would create competition for the highest-quality males. Note that Siffre's cave study and DeCoursey's chipmunks concern circadian rhythms, not infradian ones.",
       reforge:{stem:"What did Stern and McClintock's pheromone study find?",options:{A:"Pheromones had no detectable effect on the menstrual cycle",B:"Cycle synchronisation occurred only among genetic relatives",C:"The menstrual cycle is an ultradian rather than an infradian rhythm",D:"Donor sweat applied to recipients shifted most recipients' cycles"},correct:"D"}
     },
     {
@@ -13658,7 +13658,7 @@ BANKS["PSY-RM"] = {
         D:"A variable held constant so that it cannot affect the study's outcome"
       },
       correct:"B",tag:"MC-RM-VAR",
-      scaffold:"Operationalisation means defining a variable so precisely that another researcher could replicate exactly what you did. 'Sleep affects memory' is not operationalised; 'participants given 4 versus 8 hours of sleep recall a 20-word list' is. The IV is what you manipulate, the DV is what you measure. Marks are lost constantly here for vague answers, so in the exam always write the IV as its two conditions and the DV as the unit of measurement. Option A defines the DV, C describes a confounding variable and D describes a controlled variable — being able to separate all four is the foundation of the whole topic.",
+      scaffold:"Operationalisation means defining a variable so precisely that another researcher could replicate exactly what you did. 'Sleep affects memory' is not operationalised; 'participants given 4 versus 8 hours of sleep recall a 20-word list' is. The IV is what you manipulate, the DV is what you measure. Marks are lost constantly here for vague answers, so in the exam always write the IV as its two conditions and the DV as the unit of measurement. The variable measured as the outcome is the DV, one that varies systematically with the IV is a confounding variable, and one held constant is a controlled variable — being able to separate all four is the foundation of the whole topic.",
       reforge:{stem:"A study measures 'aggression'. Which is the best operationalised version?",options:{A:"How aggressive the child appears to observers",B:"Number of physical acts toward a doll in ten minutes",C:"The child's general level of aggressive feeling",D:"Whether or not the child happens to have an aggressive nature"},correct:"B"}
     },
     {
@@ -13696,7 +13696,7 @@ BANKS["PSY-RM"] = {
         D:"It allows the researcher to test every participant in every condition"
       },
       correct:"C",tag:"MC-RM-DESIGN",
-      scaffold:"Matched pairs is the compromise design. Participants are pre-tested and paired on variables relevant to the study — IQ, age, memory span — then one of each pair is allocated to each condition. Because different people do each condition there are no order effects, and because the pairs are matched on key variables participant differences are reduced. The costs are real though: matching is time-consuming and expensive, you can never match on every relevant variable, and if one participant drops out you lose the whole pair. Option D describes repeated measures, and option A is false — matched pairs needs twice as many people as repeated measures.",
+      scaffold:"Matched pairs is the compromise design. Participants are pre-tested and paired on variables relevant to the study — IQ, age, memory span — then one of each pair is allocated to each condition. Because different people do each condition there are no order effects, and because the pairs are matched on key variables participant differences are reduced. The costs are real though: matching is time-consuming and expensive, you can never match on every relevant variable, and if one participant drops out you lose the whole pair. Testing every participant in every condition describes repeated measures, and matched pairs does not save on participants — it needs twice as many as repeated measures.",
       reforge:{stem:"What is a practical disadvantage of matched pairs?",options:{A:"Order effects are unavoidable in this design",B:"Participants act as their own experimental control group",C:"Matching is time-consuming and can never be complete",D:"Only one condition of the IV can ever be tested"},correct:"C"}
     },
     {
@@ -13722,7 +13722,7 @@ BANKS["PSY-RM"] = {
         D:"Ethical requirements that a study must satisfy before it can be approved"
       },
       correct:"A",tag:"MC-RM-CONTROL",
-      scaffold:"Participants are not passive: they search for clues about the study's purpose and then adjust. That adjustment can go either way — the 'please-U effect', where they behave as they think the researcher wants, or the 'screw-U effect', where they deliberately sabotage it. Either way the DV no longer reflects the IV alone. Controls include the single-blind procedure (participants do not know which condition they are in) and deception via a cover story, though that carries an ethical cost. Do not confuse this with investigator effects, which is option C: that is the researcher unintentionally influencing results, and the control for it is a double-blind procedure.",
+      scaffold:"Participants are not passive: they search for clues about the study's purpose and then adjust. That adjustment can go either way — the 'please-U effect', where they behave as they think the researcher wants, or the 'screw-U effect', where they deliberately sabotage it. Either way the DV no longer reflects the IV alone. Controls include the single-blind procedure (participants do not know which condition they are in) and deception via a cover story, though that carries an ethical cost. Do not confuse this with investigator effects: the researcher unintentionally influencing results, and the control for it is a double-blind procedure.",
       reforge:{stem:"Which procedure controls for investigator effects?",options:{A:"A double-blind procedure, where neither party knows the condition",B:"A single-blind procedure, concealing the condition from participants",C:"Counterbalancing the order in which conditions are presented",D:"Obtaining fully informed consent before the study begins"},correct:"A"}
     },
     {
@@ -13799,7 +13799,7 @@ BANKS["PSY-RM"] = {
         D:"It balances the risk of making a Type I error against a Type II error"
       },
       correct:"D",tag:"MC-RM-SIG",
-      scaffold:"p ≤ 0.05 means there is a 5% or smaller probability that the result occurred by chance if the null hypothesis were true. It is a convention, not a law, and it exists as a compromise. A stricter level such as 0.01 reduces the chance of a Type I error — wrongly rejecting a true null hypothesis, a false positive — but increases the chance of a Type II error, wrongly accepting a false null hypothesis. Researchers use 0.01 where the consequences of a false positive are serious, such as drug trials, or where they are replicating to confirm a finding. Note that significance never proves anything: it establishes probability, never certainty, which is why option A is wrong.",
+      scaffold:"p ≤ 0.05 means there is a 5% or smaller probability that the result occurred by chance if the null hypothesis were true. It is a convention, not a law, and it exists as a compromise. A stricter level such as 0.01 reduces the chance of a Type I error — wrongly rejecting a true null hypothesis, a false positive — but increases the chance of a Type II error, wrongly accepting a false null hypothesis. Researchers use 0.01 where the consequences of a false positive are serious, such as drug trials, or where they are replicating to confirm a finding. Note that significance never proves anything: it establishes probability, never certainty, so no significance level guarantees a result is not due to chance.",
       reforge:{stem:"A researcher uses p ≤ 0.01 instead of p ≤ 0.05. What is the consequence?",options:{A:"The risk of a Type I error rises",B:"The result becomes automatically significant",C:"The risk of a Type II error rises",D:"No change to either type of error occurs"},correct:"C"}
     },
     {
@@ -13825,7 +13825,7 @@ BANKS["PSY-RM"] = {
         D:"The measuring instrument used is consistent between different raters"
       },
       correct:"B",tag:"MC-RM-VALID",
-      scaffold:"Internal validity asks whether the study measured what it intended to, free of confounding variables — so the effect can be attributed to the IV. External validity asks how far the findings generalise: to other settings (ecological validity), to other people (population validity), and to other time periods (temporal validity). The two are often in tension, which is a reliable evaluation point: the tight control of a laboratory experiment maximises internal validity but the artificiality can reduce ecological validity. Options C and D describe reliability, not validity — reliability is consistency, validity is accuracy, and a measure can be perfectly reliable while being consistently wrong.",
+      scaffold:"Internal validity asks whether the study measured what it intended to, free of confounding variables — so the effect can be attributed to the IV. External validity asks how far the findings generalise: to other settings (ecological validity), to other people (population validity), and to other time periods (temporal validity). The two are often in tension, which is a reliable evaluation point: the tight control of a laboratory experiment maximises internal validity but the artificiality can reduce ecological validity. Getting the same results on repetition and consistency between raters describe reliability, not validity — reliability is consistency, validity is accuracy, and a measure can be perfectly reliable while being consistently wrong.",
       reforge:{stem:"A study replicates perfectly but measures the wrong thing. How is it best described?",options:{A:"Reliable but lacking in validity",B:"High in validity but low in reliability",C:"Both reliable and valid",D:"Neither reliable nor valid"},correct:"A"}
     },
     {
@@ -13838,7 +13838,7 @@ BANKS["PSY-RM"] = {
         D:"Whether the observation genuinely measures the behaviour it claims to"
       },
       correct:"C",tag:"MC-RM-VALID",
-      scaffold:"Inter-observer reliability is the extent to which two or more observers watching the same behaviour produce the same record. It is assessed by correlating the two sets of tallies, with a coefficient of +0.80 or above taken as acceptable. It matters because observation is subjective, and it is improved by developing a clear, fully operationalised behavioural checklist and training observers together beforehand. Distinguish it from test-retest reliability, which is option A: giving the same test to the same people on two occasions and correlating the scores. Option D describes validity, and B describes the coverage of a behavioural checklist.",
+      scaffold:"Inter-observer reliability is the extent to which two or more observers watching the same behaviour produce the same record. It is assessed by correlating the two sets of tallies, with a coefficient of +0.80 or above taken as acceptable. It matters because observation is subjective, and it is improved by developing a clear, fully operationalised behavioural checklist and training observers together beforehand. Distinguish it from consistency over time, which is test-retest reliability: giving the same test to the same people on two occasions and correlating the scores. Whether the observation measures what it claims to is validity, and covering every possible behaviour is about the design of a behavioural checklist.",
       reforge:{stem:"What correlation coefficient is normally taken as acceptable reliability?",options:{A:"+0.20 or above",B:"+0.80 or above",C:"+0.50 or above",D:"+1.00 exactly"},correct:"B"}
     },
     {
@@ -13952,7 +13952,7 @@ BANKS["PSY-RM"] = {
         D:"A different statistical test must be selected and the analysis repeated"
       },
       correct:"B",tag:"MC-RM-TEST",
-      scaffold:"For the sign test, Wilcoxon and Mann-Whitney, the calculated value must be equal to or LESS than the critical value for significance. Here 3 is greater than 2, so the result is not significant and the null hypothesis is retained. Be precise with the language: we retain or fail to reject the null hypothesis, we never prove it — that is why option C is wrong, and it is a distinction examiners look for specifically. Note the opposite rule applies to chi-squared and the t-tests, where the calculated value must be equal to or GREATER than the critical value. Reading the critical value table also requires the correct N or degrees of freedom and whether the hypothesis was one-tailed or two-tailed.",
+      scaffold:"For the sign test, Wilcoxon and Mann-Whitney, the calculated value must be equal to or LESS than the critical value for significance. Here 3 is greater than 2, so the result is not significant and the null hypothesis is retained. Be precise with the language: we retain or fail to reject the null hypothesis, we never prove it — a non-significant result does not show the null hypothesis is true, and this is a distinction examiners look for specifically. Note the opposite rule applies to chi-squared and the t-tests, where the calculated value must be equal to or GREATER than the critical value. Reading the critical value table also requires the correct N or degrees of freedom and whether the hypothesis was one-tailed or two-tailed.",
       reforge:{stem:"When would a researcher use a one-tailed rather than a two-tailed test?",options:{A:"When the total sample size is smaller than twenty individual participants overall",B:"When previous research allows the direction of the effect to be predicted",C:"When the data collected are nominal rather than ordinal",D:"When no alternative hypothesis has been written"},correct:"B"}
     }
   ]
@@ -13973,7 +13973,7 @@ BANKS["PSY-ID"] = {
         D:"Judging another culture using the standards of the researcher's own culture"
       },
       correct:"A",tag:"MC-ID-GENDER",
-      scaffold:"Alpha bias overstates the difference between the sexes, usually presenting one as inferior. Freud's claim that women develop a weaker superego because they cannot experience full castration anxiety is the standard example. Beta bias is the opposite error: minimising or ignoring real differences, usually by studying men and assuming the findings apply to women — as in the fight-or-flight research that overlooked the tend-and-befriend response. Both produce androcentrism, where male behaviour becomes the norm and female behaviour is judged abnormal by comparison. Note options C and D belong to the culture bias debate, so keep the two sets of terms separate.",
+      scaffold:"Alpha bias overstates the difference between the sexes, usually presenting one as inferior. Freud's claim that women develop a weaker superego because they cannot experience full castration anxiety is the standard example. Beta bias is the opposite error: minimising or ignoring real differences, usually by studying men and assuming the findings apply to women — as in the fight-or-flight research that overlooked the tend-and-befriend response. Both produce androcentrism, where male behaviour becomes the norm and female behaviour is judged abnormal by comparison. One-culture samples and judging other cultures by your own standards belong to the culture bias debate, so keep the two sets of terms separate.",
       reforge:{stem:"Fight-or-flight research used male samples and generalised to everyone. Which bias is this?",options:{A:"Beta bias, minimising sex differences",B:"Alpha bias, exaggerating sex differences",C:"Ethnocentrism in cross-cultural research",D:"Cultural relativism in interpreting behaviour"},correct:"A"}
     },
     {
@@ -14025,7 +14025,7 @@ BANKS["PSY-ID"] = {
         D:"The view that behaviour is constrained but choice remains possible"
       },
       correct:"D",tag:"MC-ID-FREEWILL",
-      scaffold:"Soft determinism, associated with William James and adopted by the cognitive approach, is the middle position: behaviour has causes, but within those constraints people exercise conscious choice. It matters because it reconciles a scientific psychology with the everyday experience of deciding, and it underpins therapies such as CBT that assume clients can choose to change their thinking. Contrast it with hard determinism (option A), which holds that free will is an illusion and every behaviour is fully caused. Learn the four types of determinism as a set: biological (genes, neurochemistry), environmental (reinforcement history), psychic (unconscious conflict) and soft.",
+      scaffold:"Soft determinism, associated with William James and adopted by the cognitive approach, is the middle position: behaviour has causes, but within those constraints people exercise conscious choice. It matters because it reconciles a scientific psychology with the everyday experience of deciding, and it underpins therapies such as CBT that assume clients can choose to change their thinking. Contrast it with hard determinism, which holds that free will is an illusion and every behaviour is fully caused. Learn the four types of determinism as a set: biological (genes, neurochemistry), environmental (reinforcement history), psychic (unconscious conflict) and soft.",
       reforge:{stem:"Which approach is most associated with soft determinism?",options:{A:"The behaviourist approach",B:"The cognitive approach",C:"The biological approach",D:"The psychodynamic approach"},correct:"B"}
     },
     {
@@ -14078,7 +14078,7 @@ BANKS["PSY-ID"] = {
       },
       correct:"A",tag:"MC-ID-REDUCT",
       scaffold:"Holism insists that behaviour must be studied as a whole because the parts interact in ways that cannot be captured separately — the humanistic approach and Jahoda's account of ideal mental health both take this line. Its strength is completeness: it captures the social and interpersonal dimensions that reductionist accounts miss, which is why explanations of conformity or the effects of institutionalisation require it. Its weakness is scientific: holistic accounts tend to be vague, hard to operationalise and hard to falsify, and they offer little practical guidance about which factor to target in treatment. Reductionism has the mirror profile — testable and therapeutically productive, but potentially stripping out meaning.",
-      reforge:{stem:"Which levels of explanation runs from lowest to highest correctly?",options:{A:"Neurochemical, then cognitive, then sociocultural",B:"Sociocultural, then cognitive, then neurochemical",C:"Cognitive, then neurochemical, then sociocultural",D:"Sociocultural, then neurochemical, then cognitive"},correct:"A"}
+      reforge:{stem:"Which order runs from the lowest level of explanation to the highest?",options:{A:"Neurochemical, then cognitive, then sociocultural",B:"Sociocultural, then cognitive, then neurochemical",C:"Cognitive, then neurochemical, then sociocultural",D:"Sociocultural, then neurochemical, then cognitive"},correct:"A"}
     },
     {
       id:"PSYID-10",
@@ -14089,7 +14089,7 @@ BANKS["PSY-ID"] = {
         C:"Explaining behaviour by reference to social and cultural influences",D:"Explaining behaviour through the interaction of many different factors"
       },
       correct:"B",tag:"MC-ID-REDUCT",
-      scaffold:"Environmental reductionism is the behaviourist position: complex behaviour is broken down into simple stimulus-response links learned through conditioning. Its productivity is the strongest argument in its favour — systematic desensitisation and token economies both work, and both come directly from it. The standard criticism is that it cannot account for behaviour that clearly involves cognition, which is precisely why social learning theory added the mediational processes. Distinguish it from biological reductionism (option A), which explains behaviour through genes and neurochemistry, and note that machine reductionism is the cognitive approach's version, comparing the mind to a computer.",
+      scaffold:"Environmental reductionism is the behaviourist position: complex behaviour is broken down into simple stimulus-response links learned through conditioning. Its productivity is the strongest argument in its favour — systematic desensitisation and token economies both work, and both come directly from it. The standard criticism is that it cannot account for behaviour that clearly involves cognition, which is precisely why social learning theory added the mediational processes. Distinguish it from biological reductionism, which explains behaviour through genes and neurochemistry, and note that machine reductionism is the cognitive approach's version, comparing the mind to a computer.",
       reforge:{stem:"Which therapy provides the strongest support for environmental reductionism?",options:{A:"Drug therapy using SSRI antidepressants",B:"Psychoanalysis using dream interpretation methods",C:"Systematic desensitisation for treating phobias",D:"Client-centred humanistic counselling"},correct:"C"}
     },
     {
@@ -14231,7 +14231,7 @@ BANKS["PSY-ID"] = {
         D:"By translating the same questionnaire into as many languages as possible"
       },
       correct:"C",tag:"MC-ID-CULTURE",
-      scaffold:"The remedies AQA credits are practical. Cross-cultural collaboration means working with researchers from the culture being studied, so the measures reflect local meaning rather than an imposed etic. Emic methods study behaviour from within a culture on its own terms. Researchers should also recognise their own ethnocentrism through reflexivity, and avoid assuming that a difference from Western norms represents a deficiency. Note that option D is a trap: translating a questionnaire does not fix an imposed etic, because the underlying construct may still be culturally specific — the concept being measured, not just the wording, has to travel.",
+      scaffold:"The remedies AQA credits are practical. Cross-cultural collaboration means working with researchers from the culture being studied, so the measures reflect local meaning rather than an imposed etic. Emic methods study behaviour from within a culture on its own terms. Researchers should also recognise their own ethnocentrism through reflexivity, and avoid assuming that a difference from Western norms represents a deficiency. Note that translation is a trap: translating a questionnaire does not fix an imposed etic, because the underlying construct may still be culturally specific — the concept being measured, not just the wording, has to travel.",
       reforge:{stem:"Why does translating a questionnaire not necessarily remove culture bias?",options:{A:"Translation always introduces errors of grammar",B:"Translated questionnaires cannot be analysed statistically",C:"Participants prefer to answer in English",D:"The underlying construct may still be culturally specific"},correct:"D"}
     },
     {
@@ -14271,7 +14271,7 @@ BANKS["PSY-ID"] = {
       },
       correct:"C",tag:"MC-ID-ETHICS",
       scaffold:"Sieber and Stanley identified the areas requiring care in socially sensitive research: the framing of the research question, the treatment of participants and confidentiality, the institutional context and who funds the work, and above all the use and public interpretation of the findings. A genetic account of criminality risks being read as fixed and untreatable, and could be used to justify screening or pre-emptive intervention — which is exactly how early intelligence research was misused. The ethical duty extends past data collection into how results are reported. Note that debriefing and sample size are real methodological issues but do not address the social consequences here.",
-      reforge:{stem:"Which is NOT one of Sieber and Stanley's concerns in socially sensitive research?",options:{A:"The colour scheme used in published graphs",B:"The uses to which the research findings may be put",C:"The institution funding the research",D:"The way the research question is framed"},correct:"A"}
+      reforge:{stem:"Which is NOT one of Sieber and Stanley's concerns in socially sensitive research?",options:{A:"The statistical test chosen to analyse the data",B:"The uses to which the research findings may be put",C:"The institution funding the research",D:"The way the research question is framed"},correct:"A"}
     }
   ]
 };
@@ -14283,7 +14283,7 @@ SUBJECTS["psych"].sub = "AQA 7182 — Papers 1, 2 & 3";
 BANKS["PSY-SI"].questions.push(
     {
       id:"SI-09",
-      stem:"Which type of conformity involves adopting a group's views only while in that group's presence?",
+      stem:"Which type of conformity involves genuinely accepting a group's views, but only while you remain a member of it?",
       options:{
         A:"Identification, where group membership drives a temporary change in view",
         B:"Internalisation, where the group's beliefs are genuinely accepted as one's own",
@@ -14291,8 +14291,8 @@ BANKS["PSY-SI"].questions.push(
         D:"Obedience, where behaviour changes in response to a direct order from authority"
       },
       correct:"A",tag:"MC-SI-01",
-      scaffold:"Kelman's three types differ on depth and permanence. Compliance is the shallowest: public behaviour changes but private belief does not, and the change disappears the moment group pressure is removed. Internalisation is the deepest: the group's view is genuinely accepted, so the change persists in and out of the group. Identification sits between them — you adopt the group's views because you value membership, so the change lasts while you are in the group but fades once you leave. A new employee adopting workplace attitudes is identification; the question's key phrase is 'only while in that group's presence' combined with genuine adoption at the time.",
-      reforge:{stem:"A student joins a vegetarian friendship group and stops eating meat, but eats it at home. Which type is this?",options:{A:"Internalisation",B:"Compliance",C:"Obedience",D:"Identification"},correct:"D"}
+      scaffold:"Kelman's three types differ on depth and permanence. Compliance is the shallowest: public behaviour changes but private belief does not, and the change disappears the moment group pressure is removed. Internalisation is the deepest: the group's view is genuinely accepted, so the change persists in and out of the group. Identification sits between them — you adopt the group's views because you value membership, so the change lasts while you are in the group but fades once you leave. A new employee adopting workplace attitudes is identification; the key is genuine acceptance that lasts only while you remain a member.",
+      reforge:{stem:"While in a vegetarian friendship group, a student genuinely believes eating meat is wrong. After leaving the group she eats meat again. Which type is this?",options:{A:"Internalisation",B:"Compliance",C:"Obedience",D:"Identification"},correct:"D"}
     },
     {
       id:"SI-10",
@@ -14508,7 +14508,7 @@ BANKS["PSY-MEM"].questions.push(
     },
     {
       id:"MEM-10",
-      stem:"Which component of the working memory model has the smallest capacity?",
+      stem:"Which component of the working memory model supervises the others rather than storing information?",
       options:{
         A:"The central executive, which directs attention between the slave systems",
         B:"The phonological loop, which holds and rehearses auditory information",
@@ -14516,7 +14516,7 @@ BANKS["PSY-MEM"].questions.push(
         D:"The episodic buffer, which integrates information into a single sequence"
       },
       correct:"A",tag:"MC-MEM-02",
-      scaffold:"The central executive is the supervisory component that allocates attention to the slave systems, and Baddeley described its own storage capacity as very limited — it directs rather than stores. The phonological loop holds auditory information, subdivided into the phonological store (what you hear) and the articulatory process (the inner voice used for maintenance rehearsal), with a capacity of about two seconds' worth of speech. The visuo-spatial sketchpad holds visual and spatial data, roughly three to four objects. The episodic buffer, added in 2000, integrates information from all components into a single time-sequenced record and links to LTM. The central executive is also the model's weakest point: critics argue it is too vague to test.",
+      scaffold:"The central executive is the supervisory component that allocates attention to the slave systems; it has very limited capacity and directs rather than stores. The phonological loop holds auditory information, subdivided into the phonological store (what you hear) and the articulatory process (the inner voice used for maintenance rehearsal), with a capacity of about two seconds' worth of speech. The visuo-spatial sketchpad holds visual and spatial data, roughly three to four objects. The episodic buffer, added in 2000, integrates information from all components into a single time-sequenced record and links to LTM. The central executive is also the model's weakest point: critics argue it is too vague to test.",
       reforge:{stem:"What is the main criticism of the central executive?",options:{A:"It only processes visual information",B:"It has an unlimited storage capacity",C:"It is too vague and difficult to test empirically",D:"It was removed from the model back in the year 2000"},correct:"C"}
     },
     {
@@ -14607,7 +14607,7 @@ BANKS["PSY-MEM"].questions.push(
         D:"Semantically similar words are confused when recalled from long-term memory"
       },
       correct:"B",tag:"MC-MEM-02",
-      scaffold:"Dual-task studies are the decisive evidence. If short-term memory were a single unitary store as the multi-store model claims, any two simultaneous tasks should interfere. Baddeley and Hitch found instead that participants could perform a verbal task and a visual task together with little cost, but performance collapsed when both tasks used the same component. That pattern only makes sense if STM has separate subsystems with separate capacities. Add supporting clinical evidence: patient KF had impaired verbal short-term recall but intact visual short-term recall after brain damage, again pointing to separable stores. Option A describes the serial position effect, which supports the multi-store model instead.",
+      scaffold:"Dual-task studies are the decisive evidence. If short-term memory were a single unitary store as the multi-store model claims, any two simultaneous tasks should interfere. Baddeley and Hitch found instead that participants could perform a verbal task and a visual task together with little cost, but performance collapsed when both tasks used the same component. That pattern only makes sense if STM has separate subsystems with separate capacities. Add supporting clinical evidence: patient KF had impaired verbal short-term recall but intact visual short-term recall after brain damage, again pointing to separable stores. The option about first and last items describes the serial position effect, which supports the multi-store model instead.",
       reforge:{stem:"What does the case of patient KF suggest about short-term memory?",options:{A:"Short-term memory is a single unitary store",B:"Rehearsal is unnecessary for memory transfer",C:"Long-term memory codes all information acoustically",D:"Verbal and visual short-term memory are separable"},correct:"D"}
     },
     {
@@ -14793,7 +14793,7 @@ BANKS["PSY-ATT"].questions.push(
         D:"Showing intense distress at separation and resisting comfort on reunion"
       },
       correct:"D",tag:"MC-ATT-06",
-      scaffold:"Three classifications, each with a distinct profile. Secure (Type B, around 60-75% in Britain): explores using the caregiver as a safe base, moderate separation and stranger anxiety, easily comforted at reunion. Insecure-avoidant (Type A, 20-25%): explores freely without using the caregiver as a base, little separation or stranger anxiety, avoids contact at reunion. Insecure-resistant (Type C, around 3%): explores little, intense separation and stranger anxiety, and the defining feature — seeks contact at reunion but simultaneously resists it, arching away or pushing off. Main Solomon later added a disorganised type, described in option C.",
+      scaffold:"Three classifications, each with a distinct profile. Secure (Type B, around 60-75% in Britain): explores using the caregiver as a safe base, moderate separation and stranger anxiety, easily comforted at reunion. Insecure-avoidant (Type A, 20-25%): explores freely without using the caregiver as a base, little separation or stranger anxiety, avoids contact at reunion. Insecure-resistant (Type C, around 3%): explores little, intense separation and stranger anxiety, and the defining feature — seeks contact at reunion but simultaneously resists it, arching away or pushing off. Main and Solomon later added a fourth, disorganised type, marked by freezing and contradictory behaviour.",
       reforge:{stem:"Which behaviour defines the insecure-avoidant infant at reunion?",options:{A:"Seeking then resisting contact with the caregiver",B:"Being quickly soothed by the caregiver",C:"Avoiding contact and showing little interest",D:"Freezing and displaying contradictory behaviour"},correct:"C"}
     },
     {
@@ -14927,7 +14927,7 @@ BANKS["PSY-PATH"].questions.push(
         D:"It takes no account of the level of distress experienced by the individual"
       },
       correct:"B",tag:"MC-PATH-DEF",
-      scaffold:"Rosenhan and Seligman proposed signs of failure to function: not conforming to interpersonal rules, severe personal distress, irrational or dangerous behaviour. The definition's strength is that it takes the individual's own experience seriously and matches how people actually seek help. But the limitation is coverage: someone with severe depression or an eating disorder may hold down a job and appear to function, so the definition misses them; conversely, unconventional lifestyles may be judged as failure to function when nothing is wrong. Note that option D is false — distress is central to this definition — and option A describes statistical infrequency instead.",
+      scaffold:"Rosenhan and Seligman proposed signs of failure to function: not conforming to interpersonal rules, severe personal distress, irrational or dangerous behaviour. The definition's strength is that it takes the individual's own experience seriously and matches how people actually seek help. But the limitation is coverage: someone with severe depression or an eating disorder may hold down a job and appear to function, so the definition misses them; conversely, unconventional lifestyles may be judged as failure to function when nothing is wrong. The other options do not fit: distress is central to this definition rather than ignored, the normal distribution belongs to statistical infrequency, and judging culturally unusual behaviour belongs to deviation from social norms.",
       reforge:{stem:"Which definition of abnormality is most closely tied to cultural norms?",options:{A:"Deviation from social norms",B:"Statistical infrequency",C:"Failure to function adequately",D:"Deviation from ideal mental health"},correct:"A"}
     },
     {
@@ -14979,7 +14979,7 @@ BANKS["PSY-PATH"].questions.push(
         D:"It targets the irrational beliefs underlying the phobia directly"
       },
       correct:"C",tag:"MC-PATH-PHOB",
-      scaffold:"Systematic desensitisation is gradual and client-controlled, so it is far more tolerable — which matters for children and for people with learning difficulties who may not cope with or consent meaningfully to flooding. Gilroy found the benefits lasted at 33 months, so it is not merely a short-term fix. Flooding's advantages are speed and cost: often a single long session rather than many. Both are limited to phobias with a clear conditioned stimulus and neither addresses cognitive elements, which is why some phobias respond better to CBT. Note option D describes CBT, and option A is the strength of flooding rather than of systematic desensitisation.",
+      scaffold:"Systematic desensitisation is gradual and client-controlled, so it is far more tolerable — which matters for children and for people with learning difficulties who may not cope with or consent meaningfully to flooding. Gilroy found the benefits lasted at 33 months, so it is not merely a short-term fix. Flooding's advantages are speed and cost: often a single long session rather than many. Both are limited to phobias with a clear conditioned stimulus and neither addresses cognitive elements, which is why some phobias respond better to CBT. Targeting irrational beliefs describes CBT, and speed in a single session is the strength of flooding rather than of systematic desensitisation.",
       reforge:{stem:"What is the main advantage of flooding as a treatment?",options:{A:"It works quickly, often in a single session",B:"It is gentler and more tolerable for the client",C:"It addresses the client's irrational thoughts",D:"It has a much lower dropout rate than alternatives"},correct:"A"}
     },
     {
@@ -16190,7 +16190,7 @@ BANKS["PSY-COG"] = {
     {
       id:"COG-01",stem:"In Piaget's theory, what is assimilation?",
       options:{A:"Fitting new information into an existing schema without changing it",B:"Altering an existing schema so that it can accommodate new information",C:"The state of cognitive balance reached once a schema has been adjusted",D:"The gap between what a child can do alone and with expert guidance"},correct:"A",tag:"MC-COG-PIAGET",
-      scaffold:"Piaget's mechanism of learning runs in a cycle. A schema is a mental framework of knowledge. Assimilation is incorporating new information into an existing schema — a child who knows 'dog' calls a cat a dog. Accommodation is changing the schema when the new information will not fit — realising cats are a separate category. Disequilibrium is the unpleasant imbalance created by information that does not fit, and equilibration is the drive to resolve it, which motivates learning. Note that option D defines Vygotsky's zone of proximal development, which is the standard distractor because the two theorists are examined together.",
+      scaffold:"Piaget's mechanism of learning runs in a cycle. A schema is a mental framework of knowledge. Assimilation is incorporating new information into an existing schema — a child who knows 'dog' calls a cat a dog. Accommodation is changing the schema when the new information will not fit — realising cats are a separate category. Disequilibrium is the unpleasant imbalance created by information that does not fit, and equilibration is the drive to resolve it, which motivates learning. The gap between what a child can do alone and with help is Vygotsky's zone of proximal development, which is the standard distractor because the two theorists are examined together.",
       reforge:{stem:"A child who knows 'bird' sees a bat and creates a new category for it. This is:",options:{A:"Assimilation into the existing bird schema",B:"Accommodation, as the schema has been changed",C:"Equilibrium, since no adjustment to the schema was needed",D:"Scaffolding provided by a more expert other"},correct:"B"}
     },
     {
@@ -16398,14 +16398,14 @@ BANKS["PSY-STR"] = {
     {
       id:"STR-10",stem:"Friedman and Rosenman identified Type A personality as characterised by:",
       options:{A:"Patience, relaxation and a notably easy-going approach to deadlines",B:"Competitiveness, time urgency and hostility towards other people",C:"Suppression of emotion and an unassertive, conforming manner",D:"Strong commitment, a sense of control and openness to challenge"},correct:"B",tag:"MC-STR-PERSONALITY",
-      scaffold:"Friedman and Rosenman's Western Collaborative Group Study followed around 3,000 men for eight and a half years and found Type A men were roughly twice as likely to develop coronary heart disease. Type A: competitive, impatient, time-pressured and hostile. Type B: relaxed, patient, non-competitive. Later research refined the picture significantly — hostility appears to be the genuinely toxic component rather than the whole Type A cluster, and several replications failed to reproduce the original effect. Type C, characterised by emotional suppression, has been linked to cancer, and Kobasa's hardy personality, described in option D, is protective.",
+      scaffold:"Friedman and Rosenman's Western Collaborative Group Study followed around 3,000 men for eight and a half years and found Type A men were roughly twice as likely to develop coronary heart disease. Type A: competitive, impatient, time-pressured and hostile. Type B: relaxed, patient, non-competitive. Later research refined the picture significantly — hostility appears to be the genuinely toxic component rather than the whole Type A cluster, and several replications failed to reproduce the original effect. Type C, characterised by emotional suppression, has been linked to cancer, and Kobasa's hardy personality, with its commitment, control and challenge, is protective.",
       reforge:{stem:"Which component of Type A personality appears most strongly linked to heart disease?",options:{A:"Time urgency and marked impatience with any delay",B:"Competitiveness in work and leisure",C:"Hostility and a cynical attitude to others",D:"Ambition and a strong drive to achieve"},correct:"C"}
     },
     {
       id:"STR-11",stem:"Kobasa's three components of the hardy personality are:",
       options:{A:"Competitiveness, hostility and a persistent sense of time urgency",B:"Alarm, resistance and eventual exhaustion of physical resources",C:"Commitment, control and viewing change as a challenge",D:"Denial, displacement and the repression of stressful memories"},correct:"C",tag:"MC-STR-HARDINESS",
       scaffold:"Hardiness is a protective disposition made up of the three Cs. Commitment: involvement in life and a sense of purpose. Control: the belief that one influences events, closely related to an internal locus of control. Challenge: treating change as an opportunity to develop rather than a threat. Kobasa found hardy executives fell ill less often despite comparable stress levels, and hardiness training — teaching focusing, reconstructing stressful situations and self-improvement through manageable challenges — has been developed on this basis. Criticisms are that the concept overlaps heavily with existing ideas such as locus of control and negative affectivity, and that measurement relies on self-report.",
-      reforge:{stem:"Which existing concept does hardiness overlap with most closely?",options:{A:"Locus of control, particularly an internal orientation",B:"Short-term memory capacity and its typical overall duration",C:"Attachment type formed during early infancy",D:"The correspondence principle in education"},correct:"A"}
+      reforge:{stem:"Which existing concept does hardiness overlap with most closely?",options:{A:"Locus of control, particularly an internal orientation",B:"Short-term memory capacity and its typical overall duration",C:"Attachment type formed during early infancy",D:"Conformity to the norms of a majority group"},correct:"A"}
     },
     {
       id:"STR-12",stem:"Benzodiazepines reduce anxiety primarily by:",
@@ -17246,7 +17246,7 @@ BANKS["PSY-FOR"] = {
     },
     {
       id:"FOR-12",stem:"Blackburn's psychodynamic explanation proposes that offending can result from:",
-      options:{A:"A deviant superego, which may be weak, over-harsh or deviant",B:"Poor classical conditioning of the fear response in childhood",C:"Attributing hostile intent to other people's neutral behaviour",D:"Learning pro-criminal attitudes from an intimate peer group"},correct:"A",tag:"MC-FOR-PSYCH",
+      options:{A:"An inadequate superego, which may be weak, deviant or over-harsh",B:"Poor classical conditioning of the fear response in early childhood",C:"Attributing hostile intent to other people's neutral or ambiguous acts",D:"Learning pro-criminal attitudes from an intimate peer group"},correct:"A",tag:"MC-FOR-PSYCH",
       scaffold:"Blackburn identified three superego problems. A weak superego, if the same-sex parent is absent during the phallic stage, leaves the id unchecked so immoral behaviour is more likely. A deviant superego, internalised from a criminal same-sex parent, means the person follows deviant standards without guilt. An over-harsh superego produces overwhelming unconscious guilt and a need for punishment, so the person offends in order to be caught. Evaluate with the standard objections: the concepts are unfalsifiable and unscientific, the account is gender-biased since it implies women should be less moral, and Bowlby's related maternal deprivation work has serious methodological problems.",
       reforge:{stem:"Why is the psychodynamic explanation of offending widely criticised?",options:{A:"It has generated no useful treatments for offending behaviour",B:"It relies entirely on brain imaging evidence",C:"Its concepts are unconscious and therefore unfalsifiable",D:"It applies only to offenders under the age of eighteen"},correct:"C"}
     },
