@@ -45297,8 +45297,9 @@ for (const [id, variants] of Object.entries(physAnswerLengthRepairs)) {
 // the padded copies borrow answer options from unrelated questions. A locked
 // subject stays visible as "Coming soon" but cannot be opened; teachers
 // cannot create new classes in it. Delete a key here to reopen the subject.
-// A Level Psychology ("psych") was added on 2026-11-24 while its banks are
-// reviewed question by question after a teacher's complaint.
-["englit", "engll", "pe", "mand", "french", "german", "span", "maths", "psych"].forEach(function (key) {
+// GCSE Psychology ("gcse-psych") was added on 2026-11-24: seven of its eight
+// banks come from the same generators whose faults were fixed by hand in
+// GCSE-PSY-RESEARCH (cross-topic distractors, placeholder explanations).
+["englit", "engll", "pe", "mand", "french", "german", "span", "maths", "gcse-psych"].forEach(function (key) {
   if (SUBJECTS[key]) SUBJECTS[key].locked = true;
 });
