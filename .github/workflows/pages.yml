@@ -19,7 +19,7 @@ jobs:
   deploy:
     environment:
       name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+      url: ${{ steps.deployment.outputs.page_url || steps.deployment_retry.outputs.page_url || steps.deployment_retry2.outputs.page_url }}
 
     runs-on: ubuntu-latest
 
@@ -124,10 +124,11 @@ jobs:
           name: github-pages-${{ github.run_id }}-${{ github.run_attempt }}
           path: _site
 
-      # Deploy used to start under a second after Upload, before GitHub's
-      # artifact listing could see the new artifact, so deploy-pages failed
-      # with "No artifacts named github-pages-... were found" (three times on
-      # 2026-11-25). Wait until the artifact is listed before deploying.
+      # deploy-pages intermittently fails with "No artifacts named
+      # github-pages-... were found" (four times on 2026-11-25), even when the
+      # artifact is already listed by the REST API. A manual re-run a minute
+      # later always succeeded, so the Deploy steps below retry on their own.
+      # This wait stays as a cheap first guard.
       - name: Wait for the uploaded site to be listed
         env:
           GH_TOKEN: ${{ github.token }}
@@ -147,6 +148,33 @@ jobs:
       # anything in this repo. Give it room instead of failing the site build.
       - name: Deploy
         id: deployment
+        continue-on-error: true
+        uses: actions/deploy-pages@v5
+        with:
+          artifact_name: github-pages-${{ github.run_id }}-${{ github.run_attempt }}
+          timeout: 1800000
+
+      - name: Wait before retrying the deploy
+        if: steps.deployment.outcome == 'failure'
+        run: sleep 45
+
+      - name: Deploy (retry)
+        id: deployment_retry
+        if: steps.deployment.outcome == 'failure'
+        continue-on-error: true
+        uses: actions/deploy-pages@v5
+        with:
+          artifact_name: github-pages-${{ github.run_id }}-${{ github.run_attempt }}
+          timeout: 1800000
+
+      - name: Wait before the last deploy attempt
+        if: steps.deployment.outcome == 'failure' && steps.deployment_retry.outcome == 'failure'
+        run: sleep 90
+
+      # No continue-on-error here: if all three attempts fail, the run fails.
+      - name: Deploy (last attempt)
+        id: deployment_retry2
+        if: steps.deployment.outcome == 'failure' && steps.deployment_retry.outcome == 'failure'
         uses: actions/deploy-pages@v5
         with:
           artifact_name: github-pages-${{ github.run_id }}-${{ github.run_attempt }}
