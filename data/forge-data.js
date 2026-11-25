@@ -46620,6 +46620,8 @@ for (const [id, variants] of Object.entries(physAnswerLengthRepairs)) {
 // GCSE Psychology ("gcse-psych") was added on 2026-11-24: seven of its eight
 // banks come from the same generators whose faults were fixed by hand in
 // GCSE-PSY-RESEARCH (cross-topic distractors, placeholder explanations).
-["englit", "engll", "pe", "mand", "french", "german", "span", "maths", "gcse-psych"].forEach(function (key) {
+// A Level Psychology ("psych") and Criminology ("crim") were added on
+// 2026-11-25 at the owner's request, pending a teacher's check.
+["englit", "engll", "pe", "mand", "french", "german", "span", "maths", "gcse-psych", "psych", "crim"].forEach(function (key) {
   if (SUBJECTS[key]) SUBJECTS[key].locked = true;
 });
