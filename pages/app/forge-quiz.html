@@ -1417,6 +1417,10 @@ function renderSubjects(){
     subjectKeys = state.paidSubjects.filter(function(k) { return SUBJECTS[k]; });
   }
 
+  // Available subjects first, Coming soon after; each group keeps its order.
+  subjectKeys = subjectKeys.filter(function(k) { return !isLockedSubject(k); })
+    .concat(subjectKeys.filter(function(k) { return isLockedSubject(k); }));
+
   subjectKeys.forEach(function(k){
     var s=SUBJECTS[k];
     var countLabel;

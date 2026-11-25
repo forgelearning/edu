@@ -19,6 +19,8 @@ assert.ok(/function isLockedSubject\(/.test(quiz), 'the quiz page knows which su
 assert.ok(/if \(isLockedSubject\(state\.subject\)/.test(quiz), 'the quiz page sends a locked subject back to the picker');
 assert.ok(/subject-btn--locked[^\n]*disabled/.test(quiz) && /Coming soon/.test(quiz), 'the picker shows locked subjects as Coming soon');
 
+assert.ok(/subjectKeys = subjectKeys\.filter\(function\(k\) \{ return !isLockedSubject\(k\); \}\)\s*\.concat\(subjectKeys\.filter\(function\(k\) \{ return isLockedSubject\(k\); \}\)\)/.test(quiz), 'the picker lists available subjects before Coming soon ones');
+
 const crucible = fs.readFileSync('pages/app/crucible.html', 'utf8');
 assert.ok(/if\(s\.locked\) return;/.test(crucible), 'timed practice leaves locked subjects out');
 
