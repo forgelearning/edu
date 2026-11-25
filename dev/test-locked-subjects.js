@@ -10,7 +10,7 @@ vm.createContext(context);
 vm.runInContext(fs.readFileSync('data/forge-catalog.js', 'utf8'), context);
 const SUBJECTS = context.window.SUBJECTS;
 
-const expected = ['englit', 'engll', 'pe', 'mand', 'french', 'german', 'span', 'maths', 'gcse-psych', 'psych', 'crim', 'hsc', 'gcse-maths', 'pol', 'rs', 'media'];
+const expected = ['englit', 'engll', 'pe', 'mand', 'french', 'german', 'span', 'maths', 'gcse-psych', 'psych', 'crim', 'hsc', 'gcse-maths', 'pol', 'rs', 'media', 'gcse-sep-chem', 'gcse-sep-phys', 'gcse-sep-bio', 'phys'];
 const locked = Object.keys(SUBJECTS).filter((k) => SUBJECTS[k].locked);
 assert.deepStrictEqual(locked.sort(), expected.slice().sort(), 'the catalog locks exactly the agreed subjects (rebuild with build-question-payloads.js)');
 
