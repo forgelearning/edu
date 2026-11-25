@@ -46624,6 +46624,7 @@ for (const [id, variants] of Object.entries(physAnswerLengthRepairs)) {
 // 2026-11-25 at the owner's request, pending a teacher's check.
 ["englit", "engll", "pe", "mand", "french", "german", "span", "maths", "gcse-psych", "psych", "crim",
   // Added 2026-11-25 at the owner's request, pending a teacher's check.
-  "hsc", "gcse-maths", "pol", "rs", "media"].forEach(function (key) {
+  "hsc", "gcse-maths", "pol", "rs", "media",
+  "gcse-sep-chem", "gcse-sep-phys", "gcse-sep-bio", "phys"].forEach(function (key) {
   if (SUBJECTS[key]) SUBJECTS[key].locked = true;
 });
