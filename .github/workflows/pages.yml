@@ -7,6 +7,7 @@ on:
 
 permissions:
   contents: read
+  actions: read
   pages: write
   id-token: write
 
@@ -122,6 +123,23 @@ jobs:
         with:
           name: github-pages-${{ github.run_id }}-${{ github.run_attempt }}
           path: _site
+
+      # Deploy used to start under a second after Upload, before GitHub's
+      # artifact listing could see the new artifact, so deploy-pages failed
+      # with "No artifacts named github-pages-... were found" (three times on
+      # 2026-11-25). Wait until the artifact is listed before deploying.
+      - name: Wait for the uploaded site to be listed
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ARTIFACT: github-pages-${{ github.run_id }}-${{ github.run_attempt }}
+        run: |
+          for i in $(seq 1 30); do
+            if gh api "repos/${{ github.repository }}/actions/runs/${{ github.run_id }}/artifacts?name=$ARTIFACT" --jq '.total_count' | grep -qv '^0$'; then
+              echo "Artifact $ARTIFACT is listed"; exit 0
+            fi
+            echo "Waiting for $ARTIFACT to be listed ($i/30)"; sleep 5
+          done
+          echo "::warning::$ARTIFACT not listed after 150s; trying to deploy anyway"
 
       # The Pages backend has been taking longer than deploy-pages' 10 minute
       # default to finish a deployment that it accepts within seconds, so every
