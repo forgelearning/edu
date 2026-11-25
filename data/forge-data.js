@@ -46622,6 +46622,8 @@ for (const [id, variants] of Object.entries(physAnswerLengthRepairs)) {
 // GCSE-PSY-RESEARCH (cross-topic distractors, placeholder explanations).
 // A Level Psychology ("psych") and Criminology ("crim") were added on
 // 2026-11-25 at the owner's request, pending a teacher's check.
-["englit", "engll", "pe", "mand", "french", "german", "span", "maths", "gcse-psych", "psych", "crim"].forEach(function (key) {
+["englit", "engll", "pe", "mand", "french", "german", "span", "maths", "gcse-psych", "psych", "crim",
+  // Added 2026-11-25 at the owner's request, pending a teacher's check.
+  "hsc", "gcse-maths", "pol", "rs", "media"].forEach(function (key) {
   if (SUBJECTS[key]) SUBJECTS[key].locked = true;
 });
